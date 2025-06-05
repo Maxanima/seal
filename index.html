@@ -2,30 +2,32 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Magic Seal Upgrade System</title>
   <style>
     html, body {
-      margin: 0; padding: 0;
+      margin: 0;
+      padding: 0;
       height: 100%;
       background: #000;
-      color: #0ff;
       font-family: monospace, monospace;
-      overflow-x: hidden;
+      color: #0ff;
+      overflow: hidden;
+      -webkit-overflow-scrolling: touch;
       user-select: none;
     }
+
     body {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      min-height: 100vh;
-      position: relative;
-      padding: 20px 0;
     }
+
     #loading-screen {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: #000;
-      color: #0ff;
+      background: linear-gradient(135deg, #000000, #0ff, #000000);
+      color: #fff;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -39,24 +41,23 @@
       justify-content: center;
       gap: 12px;
       margin-bottom: 20px;
-      user-select: none;
       pointer-events: none;
     }
 
     #seal-container {
       position: relative;
-      width: 100%;
-      flex-grow: 1;
-      aspect-ratio: 1 / 1;
+      flex: 1;
+      aspect-ratio: 1/1;
       display: flex;
       justify-content: center;
       align-items: center;
+      width: 100%;
     }
 
     svg {
-      display: block;
       width: 100%;
       height: 100%;
+      display: block;
     }
 
     .glow {
@@ -68,22 +69,22 @@
     #buttons-container {
       display: flex;
       justify-content: space-between;
-      padding: 0 40px;
-      margin-top: 20px;
+      padding: 0 20px 20px;
       user-select: none;
     }
+
     button {
       background: transparent;
       border: 2px solid #0ff;
       border-radius: 8px;
-      padding: 12px 28px;
+      padding: 12px 20px;
       font-size: 16px;
       font-weight: 600;
       color: #0ff;
       cursor: pointer;
       transition: background 0.3s, color 0.3s;
-      user-select: none;
     }
+
     button:hover {
       background: #0ff;
       color: #000;
@@ -91,12 +92,12 @@
   </style>
 </head>
 <body>
-  <div id="loading-screen">Loading</div>
+  <div id="loading-screen">Загрузка...</div>
   <div id="icons-container"></div>
   <div id="seal-container"></div>
   <div id="buttons-container">
-    <button id="reset-btn">Reset</button>
-    <button id="add-figure-btn">Add Figure</button>
+    <button id="reset-btn">Сброс</button>
+    <button id="add-figure-btn">Добавить</button>
   </div>
   <audio id="upgrade-sound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_4ee6f27266.mp3?filename=correct-2-46134.mp3" preload="auto"></audio>
   <script>
@@ -106,7 +107,7 @@
 
     let figures = [];
     let glowLevels = [2, 4, 8];
-    let rotationSpeeds = [5.72 * 0.3 * 10, 3.41 * 0.3 * 10, 1.87 * 0.3 * 10]; // Уменьшено вращение на 90%
+    let rotationSpeeds = [5.72 * 0.3 * 10, 3.41 * 0.3 * 10, 1.87 * 0.3 * 10]; // замедление на 90%
 
     const upgradeSound = document.getElementById('upgrade-sound');
     const iconsContainer = document.getElementById('icons-container');
