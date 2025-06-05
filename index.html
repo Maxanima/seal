@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Magic Seal WebApp</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+      font-family: sans-serif;
+      text-align: center;
+      padding-top: 20px;
+      margin: 0;
+    }
+    svg {
+      margin-top: 20px;
+    }
+    .glow {
+      fill: none;
+      stroke-width: 6;
+      filter: drop-shadow(0 0 4px currentColor);
+      transform-origin: center center;
+    }
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+    .fade-in {
+      animation: fadeIn 1s ease;
+    }
+    #info-box-container {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 20px;
+      z-index: 10;
+    }
+    .info-box {
+      background: rgba(0, 0, 0, 0.8);
+      padding: 10px 20px;
+      border: 1px solid #555;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Magic Seal WebApp</h1>
+  <div>
+    <button onclick="upgradeGlow()">Upgrade Glow</button>
+    <button onclick="upgradeRotation()">Upgrade Rotation</button>
+  </div>
+  <div id="info-box-container">
+    <div class="info-box" id="glow-info">Glow Level: -</div>
+    <div class="info-box" id="rotation-info">Rotation Speed: -</div>
+  </div>
+  <div id="seal-container"></div>
+  <audio id="upgrade-sound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_4ee6f27266.mp3?filename=correct-2-46134.mp3"></audio>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+    tg.expand(); // разворачивает WebApp на весь экран
+
+    // Можем получать ID юзера:
+    console.log("User ID:", tg.initDataUnsafe?.user?.id);
+
+    const colors = ['#FF5555', '#FFAA55', '#FFFF55', '#AAFF55', '#55FFAA', '#55FFFF', '#5599FF', '#AA55FF', '#FF55AA', '#00FFFF', '#FF00FF', '#00FF00'];
+    const shapes = ['triangle', 'square', 'star', 'ring', 'hex', 'circle', 'diamond', 'pentagon'];
+    const maxFigures = 4;
+
+    let figures = [];
+    let glowLevels = ['4px', '8px', '16px'];
+    let rotationSpeeds = [6.5, 3.9, 2.1]; // уменьшено на 20%
+
+    const upgradeSound = document.getElementById('upgrade-sound');
+    const glowInfo = document.getElementById('glow-info');
+    const rotationInfo = document.getElementById('rotation-info');
+
+    function randomChoice(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function createFigure(index) {
+      const shape = randomChoice(shapes);
+      const color = randomChoice(colors);
+      const glow = Math.floor(Math.random() * glowLevels.length);
+      const rotation = randomChoice(rotationSpeeds);
+      return {
+        shape,
+        color,
+        glow,
+        rotation,
+        complete: false,
+        size: 100 - index * 15,
+        id: `fig${index}`
+      };
+    }
+
+    function upgradeGlow() {
+      for (let fig of figures) {
+        if (!fig.complete) {
+          fig.glow = Math.floor(Math.random() * glowLevels.length);
+          glowInfo.textContent = `Glow Level: ${glowLevels[fig.glow]}`;
+          checkFigureComplete(fig);
+          upgradeSound.play();
+          break;
+        }
+      }
+      renderSeal();
+    }
+
+    function upgradeRotation() {
+      for (let fig of figures) {
+        if (!fig.complete) {
+          fig.rotation = randomChoice(rotationSpeeds);
+          rotationInfo.textContent = `Rotation Speed: ${fig.rotation.toFixed(1)}s`;
+          checkFigureComplete(fig);
+          upgradeSound.play();
+          break;
+        }
+      }
+      renderSeal();
+    }
+
+    function checkFigureComplete(fig) {
+      if (fig.glow >= 0 && fig.rotation > 0) {
+        fig.complete = true;
+        if (figures.length < maxFigures && figures.every(f => f.complete)) {
+          figures.push(createFigure(figures.length));
+        }
+      }
+    }
+
+    function renderSeal() {
+      let svg = `<svg class="fade-in" width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">`;
+      svg += figures.map((fig, i) => renderFigure(fig, i)).join('');
+      svg += '</svg>';
+      document.getElementById('seal-container').innerHTML = svg;
+    }
+
+    function renderFigure(fig, i) {
+      const cx = 150, cy = 150;
+      const color = fig.color;
+      const glow = glowLevels[fig.glow];
+      const rotation = fig.rotation;
+      const id = fig.id;
+      const angle = (i % 2 === 0 ? 1 : -1) * 360;
+      const animateTag = `<animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0 150 150" to="${angle} 150 150" dur="${rotation}s" repeatCount="indefinite" />`;
+      const commonAttrs = `class="glow" stroke="${color}" style="color:${color}; filter: drop-shadow(0 0 ${glow} ${color});"`;
+
+      switch (fig.shape) {
+        case 'circle':
+        case 'ring':
+          return `<g transform="rotate(0 150 150)">${animateTag}<circle ${commonAttrs} cx="150" cy="150" r="${fig.size}" /></g>`;
+        case 'triangle': {
+          const h = fig.size * Math.sqrt(3)/2;
+          const points = [
+            [cx, cy - 2*h/3],
+            [cx - fig.size/2, cy + h/3],
+            [cx + fig.size/2, cy + h/3]
+          ].map(p => p.join(',')).join(' ');
+          return `<g transform="rotate(0 150 150)">${animateTag}<polygon ${commonAttrs} points="${points}" /></g>`;
+        }
+        case 'square': {
+          const s = fig.size;
+          return `<g transform="rotate(0 150 150)">${animateTag}<rect ${commonAttrs} x="${cx - s/2}" y="${cy - s/2}" width="${s}" height="${s}" /></g>`;
+        }
+        case 'star': {
+          const points = [];
+          for (let j = 0; j < 10; j++) {
+            const angle = Math.PI/2 + j * Math.PI/5;
+            const r = (j % 2 === 0) ? fig.size : fig.size/2;
+            const x = cx + r * Math.cos(angle);
+            const y = cy - r * Math.sin(angle);
+            points.push(`${x},${y}`);
+          }
+          return `<g transform="rotate(0 150 150)">${animateTag}<polygon ${commonAttrs} points="${points.join(' ')}" /></g>`;
+        }
+        case 'hex': {
+          const points = [];
+          for (let j = 0; j < 6; j++) {
+            const angle = Math.PI / 6 + j * Math.PI / 3;
+            const x = cx + fig.size * Math.cos(angle);
+            const y = cy + fig.size * Math.sin(angle);
+            points.push(`${x},${y}`);
+          }
+          return `<g transform="rotate(0 150 150)">${animateTag}<polygon ${commonAttrs} points="${points.join(' ')}" /></g>`;
+        }
+        case 'diamond': {
+          const s = fig.size;
+          return `<g transform="rotate(0 150 150)">${animateTag}<polygon ${commonAttrs} points="${cx},${cy - s} ${cx + s},${cy} ${cx},${cy + s} ${cx - s},${cy}" /></g>`;
+        }
+        case 'pentagon': {
+          const points = [];
+          for (let j = 0; j < 5; j++) {
+            const angle = Math.PI / 2 + j * 2 * Math.PI / 5;
+            const x = cx + fig.size * Math.cos(angle);
+            const y = cy - fig.size * Math.sin(angle);
+            points.push(`${x},${y}`);
+          }
+          return `<g transform="rotate(0 150 150)">${animateTag}<polygon ${commonAttrs} points="${points.join(' ')}" /></g>`;
+        }
+        default:
+          return '';
+      }
+    }
+
+    figures.push(createFigure(0));
+    renderSeal();
+  </script>
+</body>
+</html>
