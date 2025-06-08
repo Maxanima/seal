@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 <title>Магическая печать — Финал</title>
 <style>
-  /* Общие стили и центрирование */
   html, body {
     margin: 0; padding: 0; height: 100%;
     background: #000;
@@ -41,7 +40,6 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     z-index: 10;
   }
   #sphere-counter svg {
@@ -49,11 +47,24 @@
     height: 30px;
     filter: drop-shadow(0 0 5px rgba(255,255,255,0.3));
   }
+  #rare-message {
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #00ff88;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: monospace;
+    text-shadow: 0 0 6px #00ff88;
+    text-align: center;
+    white-space: pre-line;
+  }
 </style>
 </head>
 <body>
-  <div id="sphere-counter" aria-label="Счётчик сфер" role="status" aria-live="polite">
-    <svg viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" >
+  <div id="sphere-counter">
+    <svg viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
       <circle cx="32" cy="32" r="30" />
       <circle cx="32" cy="32" r="20" />
       <circle cx="32" cy="32" r="10" />
@@ -61,8 +72,9 @@
     <span id="sphere-count">100</span>
   </div>
 
-  <div id="canvas-container" tabindex="0" aria-label="Анимация печати, нажмите для генерации новой">
-    <canvas id="sealCanvas" width="520" height="520" role="img" aria-describedby="instruction"></canvas>
+  <div id="canvas-container" tabindex="0">
+    <canvas id="sealCanvas" width="520" height="520"></canvas>
+    <div id="rare-message"></div>
   </div>
 
 <script>
@@ -71,10 +83,10 @@
   const ctx = canvas.getContext('2d');
   const container = document.getElementById('canvas-container');
   const sphereCountEl = document.getElementById('sphere-count');
+  const rareMessageEl = document.getElementById('rare-message');
 
   let spheres = 100;
 
-  // Яркие 22 цвета — сочные, насыщенные, без неонового жесткого свечения
   const colors = [
     '#1E90FF', '#00FFFF', '#7FFF00', '#FF69B4', '#FFD700', '#FF4500',
     '#00FA9A', '#FF6347', '#00CED1', '#FF1493', '#ADFF2F', '#FF8C00',
@@ -83,11 +95,8 @@
   ];
 
   const figureTypes = ['circle', 'equilateralTriangle', 'square', 'star', 'hexagon'];
-
-  // Размеры фигур увеличены в 2 раза относительно прошлой версии
   const sizeRange = [160, 190, 220, 250];
   const rotationSpeeds = [0.002, 0.004, 0.006, 0.008];
-
   const cx = canvas.width / 2;
   const cy = canvas.height / 2;
 
@@ -97,12 +106,8 @@
     ctx.save();
     ctx.translate(x, y);
     ctx.rotate(rotation);
-
-    const lineWidth = 7;
-    ctx.lineWidth = lineWidth;
+    ctx.lineWidth = 7;
     ctx.strokeStyle = color;
-
-    // Свечение с пульсацией (glowAlpha от 0 до 1)
     ctx.shadowColor = color;
     ctx.shadowBlur = 30 * glowAlpha;
 
@@ -112,7 +117,6 @@
         ctx.arc(0, 0, size / 2, 0, Math.PI * 2);
         break;
       case 'equilateralTriangle':
-        // Центрированный треугольник
         for(let i=0; i<3; i++) {
           const angle = i * 2 * Math.PI / 3 - Math.PI / 2;
           const px = (size / Math.sqrt(3)) * Math.cos(angle);
@@ -123,42 +127,35 @@
         ctx.closePath();
         break;
       case 'square':
-        {
-          const s = size / Math.sqrt(2);
-          ctx.rect(-s/2, -s/2, s, s);
-        }
+        const s = size / Math.sqrt(2);
+        ctx.rect(-s/2, -s/2, s, s);
         break;
       case 'star':
-        {
-          const outerR = size / 2;
-          const innerR = outerR * 0.45;
-          for(let i=0; i<10; i++) {
-            const r = i % 2 === 0 ? outerR : innerR;
-            const angle = i * Math.PI / 5 - Math.PI / 2;
-            const px = r * Math.cos(angle);
-            const py = r * Math.sin(angle);
-            if(i === 0) ctx.moveTo(px, py);
-            else ctx.lineTo(px, py);
-          }
-          ctx.closePath();
+        const outerR = size / 2;
+        const innerR = outerR * 0.45;
+        for(let i=0; i<10; i++) {
+          const r = i % 2 === 0 ? outerR : innerR;
+          const angle = i * Math.PI / 5 - Math.PI / 2;
+          const px = r * Math.cos(angle);
+          const py = r * Math.sin(angle);
+          if(i === 0) ctx.moveTo(px, py);
+          else ctx.lineTo(px, py);
         }
+        ctx.closePath();
         break;
       case 'hexagon':
-        {
-          const r = size / 2;
-          for(let i=0; i<6; i++) {
-            const angle = i * 2 * Math.PI / 6 - Math.PI / 2;
-            const px = r * Math.cos(angle);
-            const py = r * Math.sin(angle);
-            if(i === 0) ctx.moveTo(px, py);
-            else ctx.lineTo(px, py);
-          }
-          ctx.closePath();
+        const r = size / 2;
+        for(let i=0; i<6; i++) {
+          const angle = i * 2 * Math.PI / 6 - Math.PI / 2;
+          const px = r * Math.cos(angle);
+          const py = r * Math.sin(angle);
+          if(i === 0) ctx.moveTo(px, py);
+          else ctx.lineTo(px, py);
         }
+        ctx.closePath();
         break;
     }
     ctx.stroke();
-
     ctx.restore();
   }
 
@@ -172,21 +169,50 @@
       const direction = Math.random() < 0.5 ? 1 : -1;
       seal.push({type, color, size, speed, direction, rotation: 0});
     }
+    checkRarity();
+  }
+
+  function checkRarity() {
+    const countMatches = (key) => {
+      const counts = {};
+      for (const f of seal) {
+        const val = f[key];
+        counts[val] = (counts[val] || 0) + 1;
+      }
+      const matchVal = Object.entries(counts).find(([_, c]) => c >= 3);
+      return matchVal ? { value: matchVal[0], count: matchVal[1] } : null;
+    }
+
+    const colorMatch = countMatches('color');
+    const typeMatch = countMatches('type');
+    const speedMatch = countMatches('speed');
+
+    const matchCount = [colorMatch, typeMatch, speedMatch].filter(Boolean).length;
+    const allMatch = colorMatch?.count === 4 && typeMatch?.count === 4 && speedMatch?.count === 4;
+
+    if (allMatch) {
+      rareMessageEl.textContent = `✨ Ethereal Seal!\nChance: 0.008%`;
+    } else if (matchCount >= 2 && [colorMatch, typeMatch, speedMatch].some(m => m?.count === 3)) {
+      rareMessageEl.textContent = `🔥 Legendary Seal!\nChance: 0.03%`;
+    } else if ([colorMatch, typeMatch, speedMatch].some(m => m?.count === 4)) {
+      rareMessageEl.textContent = `💎 Mythic Seal!\nChance: 0.12%`;
+    } else if ([colorMatch, typeMatch, speedMatch].some(m => m?.count === 3)) {
+      rareMessageEl.textContent = `🌟 Rare Seal!\nChance: 0.48%`;
+    } else {
+      rareMessageEl.textContent = '';
+    }
   }
 
   let time = 0;
   function render() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
     const glowPulse = 0.75 + 0.25 * Math.sin(time * Math.PI * 2 / 3);
-
     for(let i = 0; i < seal.length; i++) {
       const f = seal[i];
       f.rotation += f.speed * f.direction;
       const glowAlpha = glowPulse * (0.8 + 0.2 * Math.sin(time * Math.PI * 2 / 3 + i));
       drawShape(ctx, f.type, cx, cy, f.size, f.color, f.rotation, glowAlpha);
     }
-
     time += 1/60;
     requestAnimationFrame(render);
   }
