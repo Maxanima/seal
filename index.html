@@ -13,6 +13,8 @@
     align-items: center;
     overflow: hidden;
     user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    tap-highlight-color: transparent;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
   #canvas-container {
@@ -21,12 +23,16 @@
     height: 520px;
     outline: none;
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    tap-highlight-color: transparent;
   }
   canvas {
     display: block;
     width: 520px;
     height: 520px;
     background: transparent;
+    -webkit-tap-highlight-color: transparent;
+    tap-highlight-color: transparent;
   }
   #sphere-counter {
     position: fixed;
@@ -88,6 +94,8 @@
     border: none;
     border-radius: 6px;
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    tap-highlight-color: transparent;
   }
   #bottom-nav {
     position: fixed;
@@ -107,6 +115,8 @@
     font-size: 14px;
     cursor: pointer;
     user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    tap-highlight-color: transparent;
   }
   #player-info {
     position: fixed;
@@ -116,33 +126,11 @@
     font-size: 14px;
     z-index: 10;
     background: rgba(0,0,0,0.5);
-    padding: 6px 10px 10px 10px;
+    padding: 6px 10px;
     border-radius: 6px;
     user-select: none;
-    min-width: 160px;
-  }
-  .level-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 2px;
-  }
-  .xp-bar {
-    width: 100%;
-    height: 7px;
-    background: #222;
-    border-radius: 4px;
-    overflow: hidden;
-    margin-top: 4px;
-    margin-bottom: 2px;
-    box-shadow: 0 0 6px #000a;
-  }
-  .xp-progress {
-    height: 100%;
-    background: linear-gradient(90deg, #4e54c8, #8f94fb);
-    width: 0%;
-    transition: width 0.4s cubic-bezier(.56,.01,.53,.96);
-    border-radius: 4px;
+    -webkit-tap-highlight-color: transparent;
+    tap-highlight-color: transparent;
   }
   #mock-payment-modal {
     position: fixed;
@@ -157,6 +145,8 @@
     width: 320px;
     z-index: 30;
     display: none;
+    -webkit-tap-highlight-color: transparent;
+    tap-highlight-color: transparent;
   }
   #mock-payment-modal button {
     background: #0ff;
@@ -167,6 +157,8 @@
     cursor: pointer;
     font-weight: 700;
     user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    tap-highlight-color: transparent;
   }
   #mock-payment-result {
     margin-top: 10px;
@@ -191,6 +183,8 @@
     text-align: center;
     letter-spacing: 0.5px;
     display: block;
+    -webkit-tap-highlight-color: transparent;
+    tap-highlight-color: transparent;
   }
   #top-popup.active {
     opacity: 1;
@@ -201,15 +195,7 @@
 </head>
 <body>
 
-<div id="player-info">
-  <div class="level-row">
-    Level: <span id="level">1</span>
-    <span style="margin-left:10px;">XP: <span id="xp">0</span>/100</span>
-  </div>
-  <div class="xp-bar">
-    <div class="xp-progress" id="xp-progress"></div>
-  </div>
-</div>
+<div id="player-info">Level: <span id="level">1</span> | XP: <span id="xp">0</span>/100</div>
 
 <div id="sphere-counter">
   <svg viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
@@ -281,7 +267,6 @@
   const rareMessageEl = document.getElementById('rare-message');
   const xpEl = document.getElementById('xp');
   const levelEl = document.getElementById('level');
-  const xpProgressEl = document.getElementById('xp-progress');
   const topPopup = document.getElementById('top-popup');
 
   let spheres = 100, xp = 0, level = 1;
@@ -424,11 +409,6 @@
     sphereCountEl.textContent = spheres;
   }
 
-  function updateXPBar() {
-    const percent = (xp / 100) * 100;
-    xpProgressEl.style.width = percent + '%';
-  }
-
   function gainXP(amount) {
     xp += amount;
     while (xp >= 100) {
@@ -437,7 +417,6 @@
     }
     xpEl.textContent = xp;
     levelEl.textContent = level;
-    updateXPBar();
   }
 
   function onClick(e) {
@@ -452,6 +431,16 @@
   }
 
   container.addEventListener('click', onClick);
+  container.addEventListener('touchstart', function(e) {
+    // Для мобильных: убрать синий флэш и добавить искры
+    e.preventDefault();
+    const touch = e.touches[0];
+    let rect = canvas.getBoundingClientRect();
+    let x = (touch?.clientX ?? (rect.left + cx)) - rect.left;
+    let y = (touch?.clientY ?? (rect.top + cy)) - rect.top;
+    onClick({clientX: x + rect.left, clientY: y + rect.top});
+  }, {passive: false});
+
   container.addEventListener('keydown', e => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -501,7 +490,6 @@
 
   generateRandomSeal();
   updateSphereCount();
-  updateXPBar();
   render();
 })();
 </script>
