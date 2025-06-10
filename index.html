@@ -13,7 +13,6 @@
     align-items: center;
     overflow: hidden;
     user-select: none;
-    -webkit-tap-highlight-color: transparent;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
   #canvas-container {
@@ -62,6 +61,7 @@
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.4s ease;
+    z-index: 5;
   }
   .tab {
     position: fixed;
@@ -116,9 +116,33 @@
     font-size: 14px;
     z-index: 10;
     background: rgba(0,0,0,0.5);
-    padding: 6px 10px;
+    padding: 6px 10px 10px 10px;
     border-radius: 6px;
     user-select: none;
+    min-width: 160px;
+  }
+  .level-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 2px;
+  }
+  .xp-bar {
+    width: 100%;
+    height: 7px;
+    background: #222;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 4px;
+    margin-bottom: 2px;
+    box-shadow: 0 0 6px #000a;
+  }
+  .xp-progress {
+    height: 100%;
+    background: linear-gradient(90deg, #4e54c8, #8f94fb);
+    width: 0%;
+    transition: width 0.4s cubic-bezier(.56,.01,.53,.96);
+    border-radius: 4px;
   }
   #mock-payment-modal {
     position: fixed;
@@ -148,11 +172,44 @@
     margin-top: 10px;
     font-weight: 700;
   }
+  #top-popup {
+    position: fixed;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.97);
+    background: rgba(255,255,255,0.97);
+    color: #4e54c8;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 10px;
+    box-shadow: 0 2px 16px #4e54c822;
+    padding: 9px 24px;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(.56,.01,.53,.96), transform 0.3s cubic-bezier(.56,.01,.53,.96);
+    text-align: center;
+    letter-spacing: 0.5px;
+    display: block;
+  }
+  #top-popup.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) scale(1);
+  }
 </style>
 </head>
 <body>
 
-<div id="player-info">Level: <span id="level">1</span> | XP: <span id="xp">0</span>/100</div>
+<div id="player-info">
+  <div class="level-row">
+    Level: <span id="level">1</span>
+    <span style="margin-left:10px;">XP: <span id="xp">0</span>/100</span>
+  </div>
+  <div class="xp-bar">
+    <div class="xp-progress" id="xp-progress"></div>
+  </div>
+</div>
 
 <div id="sphere-counter">
   <svg viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
@@ -166,6 +223,7 @@
 <div id="canvas-container" tabindex="0">
   <canvas id="sealCanvas" width="520" height="520"></canvas>
   <div id="rare-message"></div>
+  <div id="top-popup">Find Ethereal Seal!<br>Chance: 0.008%</div>
 </div>
 
 <div id="bottom-nav">
@@ -223,18 +281,60 @@
   const rareMessageEl = document.getElementById('rare-message');
   const xpEl = document.getElementById('xp');
   const levelEl = document.getElementById('level');
+  const xpProgressEl = document.getElementById('xp-progress');
+  const topPopup = document.getElementById('top-popup');
 
   let spheres = 100, xp = 0, level = 1;
   const cx = canvas.width / 2, cy = canvas.height / 2;
 
-  const colors = ['#1E90FF', '#00FFFF', '#7FFF00', '#FF69B4', '#FFD700', '#FF4500'];
+  const colors = ['#1E90FF', '#00FFFF', '#7FFF00', '#FF69B4', '#FFD700', '#FF4500', '#ff00cc', '#00ffb3', '#ffb300', '#00baff', '#ff5e5e'];
   const figureTypes = ['circle', 'equilateralTriangle', 'square'];
   const sizeRange = [160, 190, 220, 250];
   const rotationSpeeds = [0.002, 0.004, 0.006, 0.008];
 
   let seal = [];
 
-  function drawShape(ctx, type, x, y, size, color, rotation, glowAlpha) {
+  // --- Искры ---
+  const sparks = [];
+  function createSparks(x, y) {
+    const count = 13 + Math.floor(Math.random()*5);
+    for(let i=0; i<count; i++) {
+      const angle = Math.random() * 2 * Math.PI;
+      const speed = 1.3 + Math.random() * 1.7;
+      sparks.push({
+        x, y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        alpha: 1,
+        color: colors[Math.floor(Math.random()*colors.length)],
+        size: 1.1 + Math.random() * 1.5,
+        life: 0.6 + Math.random()*0.5
+      });
+    }
+  }
+  function renderSparks() {
+    for(let i=sparks.length-1; i>=0; i--) {
+      const p = sparks[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vx *= 0.93;
+      p.vy *= 0.93;
+      p.life -= 0.027;
+      p.alpha = Math.max(0, p.life);
+      ctx.globalAlpha = p.alpha;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+      ctx.fillStyle = p.color;
+      ctx.shadowColor = p.color;
+      ctx.shadowBlur = 8 * p.alpha;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.globalAlpha = 1;
+      if(p.life<=0) sparks.splice(i,1);
+    }
+  }
+
+  function drawShape(ctx, type, x, y, size, color, rotation, glowAlpha, pulsate) {
     ctx.save();
     ctx.translate(x, y);
     ctx.rotate(rotation);
@@ -242,18 +342,20 @@
     ctx.strokeStyle = color;
     ctx.shadowColor = color;
     ctx.shadowBlur = 30 * glowAlpha;
+    // Минимальная пульсация (амплитуда 1%)
+    const animatedSize = size * (1 + 0.01 * Math.sin(pulsate));
     ctx.beginPath();
-    if (type === 'circle') ctx.arc(0, 0, size / 2, 0, Math.PI * 2);
+    if (type === 'circle') ctx.arc(0, 0, animatedSize / 2, 0, Math.PI * 2);
     else if (type === 'equilateralTriangle') {
       for (let i = 0; i < 3; i++) {
         const angle = i * 2 * Math.PI / 3 - Math.PI / 2;
-        const px = (size / Math.sqrt(3)) * Math.cos(angle);
-        const py = (size / Math.sqrt(3)) * Math.sin(angle);
+        const px = (animatedSize / Math.sqrt(3)) * Math.cos(angle);
+        const py = (animatedSize / Math.sqrt(3)) * Math.sin(angle);
         if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
       }
       ctx.closePath();
     } else if (type === 'square') {
-      const s = size / Math.sqrt(2);
+      const s = animatedSize / Math.sqrt(2);
       ctx.rect(-s / 2, -s / 2, s, s);
     }
     ctx.stroke();
@@ -311,14 +413,20 @@
     for (let i = 0; i < seal.length; i++) {
       const f = seal[i];
       f.rotation += f.speed * f.direction;
-      drawShape(ctx, f.type, cx, cy, f.size, f.color, f.rotation, glowPulse);
+      drawShape(ctx, f.type, cx, cy, f.size, f.color, f.rotation, glowPulse, time + i);
     }
+    renderSparks();
     time += 1 / 60;
     requestAnimationFrame(render);
   }
 
   function updateSphereCount() {
     sphereCountEl.textContent = spheres;
+  }
+
+  function updateXPBar() {
+    const percent = (xp / 100) * 100;
+    xpProgressEl.style.width = percent + '%';
   }
 
   function gainXP(amount) {
@@ -329,11 +437,18 @@
     }
     xpEl.textContent = xp;
     levelEl.textContent = level;
+    updateXPBar();
   }
 
-  function onClick() {
+  function onClick(e) {
     if (spheres <= 0) return alert('Сферы закончились!');
     spheres--; updateSphereCount(); generateRandomSeal(); gainXP(1);
+
+    // Искры по клику
+    let rect = canvas.getBoundingClientRect();
+    let x = (e?.clientX ?? (rect.left + cx)) - rect.left;
+    let y = (e?.clientY ?? (rect.top + cy)) - rect.top;
+    createSparks(x, y);
   }
 
   container.addEventListener('click', onClick);
@@ -377,8 +492,16 @@
     }, 1500);
   };
 
+  // Всплывающее окно каждые 20 секунд
+  function showTopPopup() {
+    topPopup.classList.add('active');
+    setTimeout(() => topPopup.classList.remove('active'), 2500);
+  }
+  setInterval(showTopPopup, 20000);
+
   generateRandomSeal();
   updateSphereCount();
+  updateXPBar();
   render();
 })();
 </script>
