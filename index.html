@@ -47,9 +47,6 @@
     transition: box-shadow 0.2s;
     box-shadow: 0 0 0 0 #4e54c8;
   }
-  #avatar-btn:active {
-    box-shadow: 0 0 0 3px #4e54c888;
-  }
   #avatar-btn img {
     width: 100%;
     height: 100%;
@@ -122,16 +119,14 @@
     border-bottom: 2px solid #222;
   }
   #canvas-container {
-    position: relative;
-    width: 100vw;
-    max-width: 520px;
-    height: 100vw;
-    max-height: 520px;
-    min-width: 260px;
-    min-height: 260px;
-    outline: none;
-    cursor: pointer;
-    margin-top: 80px;
+    position: absolute;
+    left: 0; right: 0;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    z-index: 2;
   }
   #seal-balance {
     position: absolute;
@@ -299,8 +294,6 @@
     font-weight: 700;
   }
   @media (max-width: 700px) {
-    #canvas-container { width: 100vw; height: 100vw; min-width: 0; min-height: 0; }
-    canvas { width: 100vw !important; height: 100vw !important; max-width: 100vw !important; max-height: 100vw !important; }
     #rare-message { font-size: 13px; bottom: calc(56px + env(safe-area-inset-bottom, 0px)); }
     #bottom-nav { bottom: calc(8px + env(safe-area-inset-bottom, 0px)); }
   }
@@ -402,22 +395,46 @@
 
 <script>
 (() => {
-  // Retina canvas для максимальной чёткости
-  const canvas = document.getElementById('sealCanvas');
-  const ctx = canvas.getContext('2d');
-  function resizeCanvas() {
-    let size = Math.min(window.innerWidth, window.innerHeight - 140, 520);
+  // --- Адаптивный canvas между верхом ($SEAL) и низом (вкладки) ---
+  function getCanvasAvailableRect() {
+    const sealBalance = document.getElementById('seal-balance');
+    const sealRect = sealBalance.getBoundingClientRect();
+    const top = sealRect.bottom + 20;
+    const bottomNav = document.getElementById('bottom-nav');
+    const navRect = bottomNav.getBoundingClientRect();
+    const bottom = navRect.top - 20;
+    const availHeight = bottom - top;
+    const availWidth = window.innerWidth;
+    const size = Math.min(availWidth, availHeight, 520);
+    return {top, left: (window.innerWidth - size)/2, size};
+  }
+
+  function resizeCanvasContainer() {
+    const rect = getCanvasAvailableRect();
+    const container = document.getElementById('canvas-container');
+    container.style.top = rect.top + 'px';
+    container.style.left = rect.left + 'px';
+    container.style.width = rect.size + 'px';
+    container.style.height = rect.size + 'px';
+    // Retina canvas
+    const canvas = document.getElementById('sealCanvas');
     const dpr = window.devicePixelRatio || 1;
-    canvas.width = size * dpr;
-    canvas.height = size * dpr;
-    canvas.style.width = size + 'px';
-    canvas.style.height = size + 'px';
+    canvas.width = rect.size * dpr;
+    canvas.height = rect.size * dpr;
+    canvas.style.width = rect.size + 'px';
+    canvas.style.height = rect.size + 'px';
+    const ctx = canvas.getContext('2d');
     ctx.setTransform(1,0,0,1,0,0);
     ctx.scale(dpr, dpr);
   }
-  window.addEventListener('resize', resizeCanvas);
-  resizeCanvas();
 
+  window.addEventListener('resize', resizeCanvasContainer);
+  setTimeout(resizeCanvasContainer, 100);
+  setTimeout(resizeCanvasContainer, 600);
+
+  // --- Анимация, вкладки, mock-оплата, popup, всё как раньше ---
+  const canvas = document.getElementById('sealCanvas');
+  const ctx = canvas.getContext('2d');
   const container = document.getElementById('canvas-container');
   const sphereCountEl = document.getElementById('sphere-count');
   const rareMessageEl = document.getElementById('rare-message');
@@ -430,7 +447,7 @@
 
   let spheres = 100, xp = 0, level = 1;
   let seal = 0.000;
-  let miningCooldown = 0; // unixtime
+  let miningCooldown = 0;
   let statTotal = 0, statRare = 0, statLegendary = 0, statMythic = 0, statEthereal = 0;
 
   const colors = ['#1E90FF', '#00FFFF', '#7FFF00', '#FF69B4', '#FFD700', '#FF4500', '#ff00cc', '#00ffb3', '#ffb300', '#00baff', '#ff5e5e'];
@@ -561,7 +578,7 @@
 
   function generateRandomSeal() {
     sealFigures = [];
-    const size = Math.min(canvas.width, canvas.height) / (window.devicePixelRatio || 1);
+    const size = parseInt(canvas.style.width) || 520;
     for (let i = 0; i < 4; i++) {
       const type = figureTypes[Math.floor(Math.random() * figureTypes.length)];
       const color = colors[Math.floor(Math.random() * colors.length)];
@@ -588,8 +605,8 @@
   function render() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     renderSparks();
-    const dpr = window.devicePixelRatio || 1;
-    const cx = canvas.width / 2 / dpr, cy = canvas.height / 2 / dpr;
+    const size = parseInt(canvas.style.width) || 520;
+    const cx = size/2, cy = size/2;
     const glowPulse = 0.75 + 0.25 * Math.sin(time * Math.PI * 2 / 3);
     for (let i = 0; i < sealFigures.length; i++) {
       const f = sealFigures[i];
@@ -620,9 +637,11 @@
     spheres--; updateSphereCount(); generateRandomSeal(); gainXP(1);
 
     // Искры по клику
+    const size = parseInt(canvas.style.width) || 520;
+    const cx = size/2, cy = size/2;
     let rect = canvas.getBoundingClientRect();
-    let x = (e?.clientX ?? (rect.left + canvas.width/2)) - rect.left;
-    let y = (e?.clientY ?? (rect.top + canvas.height/2)) - rect.top;
+    let x = (e?.clientX ?? (rect.left + cx)) - rect.left;
+    let y = (e?.clientY ?? (rect.top + cy)) - rect.top;
     createSparks(x, y);
   }
 
@@ -630,9 +649,11 @@
   container.addEventListener('touchstart', function(e) {
     e.preventDefault();
     const touch = e.touches[0];
+    const size = parseInt(canvas.style.width) || 520;
+    const cx = size/2, cy = size/2;
     let rect = canvas.getBoundingClientRect();
-    let x = (touch?.clientX ?? (rect.left + canvas.width/2)) - rect.left;
-    let y = (touch?.clientY ?? (rect.top + canvas.height/2)) - rect.top;
+    let x = (touch?.clientX ?? (rect.left + cx)) - rect.left;
+    let y = (touch?.clientY ?? (rect.top + cy)) - rect.top;
     onClick({clientX: x + rect.left, clientY: y + rect.top});
   }, {passive: false});
 
