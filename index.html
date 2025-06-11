@@ -166,7 +166,7 @@
   }
   #top-popup {
     position: fixed;
-    top: 18px;
+    top: 48px;
     left: 50%;
     transform: translateX(-50%) scale(0.97);
     background: rgba(255,255,255,0.97);
@@ -260,8 +260,19 @@
 
 <script>
 (() => {
+  // Retina canvas и сглаживание линий
   const canvas = document.getElementById('sealCanvas');
   const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = 520 * dpr;
+  canvas.height = 520 * dpr;
+  canvas.style.width = '520px';
+  canvas.style.height = '520px';
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr, dpr);
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+
   const container = document.getElementById('canvas-container');
   const sphereCountEl = document.getElementById('sphere-count');
   const rareMessageEl = document.getElementById('rare-message');
@@ -270,7 +281,7 @@
   const topPopup = document.getElementById('top-popup');
 
   let spheres = 100, xp = 0, level = 1;
-  const cx = canvas.width / 2, cy = canvas.height / 2;
+  const cx = 260, cy = 260;
 
   const colors = ['#1E90FF', '#00FFFF', '#7FFF00', '#FF69B4', '#FFD700', '#FF4500', '#ff00cc', '#00ffb3', '#ffb300', '#00baff', '#ff5e5e'];
   const figureTypes = ['circle', 'equilateralTriangle', 'square'];
@@ -327,7 +338,6 @@
     ctx.strokeStyle = color;
     ctx.shadowColor = color;
     ctx.shadowBlur = 30 * glowAlpha;
-    // Минимальная пульсация (амплитуда 1%)
     const animatedSize = size * (1 + 0.01 * Math.sin(pulsate));
     ctx.beginPath();
     if (type === 'circle') ctx.arc(0, 0, animatedSize / 2, 0, Math.PI * 2);
@@ -432,7 +442,6 @@
 
   container.addEventListener('click', onClick);
   container.addEventListener('touchstart', function(e) {
-    // Для мобильных: убрать синий флэш и добавить искры
     e.preventDefault();
     const touch = e.touches[0];
     let rect = canvas.getBoundingClientRect();
@@ -481,10 +490,10 @@
     }, 1500);
   };
 
-  // Всплывающее окно каждые 20 секунд
+  // Всплывающее окно каждые 20 секунд, держится 3с, чуть ниже верха
   function showTopPopup() {
     topPopup.classList.add('active');
-    setTimeout(() => topPopup.classList.remove('active'), 2500);
+    setTimeout(() => topPopup.classList.remove('active'), 3000);
   }
   setInterval(showTopPopup, 20000);
 
