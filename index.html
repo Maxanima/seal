@@ -188,16 +188,17 @@
   }
   #top-popup {
     position: fixed;
-    top: 36px;
+    top: 68px;
     left: 50%;
-    transform: translateX(-50%) scale(0.97);
-    background: none;
-    color: #fff;
+    transform: translateX(-50%) scale(1);
+    background: #fff;
+    color: #222;
     font-size: 16px;
     font-weight: 800;
-    border-radius: 10px;
-    box-shadow: none;
-    padding: 8px 28px;
+    border-radius: 12px;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 18px #fff3;
+    padding: 10px 30px;
     z-index: 100;
     opacity: 0;
     pointer-events: none;
@@ -210,7 +211,6 @@
   #top-popup.active {
     opacity: 1;
     pointer-events: auto;
-    transform: translateX(-50%) scale(1);
     filter: blur(0);
     animation: rareFade 0.7s cubic-bezier(.56,.01,.53,.96);
   }
@@ -296,6 +296,7 @@
   @media (max-width: 700px) {
     #rare-message { font-size: 13px; bottom: calc(56px + env(safe-area-inset-bottom, 0px)); }
     #bottom-nav { bottom: calc(8px + env(safe-area-inset-bottom, 0px)); }
+    #top-popup { top: 54px; }
   }
 </style>
 </head>
