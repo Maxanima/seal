@@ -14,8 +14,138 @@
     overflow: hidden;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
-    tap-highlight-color: transparent;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  #header-bar {
+    position: fixed;
+    top: 16px;
+    left: 0; right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 30;
+    pointer-events: none;
+    width: 100vw;
+  }
+  #avatar-block {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 16px;
+    pointer-events: auto;
+  }
+  #avatar-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid #4e54c8;
+    overflow: hidden;
+    background: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: box-shadow 0.2s;
+    box-shadow: 0 0 0 0 #4e54c8;
+  }
+  #avatar-btn:active {
+    box-shadow: 0 0 0 3px #4e54c888;
+  }
+  #avatar-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    pointer-events: none;
+    user-select: none;
+  }
+  #player-level-xp {
+    color: #eee;
+    font-size: 1.04rem;
+    font-weight: 600;
+    background: rgba(0,0,0,0.5);
+    padding: 4px 12px;
+    border-radius: 7px;
+    margin-left: 2px;
+    user-select: none;
+    min-width: 120px;
+    text-align: left;
+  }
+  #seal-balance {
+    position: absolute;
+    left: 50%;
+    top: -38px;
+    transform: translateX(-50%);
+    color: #fff;
+    font-size: 1.35rem;
+    font-weight: 900;
+    letter-spacing: 1.2px;
+    text-shadow: 0 2px 12px #fff3, 0 0 2px #fff;
+    z-index: 20;
+    opacity: 0;
+    animation: sealFadeIn 1.2s cubic-bezier(.56,.01,.53,.96) 0.1s forwards;
+    pointer-events: none;
+    user-select: none;
+    background: rgba(0,0,0,0.13);
+    border-radius: 9px;
+    padding: 2px 18px 2px 14px;
+    min-width: 128px;
+    text-align: center;
+    box-sizing: border-box;
+  }
+  @keyframes sealFadeIn {
+    0% { opacity: 0; filter: blur(8px);}
+    60% { opacity: 1; filter: blur(0);}
+    100% { opacity: 1; filter: blur(0);}
+  }
+  #sphere-counter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #eee;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-right: 18px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 7px;
+    padding: 4px 10px 4px 7px;
+    user-select: none;
+    pointer-events: auto;
+    height: 36px;
+  }
+  #sphere-counter svg {
+    width: 26px;
+    height: 26px;
+    filter: drop-shadow(0 0 5px rgba(255,255,255,0.3));
+  }
+  #mining-btn {
+    position: fixed;
+    top: 50%;
+    right: 18px;
+    transform: translateY(-50%);
+    background: linear-gradient(90deg,#34c759,#00b894);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 12px;
+    padding: 7px 0;
+    width: 92px;
+    text-align: center;
+    box-shadow: 0 2px 18px #34c75966;
+    cursor: pointer;
+    z-index: 21;
+    transition: background 0.2s, color 0.2s, filter 0.2s;
+    user-select: none;
+    outline: none;
+    border-bottom: 3px solid #fff3;
+  }
+  #mining-btn[disabled] {
+    background: #444;
+    color: #aaa;
+    filter: grayscale(0.5) brightness(0.8);
+    cursor: default;
+    border-bottom: 3px solid #222;
   }
   #canvas-container {
     position: relative;
@@ -24,7 +154,7 @@
     outline: none;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
-    tap-highlight-color: transparent;
+    margin-top: 38px;
   }
   canvas {
     display: block;
@@ -32,42 +162,62 @@
     height: 520px;
     background: transparent;
     -webkit-tap-highlight-color: transparent;
-    tap-highlight-color: transparent;
-  }
-  #sphere-counter {
-    position: fixed;
-    top: 12px;
-    right: 12px;
-    color: #eee;
-    font-weight: 600;
-    font-size: 22px;
-    user-select: none;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    z-index: 10;
-  }
-  #sphere-counter svg {
-    width: 30px;
-    height: 30px;
-    filter: drop-shadow(0 0 5px rgba(255,255,255,0.3));
   }
   #rare-message {
-    position: absolute;
-    bottom: 12px;
+    position: fixed;
+    top: 570px;
     left: 50%;
     transform: translateX(-50%);
-    color: #00ff88;
-    font-size: 15px;
-    font-weight: bold;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
     font-family: monospace;
-    text-shadow: 0 0 6px #00ff88;
+    text-shadow: 0 0 16px #fff, 0 0 6px #fff;
     text-align: center;
     white-space: pre-line;
     pointer-events: none;
     opacity: 0;
-    transition: opacity 0.4s ease;
-    z-index: 5;
+    transition: opacity 0.35s cubic-bezier(.56,.01,.53,.96), filter 0.6s;
+    filter: blur(8px);
+    z-index: 19;
+  }
+  #rare-message.active {
+    opacity: 1;
+    filter: blur(0);
+    animation: rareFade 0.7s cubic-bezier(.56,.01,.53,.96);
+  }
+  @keyframes rareFade {
+    0% { opacity: 0; filter: blur(12px);}
+    60% { opacity: 1; filter: blur(0);}
+    100% { opacity: 1; filter: blur(0);}
+  }
+  #top-popup {
+    position: fixed;
+    top: 86px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.97);
+    background: none;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 800;
+    border-radius: 10px;
+    box-shadow: none;
+    padding: 8px 28px;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(.56,.01,.53,.96), transform 0.3s cubic-bezier(.56,.01,.53,.96);
+    text-align: center;
+    letter-spacing: 0.5px;
+    display: block;
+    filter: blur(8px);
+  }
+  #top-popup.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) scale(1);
+    filter: blur(0);
+    animation: rareFade 0.7s cubic-bezier(.56,.01,.53,.96);
   }
   .tab {
     position: fixed;
@@ -81,7 +231,7 @@
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 0 20px #0ff3;
-    z-index: 20;
+    z-index: 30;
     display: none;
   }
   .tab h2 { margin-top: 0; }
@@ -94,8 +244,6 @@
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    tap-highlight-color: transparent;
   }
   #bottom-nav {
     position: fixed;
@@ -115,22 +263,12 @@
     font-size: 14px;
     cursor: pointer;
     user-select: none;
-    -webkit-tap-highlight-color: transparent;
-    tap-highlight-color: transparent;
   }
-  #player-info {
-    position: fixed;
-    top: 12px;
-    left: 12px;
-    color: #eee;
-    font-size: 14px;
-    z-index: 10;
-    background: rgba(0,0,0,0.5);
-    padding: 6px 10px;
-    border-radius: 6px;
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-    tap-highlight-color: transparent;
+  #profile-tab img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid #4e54c8;
   }
   #mock-payment-modal {
     position: fixed;
@@ -143,10 +281,8 @@
     color: #0ff;
     font-family: monospace;
     width: 320px;
-    z-index: 30;
+    z-index: 40;
     display: none;
-    -webkit-tap-highlight-color: transparent;
-    tap-highlight-color: transparent;
   }
   #mock-payment-modal button {
     background: #0ff;
@@ -157,60 +293,41 @@
     cursor: pointer;
     font-weight: 700;
     user-select: none;
-    -webkit-tap-highlight-color: transparent;
-    tap-highlight-color: transparent;
   }
   #mock-payment-result {
     margin-top: 10px;
     font-weight: 700;
   }
-  #top-popup {
-    position: fixed;
-    top: 48px;
-    left: 50%;
-    transform: translateX(-50%) scale(0.97);
-    background: rgba(255,255,255,0.97);
-    color: #4e54c8;
-    font-size: 15px;
-    font-weight: 700;
-    border-radius: 10px;
-    box-shadow: 0 2px 16px #4e54c822;
-    padding: 9px 24px;
-    z-index: 100;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s cubic-bezier(.56,.01,.53,.96), transform 0.3s cubic-bezier(.56,.01,.53,.96);
-    text-align: center;
-    letter-spacing: 0.5px;
-    display: block;
-    -webkit-tap-highlight-color: transparent;
-    tap-highlight-color: transparent;
-  }
-  #top-popup.active {
-    opacity: 1;
-    pointer-events: auto;
-    transform: translateX(-50%) scale(1);
-  }
 </style>
 </head>
 <body>
 
-<div id="player-info">Level: <span id="level">1</span> | XP: <span id="xp">0</span>/100</div>
-
-<div id="sphere-counter">
-  <svg viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-    <circle cx="32" cy="32" r="30" />
-    <circle cx="32" cy="32" r="20" />
-    <circle cx="32" cy="32" r="10" />
-  </svg>
-  <span id="sphere-count">100</span>
+<div id="header-bar">
+  <div id="avatar-block">
+    <button id="avatar-btn" title="Профиль">
+      <img src="https://i.pravatar.cc/100?u=sealuser" alt="Avatar"/>
+    </button>
+    <div id="player-level-xp">
+      Level: <span id="level">1</span> | XP: <span id="xp">0</span>/100
+    </div>
+  </div>
+  <div id="sphere-counter">
+    <svg viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+      <circle cx="32" cy="32" r="30" />
+      <circle cx="32" cy="32" r="20" />
+      <circle cx="32" cy="32" r="10" />
+    </svg>
+    <span id="sphere-count">100</span>
+  </div>
 </div>
 
 <div id="canvas-container" tabindex="0">
+  <div id="seal-balance">$SEAL: <span id="seal-amount">0.000</span></div>
   <canvas id="sealCanvas" width="520" height="520"></canvas>
-  <div id="rare-message"></div>
-  <div id="top-popup">Find Ethereal Seal!<br>Chance: 0.008%</div>
 </div>
+<button id="mining-btn">Mining</button>
+<div id="rare-message"></div>
+<div id="top-popup">Find Ethereal Seal!<br>Chance: 0.008%</div>
 
 <div id="bottom-nav">
   <button class="nav-btn" onclick="openTab('shop-tab')">Shop</button>
@@ -250,7 +367,26 @@
   <button class="close-btn" onclick="closeTabs()">Close</button>
 </div>
 
-<div id="mock-payment-modal">
+<div id="profile-tab" class="tab">
+  <h2>Profile</h2>
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+    <img src="https://i.pravatar.cc/100?u=sealuser" alt="Avatar">
+    <div>
+      <div style="font-weight:700;font-size:17px;color:#fff;">Seal User</div>
+      <div style="font-size:13px;color:#ccc;">Level: <span id="profile-level">1</span></div>
+    </div>
+  </div>
+  <ul style="font-size:15px;line-height:1.7;">
+    <li>Всего генераций: <span id="stat-total">0</span></li>
+    <li>Редких печатей: <span id="stat-rare">0</span></li>
+    <li>Легендарных печатей: <span id="stat-legendary">0</span></li>
+    <li>Мифических печатей: <span id="stat-mythic">0</span></li>
+    <li>Ethereal печатей: <span id="stat-ethereal">0</span></li>
+  </ul>
+  <button class="close-btn" onclick="closeTabs()">Close</button>
+</div>
+
+<div id="mock-payment-modal" style="display:none;">
   <h3>Mock Payment</h3>
   <p>Вы покупаете <span id="mock-payment-amount">0</span> сфер.</p>
   <button id="confirm-payment-btn">Подтвердить</button>
@@ -260,51 +396,46 @@
 
 <script>
 (() => {
-  // Retina canvas и сглаживание линий
   const canvas = document.getElementById('sealCanvas');
   const ctx = canvas.getContext('2d');
-  const dpr = window.devicePixelRatio || 1;
-  canvas.width = 520 * dpr;
-  canvas.height = 520 * dpr;
-  canvas.style.width = '520px';
-  canvas.style.height = '520px';
-  ctx.setTransform(1,0,0,1,0,0);
-  ctx.scale(dpr, dpr);
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-
   const container = document.getElementById('canvas-container');
   const sphereCountEl = document.getElementById('sphere-count');
   const rareMessageEl = document.getElementById('rare-message');
   const xpEl = document.getElementById('xp');
   const levelEl = document.getElementById('level');
+  const sealAmountEl = document.getElementById('seal-amount');
+  const miningBtn = document.getElementById('mining-btn');
+  const avatarBtn = document.getElementById('avatar-btn');
   const topPopup = document.getElementById('top-popup');
 
   let spheres = 100, xp = 0, level = 1;
-  const cx = 260, cy = 260;
+  let seal = 0.000;
+  let miningCooldown = 0; // unixtime
+  let statTotal = 0, statRare = 0, statLegendary = 0, statMythic = 0, statEthereal = 0;
+  const cx = canvas.width / 2, cy = canvas.height / 2;
 
   const colors = ['#1E90FF', '#00FFFF', '#7FFF00', '#FF69B4', '#FFD700', '#FF4500', '#ff00cc', '#00ffb3', '#ffb300', '#00baff', '#ff5e5e'];
   const figureTypes = ['circle', 'equilateralTriangle', 'square'];
   const sizeRange = [160, 190, 220, 250];
   const rotationSpeeds = [0.002, 0.004, 0.006, 0.008];
 
-  let seal = [];
+  let sealFigures = [];
 
   // --- Искры ---
   const sparks = [];
   function createSparks(x, y) {
-    const count = 13 + Math.floor(Math.random()*5);
+    const count = 14 + Math.floor(Math.random()*6);
     for(let i=0; i<count; i++) {
       const angle = Math.random() * 2 * Math.PI;
-      const speed = 1.3 + Math.random() * 1.7;
+      const speed = 1.4 + Math.random() * 1.7;
       sparks.push({
         x, y,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
         alpha: 1,
         color: colors[Math.floor(Math.random()*colors.length)],
-        size: 1.1 + Math.random() * 1.5,
-        life: 0.6 + Math.random()*0.5
+        size: 1.1 + Math.random() * 1.7,
+        life: 0.7 + Math.random()*0.45
       });
     }
   }
@@ -330,7 +461,7 @@
     }
   }
 
-  function drawShape(ctx, type, x, y, size, color, rotation, glowAlpha, pulsate) {
+  function drawShape(ctx, type, x, y, size, color, rotation, glowAlpha) {
     ctx.save();
     ctx.translate(x, y);
     ctx.rotate(rotation);
@@ -338,19 +469,18 @@
     ctx.strokeStyle = color;
     ctx.shadowColor = color;
     ctx.shadowBlur = 30 * glowAlpha;
-    const animatedSize = size * (1 + 0.01 * Math.sin(pulsate));
     ctx.beginPath();
-    if (type === 'circle') ctx.arc(0, 0, animatedSize / 2, 0, Math.PI * 2);
+    if (type === 'circle') ctx.arc(0, 0, size / 2, 0, Math.PI * 2);
     else if (type === 'equilateralTriangle') {
       for (let i = 0; i < 3; i++) {
         const angle = i * 2 * Math.PI / 3 - Math.PI / 2;
-        const px = (animatedSize / Math.sqrt(3)) * Math.cos(angle);
-        const py = (animatedSize / Math.sqrt(3)) * Math.sin(angle);
+        const px = (size / Math.sqrt(3)) * Math.cos(angle);
+        const py = (size / Math.sqrt(3)) * Math.sin(angle);
         if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
       }
       ctx.closePath();
     } else if (type === 'square') {
-      const s = animatedSize / Math.sqrt(2);
+      const s = size / Math.sqrt(2);
       ctx.rect(-s / 2, -s / 2, s, s);
     }
     ctx.stroke();
@@ -360,7 +490,7 @@
   function checkRarity() {
     const getMatches = (key) => {
       const map = {};
-      for (const f of seal) map[f[key]] = (map[f[key]] || 0) + 1;
+      for (const f of sealFigures) map[f[key]] = (map[f[key]] || 0) + 1;
       return Object.values(map).some(c => c >= 3) ? Math.max(...Object.values(map)) : 0;
     };
     const colorMatch = getMatches('color');
@@ -370,47 +500,80 @@
     const totalMatch = [colorMatch, typeMatch, speedMatch].filter(v => v >= 3).length;
     const allFour = [colorMatch, typeMatch, speedMatch].every(v => v === 4);
 
+    let reward = 0;
+    let msg = '';
     if (allFour) {
-      rareMessageEl.textContent = '✨ Ethereal Seal!\nChance: 0.008%';
-      rareMessageEl.style.opacity = 1;
+      msg = '✨ Ethereal Seal!\nChance: 0.008%';
+      reward = 1;
+      statEthereal++;
     } else if (totalMatch >= 2 && [colorMatch, typeMatch, speedMatch].some(v => v === 3)) {
-      rareMessageEl.textContent = '🔥 Legendary Seal!\nChance: 0.03%';
-      rareMessageEl.style.opacity = 1;
+      msg = '🔥 Legendary Seal!\nChance: 0.03%';
+      reward = 0.1;
+      statLegendary++;
     } else if ([colorMatch, typeMatch, speedMatch].some(v => v === 4)) {
-      rareMessageEl.textContent = '💎 Mythic Seal!\nChance: 0.12%';
-      rareMessageEl.style.opacity = 1;
+      msg = '💎 Mythic Seal!\nChance: 0.12%';
+      reward = 0.01;
+      statMythic++;
     } else if ([colorMatch, typeMatch, speedMatch].some(v => v === 3)) {
-      rareMessageEl.textContent = '🌟 Rare Seal!\nChance: 0.48%';
-      rareMessageEl.style.opacity = 1;
+      msg = '🌟 Rare Seal!\nChance: 0.48%';
+      reward = 0.001;
+      statRare++;
+    } else {
+      msg = '';
+    }
+    if (msg) {
+      rareMessageEl.textContent = msg;
+      rareMessageEl.classList.add('active');
+      setTimeout(() => rareMessageEl.classList.remove('active'), 2400);
     } else {
       rareMessageEl.textContent = '';
-      rareMessageEl.style.opacity = 0;
+      rareMessageEl.classList.remove('active');
     }
+    if (reward > 0) {
+      seal += reward;
+      updateSeal();
+    }
+    updateProfileStats();
+  }
+
+  function updateSeal() {
+    sealAmountEl.textContent = seal.toFixed(3);
   }
 
   function generateRandomSeal() {
-    seal = [];
+    sealFigures = [];
     for (let i = 0; i < 4; i++) {
       const type = figureTypes[Math.floor(Math.random() * figureTypes.length)];
       const color = colors[Math.floor(Math.random() * colors.length)];
       const size = sizeRange[Math.floor(Math.random() * sizeRange.length)];
       const speed = rotationSpeeds[Math.floor(Math.random() * rotationSpeeds.length)];
       const direction = Math.random() < 0.5 ? 1 : -1;
-      seal.push({ type, color, size, speed, direction, rotation: 0 });
+      sealFigures.push({ type, color, size, speed, direction, rotation: 0 });
     }
+    statTotal++;
     checkRarity();
+  }
+
+  function updateProfileStats() {
+    const el = id => document.getElementById(id);
+    if (el('stat-total')) el('stat-total').textContent = statTotal;
+    if (el('stat-rare')) el('stat-rare').textContent = statRare;
+    if (el('stat-legendary')) el('stat-legendary').textContent = statLegendary;
+    if (el('stat-mythic')) el('stat-mythic').textContent = statMythic;
+    if (el('stat-ethereal')) el('stat-ethereal').textContent = statEthereal;
+    if (el('profile-level')) el('profile-level').textContent = level;
   }
 
   let time = 0;
   function render() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const glowPulse = 0.75 + 0.25 * Math.sin(time * Math.PI * 2 / 3);
-    for (let i = 0; i < seal.length; i++) {
-      const f = seal[i];
-      f.rotation += f.speed * f.direction;
-      drawShape(ctx, f.type, cx, cy, f.size, f.color, f.rotation, glowPulse, time + i);
-    }
     renderSparks();
+    const glowPulse = 0.75 + 0.25 * Math.sin(time * Math.PI * 2 / 3);
+    for (let i = 0; i < sealFigures.length; i++) {
+      const f = sealFigures[i];
+      f.rotation += f.speed * f.direction;
+      drawShape(ctx, f.type, cx, cy, f.size, f.color, f.rotation, glowPulse);
+    }
     time += 1 / 60;
     requestAnimationFrame(render);
   }
@@ -425,8 +588,9 @@
       xp -= 100;
       level++;
     }
-    xpEl.textContent = xp;
-    levelEl.textContent = level;
+    document.getElementById('xp').textContent = xp;
+    document.getElementById('level').textContent = level;
+    updateProfileStats();
   }
 
   function onClick(e) {
@@ -457,6 +621,30 @@
     }
   });
 
+  // Mining
+  function updateMiningBtn() {
+    const now = Math.floor(Date.now()/1000);
+    if (miningCooldown > now) {
+      miningBtn.disabled = true;
+      let left = miningCooldown - now;
+      let h = Math.floor(left/3600);
+      let m = Math.floor((left%3600)/60);
+      let s = left%60;
+      miningBtn.textContent = `Mining: ${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+    } else {
+      miningBtn.disabled = false;
+      miningBtn.textContent = 'Mining';
+    }
+  }
+  miningBtn.onclick = () => {
+    if (miningBtn.disabled) return;
+    seal += 0.10;
+    updateSeal();
+    miningCooldown = Math.floor(Date.now()/1000) + 12*3600;
+    updateMiningBtn();
+  };
+  setInterval(updateMiningBtn, 1000);
+
   // Tabs & Payment
   window.openTab = id => {
     document.querySelectorAll('.tab').forEach(t => t.style.display = 'none');
@@ -467,6 +655,18 @@
     closeMockPayment();
   };
 
+  avatarBtn.onclick = () => {
+    openTab('profile-tab');
+  };
+
+  // Top popup (каждые 20 секунд)
+  function showTopPopup() {
+    topPopup.classList.add('active');
+    setTimeout(() => topPopup.classList.remove('active'), 3000);
+  }
+  setInterval(showTopPopup, 20000);
+
+  // Mock Payment logic
   const modal = document.getElementById('mock-payment-modal');
   const confirmBtn = document.getElementById('confirm-payment-btn');
   const result = document.getElementById('mock-payment-result');
@@ -477,8 +677,13 @@
     amountEl.textContent = amt;
     modal.style.display = 'block';
     result.textContent = '';
+    confirmBtn.disabled = false;
   };
-  window.closeMockPayment = () => { modal.style.display = 'none'; result.textContent = ''; };
+  window.closeMockPayment = () => {
+    modal.style.display = 'none';
+    result.textContent = '';
+    confirmBtn.disabled = false;
+  };
   confirmBtn.onclick = () => {
     confirmBtn.disabled = true;
     result.textContent = 'Обработка платежа...';
@@ -490,15 +695,11 @@
     }, 1500);
   };
 
-  // Всплывающее окно каждые 20 секунд, держится 3с, чуть ниже верха
-  function showTopPopup() {
-    topPopup.classList.add('active');
-    setTimeout(() => topPopup.classList.remove('active'), 3000);
-  }
-  setInterval(showTopPopup, 20000);
-
   generateRandomSeal();
   updateSphereCount();
+  updateSeal();
+  updateMiningBtn();
+  updateProfileStats();
   render();
 })();
 </script>
