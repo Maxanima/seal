@@ -19,37 +19,22 @@
     padding-top: 90px;
     box-sizing: border-box;
   }
-  #canvas-container {
-    position: relative;
-    margin: 0 auto;
-    /* Высота и ширина canvas так, чтобы не заходить на верх/низ */
+  #canvas-outer {
     width: 100vw;
     max-width: 520px;
-    height: calc(100vh - 230px); /* 90px сверху + 90px снизу + запас */
-    max-height: 520px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    outline: none;
-    cursor: pointer;
-    background: none;
-  }
-  canvas {
-    display: block;
-    width: 100%;
-    height: 100%;
     margin: 0 auto;
-    background: transparent;
-    max-width: 520px;
-    max-height: 520px;
-  }
-  #seal-balance, #rare-message {
-    left: 50%;
-    transform: translateX(-50%);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Отступы сверху и снизу для SEAL и кнопок */
+    padding-top: 38px;
+    padding-bottom: 80px;
+    box-sizing: border-box;
   }
   #seal-balance {
     position: absolute;
-    top: calc(100% + 16px); /* чуть ниже canvas */
+    top: 0;
     left: 50%;
     transform: translateX(-50%);
     color: #fff;
@@ -66,10 +51,35 @@
     box-sizing: border-box;
     user-select: none;
     width: max-content;
+    pointer-events: none;
+  }
+  #canvas-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1/1;
+    max-width: 520px;
+    max-height: 520px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+  }
+  canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    margin: 0 auto;
+    border-radius: 16px;
+    box-sizing: border-box;
+    touch-action: manipulation;
   }
   #rare-message {
     position: absolute;
     bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
     color: #00ff88;
     font-size: 15px;
     font-weight: bold;
@@ -214,15 +224,18 @@
     font-weight: 700;
   }
   @media (max-width: 600px) {
+    #canvas-outer {
+      max-width: 100vw;
+      padding-top: 38px;
+      padding-bottom: 80px;
+    }
     #canvas-container {
       max-width: 100vw;
-      max-height: calc(100vw - 32px);
-      height: calc(100vw - 32px);
+      max-height: 100vw;
     }
     canvas {
       max-width: 100vw;
-      max-height: calc(100vw - 32px);
-      height: calc(100vw - 32px);
+      max-height: 100vw;
     }
     #seal-balance {
       font-size: 1rem;
@@ -251,10 +264,12 @@
 
 <button id="mining-btn">Mining</button>
 
-<div id="canvas-container" tabindex="0">
-  <canvas id="sealCanvas"></canvas>
-  <div id="rare-message"></div>
+<div id="canvas-outer">
   <div id="seal-balance">$SEAL: <span id="seal-amount">0.000</span></div>
+  <div id="canvas-container" tabindex="0">
+    <canvas id="sealCanvas"></canvas>
+    <div id="rare-message"></div>
+  </div>
 </div>
 
 <div id="bottom-nav">
@@ -320,18 +335,23 @@
 
 <script>
 (() => {
-  // Responsive canvas size
+  // Responsive canvas size with devicePixelRatio for perfect lines
   function resizeCanvas() {
+    const outer = document.getElementById('canvas-outer');
     const container = document.getElementById('canvas-container');
     const canvas = document.getElementById('sealCanvas');
-    // Вычисляем доступную высоту: весь экран минус player-info, sphere-counter, mining, seal-balance, bottom-nav
-    const topSpace = 90; // px (player-info + mining)
-    const bottomSpace = 90; // px (bottom-nav + запас)
-    const avail = Math.min(window.innerWidth, window.innerHeight - topSpace - bottomSpace, 520);
-    container.style.width = canvas.style.width = canvas.width = avail;
-    container.style.height = canvas.style.height = canvas.height = avail;
+    // Вычисляем доступную высоту: весь outer минус SEAL сверху и rare-message снизу
+    const max = Math.min(outer.offsetWidth, outer.offsetHeight || window.innerHeight - 180, 520);
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = max * dpr;
+    canvas.height = max * dpr;
+    canvas.style.width = max + 'px';
+    canvas.style.height = max + 'px';
+    container.style.width = max + 'px';
+    container.style.height = max + 'px';
+    return {size: max, dpr};
   }
-  window.addEventListener('resize', resizeCanvas);
+  window.addEventListener('resize', () => { resizeCanvas(); });
 
   const colors = ['#1E90FF', '#00FFFF', '#7FFF00', '#FF69B4', '#FFD700', '#FF4500'];
   const figureTypes = ['circle', 'equilateralTriangle', 'square'];
@@ -361,14 +381,14 @@
   const miningBtn = document.getElementById('mining-btn');
   let miningCooldown = 0;
 
-  function drawShape(ctx, type, x, y, size, color, rotation, glowAlpha) {
+  function drawShape(ctx, type, x, y, size, color, rotation, glowAlpha, dpr) {
     ctx.save();
     ctx.translate(x, y);
     ctx.rotate(rotation);
-    ctx.lineWidth = 7;
+    ctx.lineWidth = 7 * dpr;
     ctx.strokeStyle = color;
     ctx.shadowColor = color;
-    ctx.shadowBlur = 30 * glowAlpha;
+    ctx.shadowBlur = 30 * glowAlpha * dpr;
     ctx.beginPath();
     if (type === 'circle') ctx.arc(0, 0, size / 2, 0, Math.PI * 2);
     else if (type === 'equilateralTriangle') {
@@ -454,14 +474,16 @@
 
   let time = 0;
   function render() {
-    resizeCanvas();
+    const {size, dpr} = resizeCanvas();
+    ctx.setTransform(1,0,0,1,0,0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     const cx = canvas.width / 2, cy = canvas.height / 2;
+    const scale = size / 520 * dpr;
     const glowPulse = 0.75 + 0.25 * Math.sin(time * Math.PI * 2 / 3);
     for (let i = 0; i < sealFigures.length; i++) {
       const f = sealFigures[i];
       f.rotation += f.speed * f.direction;
-      drawShape(ctx, f.type, cx, cy, f.size * (canvas.width/520), f.color, f.rotation, glowPulse);
+      drawShape(ctx, f.type, cx, cy, f.size * scale, f.color, f.rotation, glowPulse, dpr);
     }
     time += 1 / 60;
     requestAnimationFrame(render);
