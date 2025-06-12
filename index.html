@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 <title>Магическая печать — Сферы + Mock</title>
 <style>
+  :root {
+    --max-canvas: 520px;
+    --popup-top: 70px;
+    --popup-padding: 10px 30px;
+  }
   html, body {
     margin: 0; padding: 0; height: 100%;
     background: #000;
@@ -17,8 +22,7 @@
   }
   #header-bar {
     position: fixed;
-    top: 16px;
-    left: 0; right: 0;
+    top: 16px; left: 0; right: 0;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
@@ -34,121 +38,59 @@
     pointer-events: auto;
   }
   #avatar-btn {
-    width: 36px;
-    height: 36px;
+    width: 36px; height: 36px;
     border-radius: 50%;
     border: 2px solid #4e54c8;
     overflow: hidden;
     background: #fff;
     cursor: pointer;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: center; justify-content: center;
     transition: box-shadow 0.2s;
     box-shadow: 0 0 0 0 #4e54c8;
   }
   #avatar-btn img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-    pointer-events: none;
-    user-select: none;
+    width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
+    pointer-events: none; user-select: none;
   }
   #player-level-xp {
-    color: #eee;
-    font-size: 1.04rem;
-    font-weight: 600;
-    background: rgba(0,0,0,0.5);
-    padding: 4px 12px;
-    border-radius: 7px;
-    margin-left: 2px;
-    user-select: none;
-    min-width: 120px;
-    text-align: left;
+    color: #eee; font-size: 1.04rem; font-weight: 600;
+    background: rgba(0,0,0,0.5); padding: 4px 12px; border-radius: 7px;
+    margin-left: 2px; user-select: none; min-width: 120px; text-align: left;
   }
   #sphere-counter {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #eee;
-    font-weight: 600;
-    font-size: 1.1rem;
-    margin-right: 18px;
-    background: rgba(0,0,0,0.5);
-    border-radius: 7px;
-    padding: 4px 10px 4px 7px;
-    user-select: none;
-    pointer-events: auto;
-    height: 36px;
-    flex-shrink: 0;
-    flex-grow: 0;
-    position: relative;
+    display: flex; align-items: center; gap: 8px;
+    color: #eee; font-weight: 600; font-size: 1.1rem; margin-right: 18px;
+    background: rgba(0,0,0,0.5); border-radius: 7px; padding: 4px 10px 4px 7px;
+    user-select: none; pointer-events: auto; height: 36px; flex-shrink: 0; flex-grow: 0; position: relative;
   }
   #sphere-counter svg {
-    width: 26px;
-    height: 26px;
-    filter: drop-shadow(0 0 5px rgba(255,255,255,0.3));
+    width: 26px; height: 26px; filter: drop-shadow(0 0 5px rgba(255,255,255,0.3));
   }
   #mining-btn {
-    position: fixed;
-    top: 62px;
-    right: 24px;
-    background: linear-gradient(90deg,#34c759,#00b894);
-    color: #fff;
-    font-size: 0.93rem;
-    font-weight: 700;
-    border: none;
-    border-radius: 9px;
-    padding: 5px 0;
-    width: 74px;
-    text-align: center;
-    box-shadow: 0 2px 12px #34c75966;
-    cursor: pointer;
-    z-index: 21;
+    position: fixed; top: 62px; right: 24px;
+    background: linear-gradient(90deg,#34c759,#00b894); color: #fff;
+    font-size: 0.93rem; font-weight: 700; border: none; border-radius: 9px;
+    padding: 5px 0; width: 74px; text-align: center;
+    box-shadow: 0 2px 12px #34c75966; cursor: pointer; z-index: 21;
     transition: background 0.2s, color 0.2s, filter 0.2s;
-    user-select: none;
-    outline: none;
-    border-bottom: 2px solid #fff3;
+    user-select: none; outline: none; border-bottom: 2px solid #fff3;
   }
   #mining-btn[disabled] {
-    background: #444;
-    color: #aaa;
-    filter: grayscale(0.5) brightness(0.8);
-    cursor: default;
-    border-bottom: 2px solid #222;
+    background: #444; color: #aaa; filter: grayscale(0.5) brightness(0.8);
+    cursor: default; border-bottom: 2px solid #222;
   }
   #canvas-container {
-    position: absolute;
-    left: 0; right: 0;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: none;
-    z-index: 2;
+    position: absolute; left: 0; right: 0; margin: 0 auto;
+    display: flex; align-items: center; justify-content: center; background: none; z-index: 2;
   }
   #seal-balance {
-    position: absolute;
-    left: 50%;
-    top: -44px;
-    transform: translateX(-50%);
-    color: #fff;
-    font-size: 1.25rem;
-    font-weight: 900;
-    letter-spacing: 1.2px;
-    text-shadow: 0 2px 12px #fff3, 0 0 2px #fff;
-    z-index: 20;
-    opacity: 0;
+    position: absolute; left: 50%; top: -44px; transform: translateX(-50%);
+    color: #fff; font-size: 1.25rem; font-weight: 900; letter-spacing: 1.2px;
+    text-shadow: 0 2px 12px #fff3, 0 0 2px #fff; z-index: 20; opacity: 0;
     animation: sealFadeIn 1.2s cubic-bezier(.56,.01,.53,.96) 0.1s forwards;
-    pointer-events: none;
-    user-select: none;
-    background: rgba(0,0,0,0.13);
-    border-radius: 9px;
-    padding: 2px 18px 2px 14px;
-    min-width: 110px;
-    text-align: center;
-    box-sizing: border-box;
+    pointer-events: none; user-select: none; background: rgba(0,0,0,0.13);
+    border-radius: 9px; padding: 2px 18px 2px 14px; min-width: 110px; text-align: center; box-sizing: border-box;
   }
   @keyframes sealFadeIn {
     0% { opacity: 0; filter: blur(8px);}
@@ -156,39 +98,22 @@
     100% { opacity: 1; filter: blur(0);}
   }
   canvas {
-    display: block;
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    border-radius: 18px;
-    touch-action: none;
+    display: block; width: 100%; height: 100%; background: transparent; border-radius: 18px; touch-action: none;
   }
   #rare-message {
-    position: fixed;
-    left: 50%;
-    transform: translateX(-50%);
-    color: #fff;
-    font-size: 16px;
-    font-weight: 700;
-    font-family: monospace;
-    text-shadow: 0 0 16px #fff, 0 0 6px #fff;
-    text-align: center;
-    white-space: pre-line;
-    pointer-events: none;
-    opacity: 0;
+    position: fixed; left: 50%; transform: translateX(-50%);
+    color: #fff; font-size: 16px; font-weight: 700; font-family: monospace;
+    text-shadow: 0 0 16px #fff, 0 0 6px #fff; text-align: center;
+    white-space: pre-line; pointer-events: none; opacity: 0;
     transition: opacity 0.35s cubic-bezier(.56,.01,.53,.96), filter 0.6s;
-    filter: blur(8px);
-    z-index: 19;
-    bottom: calc(58px + env(safe-area-inset-bottom, 0px));
+    filter: blur(8px); z-index: 19; bottom: calc(58px + env(safe-area-inset-bottom, 0px));
   }
   #rare-message.active {
-    opacity: 1;
-    filter: blur(0);
-    animation: rareFade 0.7s cubic-bezier(.56,.01,.53,.96);
+    opacity: 1; filter: blur(0); animation: rareFade 0.7s cubic-bezier(.56,.01,.53,.96);
   }
   #top-popup {
     position: fixed;
-    top: 68px;
+    top: var(--popup-top,70px);
     left: 50%;
     transform: translateX(-50%) scale(1);
     background: #fff;
@@ -198,100 +123,52 @@
     border-radius: 12px;
     border: 2px solid #fff;
     box-shadow: 0 2px 18px #fff3;
-    padding: 10px 30px;
+    padding: var(--popup-padding,10px 30px);
     z-index: 100;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s cubic-bezier(.56,.01,.53,.96), transform 0.3s cubic-bezier(.56,.01,.53,.96);
     text-align: center;
     letter-spacing: 0.5px;
     display: block;
     filter: blur(8px);
+    transition: opacity 0.3s cubic-bezier(.56,.01,.53,.96), transform 0.3s cubic-bezier(.56,.01,.53,.96);
   }
   #top-popup.active {
-    opacity: 1;
-    pointer-events: auto;
-    filter: blur(0);
-    animation: rareFade 0.7s cubic-bezier(.56,.01,.53,.96);
+    opacity: 1; pointer-events: auto; filter: blur(0); animation: rareFade 0.7s cubic-bezier(.56,.01,.53,.96);
   }
   .tab {
-    position: fixed;
-    top: 60px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    max-width: 400px;
-    background: #111;
-    color: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 0 20px #0ff3;
-    z-index: 30;
-    display: none;
+    position: fixed; top: 60px; left: 50%; transform: translateX(-50%);
+    width: 90%; max-width: 400px; background: #111; color: white; padding: 20px;
+    border-radius: 12px; box-shadow: 0 0 20px #0ff3; z-index: 30; display: none;
   }
   .tab h2 { margin-top: 0; }
   .close-btn {
-    display: inline-block;
-    margin-top: 10px;
-    background: #222;
-    color: #fff;
-    padding: 6px 12px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
+    display: inline-block; margin-top: 10px; background: #222; color: #fff;
+    padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer;
   }
   #bottom-nav {
-    position: fixed;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 12px;
-    z-index: 10;
-    bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+    position: fixed; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 12px; z-index: 10; bottom: calc(8px + env(safe-area-inset-bottom, 0px));
   }
   .nav-btn {
-    background: #111;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 8px 14px;
-    font-size: 14px;
-    cursor: pointer;
-    user-select: none;
+    background: #111; color: #fff; border: none; border-radius: 8px; padding: 8px 14px;
+    font-size: 14px; cursor: pointer; user-select: none;
   }
   #profile-tab img {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    border: 2px solid #4e54c8;
+    width: 60px; height: 60px; border-radius: 50%; border: 2px solid #4e54c8;
   }
   #mock-payment-modal {
-    position: fixed;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    background: #111;
-    border-radius: 14px;
-    box-shadow: 0 0 30px #0ff;
-    padding: 20px;
-    color: #0ff;
-    font-family: monospace;
-    width: 320px;
-    z-index: 40;
-    display: none;
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    background: #111; border-radius: 14px; box-shadow: 0 0 30px #0ff;
+    padding: 20px; color: #0ff; font-family: monospace; width: 320px;
+    z-index: 40; display: none;
   }
   #mock-payment-modal button {
-    background: #0ff;
-    color: #000;
-    border: none;
-    border-radius: 8px;
-    padding: 8px 16px;
-    cursor: pointer;
-    font-weight: 700;
-    user-select: none;
+    background: #0ff; color: #000; border: none; border-radius: 8px;
+    padding: 8px 16px; cursor: pointer; font-weight: 700; user-select: none;
   }
   #mock-payment-result {
-    margin-top: 10px;
-    font-weight: 700;
+    margin-top: 10px; font-weight: 700;
   }
   @media (max-width: 700px) {
     #rare-message { font-size: 13px; bottom: calc(56px + env(safe-area-inset-bottom, 0px)); }
@@ -301,7 +178,7 @@
 </style>
 </head>
 <body>
-
+<!-- ... тот же HTML, что и раньше ... -->
 <div id="header-bar">
   <div id="avatar-block">
     <button id="avatar-btn" title="Профиль">
@@ -320,7 +197,6 @@
     <span id="sphere-count">100</span>
   </div>
 </div>
-
 <div id="canvas-container" tabindex="0">
   <div id="seal-balance">$SEAL: <span id="seal-amount">0.000</span></div>
   <canvas id="sealCanvas" width="520" height="520"></canvas>
@@ -328,13 +204,11 @@
 <button id="mining-btn">Mining</button>
 <div id="rare-message"></div>
 <div id="top-popup">Find Ethereal Seal!<br>Chance: 0.008%</div>
-
 <div id="bottom-nav">
   <button class="nav-btn" onclick="openTab('shop-tab')">Shop</button>
   <button class="nav-btn" onclick="openTab('quests-tab')">Quests</button>
   <button class="nav-btn" onclick="openTab('friends-tab')">Friends</button>
 </div>
-
 <div id="shop-tab" class="tab">
   <h2>Shop</h2>
   <ul>
@@ -347,7 +221,6 @@
   </ul>
   <button class="close-btn" onclick="closeTabs()">Close</button>
 </div>
-
 <div id="quests-tab" class="tab">
   <h2>Quests</h2>
   <ul>
@@ -357,7 +230,6 @@
   </ul>
   <button class="close-btn" onclick="closeTabs()">Close</button>
 </div>
-
 <div id="friends-tab" class="tab">
   <h2>Friends</h2>
   <p>Приглашённые друзья:</p>
@@ -366,7 +238,6 @@
   <ul><li>Игрок1 — Уровень 12</li><li>Игрок2 — Уровень 9</li></ul>
   <button class="close-btn" onclick="closeTabs()">Close</button>
 </div>
-
 <div id="profile-tab" class="tab">
   <h2>Profile</h2>
   <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
@@ -385,7 +256,6 @@
   </ul>
   <button class="close-btn" onclick="closeTabs()">Close</button>
 </div>
-
 <div id="mock-payment-modal" style="display:none;">
   <h3>Mock Payment</h3>
   <p>Вы покупаете <span id="mock-payment-amount">0</span> сфер.</p>
@@ -393,10 +263,24 @@
   <button class="close-btn" onclick="closeMockPayment()">Отмена</button>
   <p id="mock-payment-result"></p>
 </div>
-
 <script>
 (() => {
-  // --- Адаптивный canvas между верхом ($SEAL) и низом (вкладки) ---
+  // --- Константы и state ---
+  const CONFIG = {
+    maxCanvas: 520,
+    colors: ['#1E90FF', '#00FFFF', '#7FFF00', '#FF69B4', '#FFD700', '#FF4500', '#ff00cc', '#00ffb3', '#ffb300', '#00baff', '#ff5e5e'],
+    figureTypes: ['circle', 'equilateralTriangle', 'square'],
+    sizeRange: [160, 190, 220, 250],
+    rotationSpeeds: [0.002, 0.004, 0.006, 0.008],
+    popupInterval: 20000
+  };
+  const state = {
+    spheres: 100, xp: 0, level: 1, seal: 0.000, miningCooldown: 0,
+    statTotal: 0, statRare: 0, statLegendary: 0, statMythic: 0, statEthereal: 0,
+    sealFigures: []
+  };
+
+  // --- Canvas адаптивный ---
   function getCanvasAvailableRect() {
     const sealBalance = document.getElementById('seal-balance');
     const sealRect = sealBalance.getBoundingClientRect();
@@ -406,10 +290,9 @@
     const bottom = navRect.top - 20;
     const availHeight = bottom - top;
     const availWidth = window.innerWidth;
-    const size = Math.min(availWidth, availHeight, 520);
+    const size = Math.min(availWidth, availHeight, CONFIG.maxCanvas);
     return {top, left: (window.innerWidth - size)/2, size};
   }
-
   function resizeCanvasContainer() {
     const rect = getCanvasAvailableRect();
     const container = document.getElementById('canvas-container');
@@ -417,49 +300,86 @@
     container.style.left = rect.left + 'px';
     container.style.width = rect.size + 'px';
     container.style.height = rect.size + 'px';
-    // Retina canvas
     const canvas = document.getElementById('sealCanvas');
     const dpr = window.devicePixelRatio || 1;
     canvas.width = rect.size * dpr;
     canvas.height = rect.size * dpr;
     canvas.style.width = rect.size + 'px';
     canvas.style.height = rect.size + 'px';
+    canvas.dataset.size = rect.size;
+    canvas.dataset.dpr = dpr;
     const ctx = canvas.getContext('2d');
     ctx.setTransform(1,0,0,1,0,0);
     ctx.scale(dpr, dpr);
   }
-
-  window.addEventListener('resize', resizeCanvasContainer);
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(resizeCanvasContainer, 80);
+  });
   setTimeout(resizeCanvasContainer, 100);
   setTimeout(resizeCanvasContainer, 600);
 
-  // --- Анимация, вкладки, mock-оплата, popup, всё как раньше ---
+  // --- UI-обновления ---
+  function updateUI() {
+    document.getElementById('sphere-count').textContent = state.spheres;
+    document.getElementById('xp').textContent = state.xp;
+    document.getElementById('level').textContent = state.level;
+    document.getElementById('seal-amount').textContent = state.seal.toFixed(3);
+    if (document.getElementById('stat-total')) document.getElementById('stat-total').textContent = state.statTotal;
+    if (document.getElementById('stat-rare')) document.getElementById('stat-rare').textContent = state.statRare;
+    if (document.getElementById('stat-legendary')) document.getElementById('stat-legendary').textContent = state.statLegendary;
+    if (document.getElementById('stat-mythic')) document.getElementById('stat-mythic').textContent = state.statMythic;
+    if (document.getElementById('stat-ethereal')) document.getElementById('stat-ethereal').textContent = state.statEthereal;
+    if (document.getElementById('profile-level')) document.getElementById('profile-level').textContent = state.level;
+  }
+
+  // --- Генерация печати ---
+  function generateRandomSeal() {
+    state.sealFigures = [];
+    const size = parseInt(document.getElementById('sealCanvas').style.width) || CONFIG.maxCanvas;
+    for (let i = 0; i < 4; i++) {
+      const type = CONFIG.figureTypes[Math.floor(Math.random() * CONFIG.figureTypes.length)];
+      const color = CONFIG.colors[Math.floor(Math.random() * CONFIG.colors.length)];
+      const relSize = CONFIG.sizeRange[Math.floor(Math.random() * CONFIG.sizeRange.length)];
+      const speed = CONFIG.rotationSpeeds[Math.floor(Math.random() * CONFIG.rotationSpeeds.length)];
+      const direction = Math.random() < 0.5 ? 1 : -1;
+      state.sealFigures.push({ type, color, size: relSize * size / 520, speed, direction, rotation: 0 });
+    }
+    state.statTotal++;
+    checkRarity();
+    updateUI();
+  }
+
+  // --- Анимация ---
   const canvas = document.getElementById('sealCanvas');
   const ctx = canvas.getContext('2d');
-  const container = document.getElementById('canvas-container');
-  const sphereCountEl = document.getElementById('sphere-count');
-  const rareMessageEl = document.getElementById('rare-message');
-  const xpEl = document.getElementById('xp');
-  const levelEl = document.getElementById('level');
-  const sealAmountEl = document.getElementById('seal-amount');
-  const miningBtn = document.getElementById('mining-btn');
-  const avatarBtn = document.getElementById('avatar-btn');
-  const topPopup = document.getElementById('top-popup');
-
-  let spheres = 100, xp = 0, level = 1;
-  let seal = 0.000;
-  let miningCooldown = 0;
-  let statTotal = 0, statRare = 0, statLegendary = 0, statMythic = 0, statEthereal = 0;
-
-  const colors = ['#1E90FF', '#00FFFF', '#7FFF00', '#FF69B4', '#FFD700', '#FF4500', '#ff00cc', '#00ffb3', '#ffb300', '#00baff', '#ff5e5e'];
-  const figureTypes = ['circle', 'equilateralTriangle', 'square'];
-  const sizeRange = [160, 190, 220, 250];
-  const rotationSpeeds = [0.002, 0.004, 0.006, 0.008];
-
-  let sealFigures = [];
-
-  // --- Искры ---
   const sparks = [];
+  function drawShape(ctx, type, x, y, size, color, rotation, glowAlpha) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(rotation);
+    ctx.lineWidth = 7;
+    ctx.strokeStyle = color;
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 30 * glowAlpha;
+    ctx.beginPath();
+    if (type === 'circle') ctx.arc(0, 0, size / 2, 0, Math.PI * 2);
+    else if (type === 'equilateralTriangle') {
+      for (let i = 0; i < 3; i++) {
+        const angle = i * 2 * Math.PI / 3 - Math.PI / 2;
+        const px = (size / Math.sqrt(3)) * Math.cos(angle);
+        const py = (size / Math.sqrt(3)) * Math.sin(angle);
+        if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      }
+      ctx.closePath();
+    } else if (type === 'square') {
+      const s = size / Math.sqrt(2);
+      ctx.rect(-s / 2, -s / 2, s, s);
+    }
+    ctx.stroke();
+    ctx.restore();
+  }
   function createSparks(x, y) {
     const count = 14 + Math.floor(Math.random()*6);
     for(let i=0; i<count; i++) {
@@ -470,7 +390,7 @@
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
         alpha: 1,
-        color: colors[Math.floor(Math.random()*colors.length)],
+        color: CONFIG.colors[Math.floor(Math.random()*CONFIG.colors.length)],
         size: 1.1 + Math.random() * 1.7,
         life: 0.7 + Math.random()*0.45
       });
@@ -497,67 +417,50 @@
       if(p.life<=0) sparks.splice(i,1);
     }
   }
-
-  function drawShape(ctx, type, x, y, size, color, rotation, glowAlpha) {
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(rotation);
-    ctx.lineWidth = 7;
-    ctx.strokeStyle = color;
-    ctx.shadowColor = color;
-    ctx.shadowBlur = 30 * glowAlpha;
-    ctx.beginPath();
-    if (type === 'circle') ctx.arc(0, 0, size / 2, 0, Math.PI * 2);
-    else if (type === 'equilateralTriangle') {
-      for (let i = 0; i < 3; i++) {
-        const angle = i * 2 * Math.PI / 3 - Math.PI / 2;
-        const px = (size / Math.sqrt(3)) * Math.cos(angle);
-        const py = (size / Math.sqrt(3)) * Math.sin(angle);
-        if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
-      }
-      ctx.closePath();
-    } else if (type === 'square') {
-      const s = size / Math.sqrt(2);
-      ctx.rect(-s / 2, -s / 2, s, s);
+  let time = 0;
+  function render() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    renderSparks();
+    const size = parseInt(canvas.style.width) || CONFIG.maxCanvas;
+    const cx = size/2, cy = size/2;
+    const glowPulse = 0.75 + 0.25 * Math.sin(time * Math.PI * 2 / 3);
+    for (let i = 0; i < state.sealFigures.length; i++) {
+      const f = state.sealFigures[i];
+      f.rotation += f.speed * f.direction;
+      drawShape(ctx, f.type, cx, cy, f.size, f.color, f.rotation, glowPulse);
     }
-    ctx.stroke();
-    ctx.restore();
+    time += 1 / 60;
+    requestAnimationFrame(render);
   }
 
+  // --- Редкость и награды ---
   function checkRarity() {
     const getMatches = (key) => {
       const map = {};
-      for (const f of sealFigures) map[f[key]] = (map[f[key]] || 0) + 1;
+      for (const f of state.sealFigures) map[f[key]] = (map[f[key]] || 0) + 1;
       return Object.values(map).some(c => c >= 3) ? Math.max(...Object.values(map)) : 0;
     };
     const colorMatch = getMatches('color');
     const typeMatch = getMatches('type');
     const speedMatch = getMatches('speed');
-
     const totalMatch = [colorMatch, typeMatch, speedMatch].filter(v => v >= 3).length;
     const allFour = [colorMatch, typeMatch, speedMatch].every(v => v === 4);
-
     let reward = 0;
     let msg = '';
     if (allFour) {
       msg = '✨ Ethereal Seal!\nChance: 0.008%';
-      reward = 1;
-      statEthereal++;
+      reward = 1; state.statEthereal++;
     } else if (totalMatch >= 2 && [colorMatch, typeMatch, speedMatch].some(v => v === 3)) {
       msg = '🔥 Legendary Seal!\nChance: 0.03%';
-      reward = 0.1;
-      statLegendary++;
+      reward = 0.1; state.statLegendary++;
     } else if ([colorMatch, typeMatch, speedMatch].some(v => v === 4)) {
       msg = '💎 Mythic Seal!\nChance: 0.12%';
-      reward = 0.01;
-      statMythic++;
+      reward = 0.01; state.statMythic++;
     } else if ([colorMatch, typeMatch, speedMatch].some(v => v === 3)) {
       msg = '🌟 Rare Seal!\nChance: 0.48%';
-      reward = 0.001;
-      statRare++;
-    } else {
-      msg = '';
+      reward = 0.001; state.statRare++;
     }
+    const rareMessageEl = document.getElementById('rare-message');
     if (msg) {
       rareMessageEl.textContent = msg;
       rareMessageEl.classList.add('active');
@@ -567,129 +470,45 @@
       rareMessageEl.classList.remove('active');
     }
     if (reward > 0) {
-      seal += reward;
-      updateSeal();
+      state.seal += reward;
+      updateUI();
     }
-    updateProfileStats();
   }
 
-  function updateSeal() {
-    sealAmountEl.textContent = seal.toFixed(3);
-  }
-
-  function generateRandomSeal() {
-    sealFigures = [];
-    const size = parseInt(canvas.style.width) || 520;
-    for (let i = 0; i < 4; i++) {
-      const type = figureTypes[Math.floor(Math.random() * figureTypes.length)];
-      const color = colors[Math.floor(Math.random() * colors.length)];
-      const relSize = sizeRange[Math.floor(Math.random() * sizeRange.length)];
-      const speed = rotationSpeeds[Math.floor(Math.random() * rotationSpeeds.length)];
-      const direction = Math.random() < 0.5 ? 1 : -1;
-      sealFigures.push({ type, color, size: relSize * size / 520, speed, direction, rotation: 0 });
-    }
-    statTotal++;
-    checkRarity();
-  }
-
-  function updateProfileStats() {
-    const el = id => document.getElementById(id);
-    if (el('stat-total')) el('stat-total').textContent = statTotal;
-    if (el('stat-rare')) el('stat-rare').textContent = statRare;
-    if (el('stat-legendary')) el('stat-legendary').textContent = statLegendary;
-    if (el('stat-mythic')) el('stat-mythic').textContent = statMythic;
-    if (el('stat-ethereal')) el('stat-ethereal').textContent = statEthereal;
-    if (el('profile-level')) el('profile-level').textContent = level;
-  }
-
-  let time = 0;
-  function render() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    renderSparks();
-    const size = parseInt(canvas.style.width) || 520;
-    const cx = size/2, cy = size/2;
-    const glowPulse = 0.75 + 0.25 * Math.sin(time * Math.PI * 2 / 3);
-    for (let i = 0; i < sealFigures.length; i++) {
-      const f = sealFigures[i];
-      f.rotation += f.speed * f.direction;
-      drawShape(ctx, f.type, cx, cy, f.size, f.color, f.rotation, glowPulse);
-    }
-    time += 1 / 60;
-    requestAnimationFrame(render);
-  }
-
-  function updateSphereCount() {
-    sphereCountEl.textContent = spheres;
-  }
-
+  // --- XP, Mining, Profile ---
   function gainXP(amount) {
-    xp += amount;
-    while (xp >= 100) {
-      xp -= 100;
-      level++;
+    state.xp += amount;
+    while (state.xp >= 100) {
+      state.xp -= 100;
+      state.level++;
     }
-    document.getElementById('xp').textContent = xp;
-    document.getElementById('level').textContent = level;
-    updateProfileStats();
+    updateUI();
   }
-
-  function onClick(e) {
-    if (spheres <= 0) return alert('Сферы закончились!');
-    spheres--; updateSphereCount(); generateRandomSeal(); gainXP(1);
-
-    // Искры по клику
-    const size = parseInt(canvas.style.width) || 520;
-    const cx = size/2, cy = size/2;
-    let rect = canvas.getBoundingClientRect();
-    let x = (e?.clientX ?? (rect.left + cx)) - rect.left;
-    let y = (e?.clientY ?? (rect.top + cy)) - rect.top;
-    createSparks(x, y);
-  }
-
-  container.addEventListener('click', onClick);
-  container.addEventListener('touchstart', function(e) {
-    e.preventDefault();
-    const touch = e.touches[0];
-    const size = parseInt(canvas.style.width) || 520;
-    const cx = size/2, cy = size/2;
-    let rect = canvas.getBoundingClientRect();
-    let x = (touch?.clientX ?? (rect.left + cx)) - rect.left;
-    let y = (touch?.clientY ?? (rect.top + cy)) - rect.top;
-    onClick({clientX: x + rect.left, clientY: y + rect.top});
-  }, {passive: false});
-
-  container.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      onClick();
-    }
-  });
-
-  // Mining
   function updateMiningBtn() {
+    const btn = document.getElementById('mining-btn');
     const now = Math.floor(Date.now()/1000);
-    if (miningCooldown > now) {
-      miningBtn.disabled = true;
-      let left = miningCooldown - now;
+    if (state.miningCooldown > now) {
+      btn.disabled = true;
+      let left = state.miningCooldown - now;
       let h = Math.floor(left/3600);
       let m = Math.floor((left%3600)/60);
       let s = left%60;
-      miningBtn.textContent = `Mining: ${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+      btn.textContent = `Mining: ${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
     } else {
-      miningBtn.disabled = false;
-      miningBtn.textContent = 'Mining';
+      btn.disabled = false;
+      btn.textContent = 'Mining';
     }
   }
-  miningBtn.onclick = () => {
-    if (miningBtn.disabled) return;
-    seal += 0.10;
-    updateSeal();
-    miningCooldown = Math.floor(Date.now()/1000) + 12*3600;
+  document.getElementById('mining-btn').onclick = () => {
+    if (document.getElementById('mining-btn').disabled) return;
+    state.seal += 0.10;
+    state.miningCooldown = Math.floor(Date.now()/1000) + 12*3600;
+    updateUI();
     updateMiningBtn();
   };
   setInterval(updateMiningBtn, 1000);
 
-  // Tabs & Payment
+  // --- Вкладки и popup ---
   window.openTab = id => {
     document.querySelectorAll('.tab').forEach(t => t.style.display = 'none');
     document.getElementById(id).style.display = 'block';
@@ -698,19 +517,17 @@
     document.querySelectorAll('.tab').forEach(t => t.style.display = 'none');
     closeMockPayment();
   };
+  document.getElementById('avatar-btn').onclick = () => openTab('profile-tab');
 
-  avatarBtn.onclick = () => {
-    openTab('profile-tab');
-  };
-
-  // Top popup (каждые 20 секунд)
+  // --- Popup (каждые 20 секунд) ---
   function showTopPopup() {
-    topPopup.classList.add('active');
-    setTimeout(() => topPopup.classList.remove('active'), 3000);
+    const popup = document.getElementById('top-popup');
+    popup.classList.add('active');
+    setTimeout(() => popup.classList.remove('active'), 3000);
   }
-  setInterval(showTopPopup, 20000);
+  setInterval(showTopPopup, CONFIG.popupInterval);
 
-  // Mock Payment logic
+  // --- Mock-оплата ---
   const modal = document.getElementById('mock-payment-modal');
   const confirmBtn = document.getElementById('confirm-payment-btn');
   const result = document.getElementById('mock-payment-result');
@@ -732,18 +549,48 @@
     confirmBtn.disabled = true;
     result.textContent = 'Обработка платежа...';
     setTimeout(() => {
-      spheres += amount;
-      updateSphereCount();
+      state.spheres += amount;
+      updateUI();
       result.textContent = `Успешно куплено ${amount} сфер!`;
       confirmBtn.disabled = false;
     }, 1500);
   };
 
+  // --- Генерация и рендер ---
+  function onClick(e) {
+    if (state.spheres <= 0) return alert('Сферы закончились!');
+    state.spheres--; updateUI(); generateRandomSeal(); gainXP(1);
+    // Искры по клику
+    const size = parseInt(canvas.style.width) || CONFIG.maxCanvas;
+    const cx = size/2, cy = size/2;
+    let rect = canvas.getBoundingClientRect();
+    let x = (e?.clientX ?? (rect.left + cx)) - rect.left;
+    let y = (e?.clientY ?? (rect.top + cy)) - rect.top;
+    createSparks(x, y);
+  }
+  const canvasContainer = document.getElementById('canvas-container');
+  canvasContainer.addEventListener('click', onClick);
+  canvasContainer.addEventListener('touchstart', function(e) {
+    e.preventDefault();
+    const touch = e.touches[0];
+    const size = parseInt(canvas.style.width) || CONFIG.maxCanvas;
+    const cx = size/2, cy = size/2;
+    let rect = canvas.getBoundingClientRect();
+    let x = (touch?.clientX ?? (rect.left + cx)) - rect.left;
+    let y = (touch?.clientY ?? (rect.top + cy)) - rect.top;
+    onClick({clientX: x + rect.left, clientY: y + rect.top});
+  }, {passive: false});
+  canvasContainer.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onClick();
+    }
+  });
+
+  // --- Запуск ---
   generateRandomSeal();
-  updateSphereCount();
-  updateSeal();
+  updateUI();
   updateMiningBtn();
-  updateProfileStats();
   render();
 })();
 </script>
