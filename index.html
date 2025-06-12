@@ -106,16 +106,17 @@
   #canvas-container {
     position: fixed;
     left: 0; right: 0;
-    top: 100px; /* ниже top-bar + seal-balance */
-    bottom: 70px; /* выше bottom-nav */
+    top: 100px; /* ниже top-bar + seal-balance + mining */
+    bottom: 90px; /* выше bottom-nav */
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1;
     background: none;
     overflow: visible;
+    pointer-events: none;
   }
-  canvas {
+  #sealCanvas {
     display: block;
     background: transparent;
     border-radius: 0;
@@ -123,7 +124,7 @@
     touch-action: manipulation;
     image-rendering: auto;
     z-index: 1;
-    pointer-events: none;
+    pointer-events: auto;
     margin: auto;
   }
   #rare-message {
