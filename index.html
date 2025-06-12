@@ -16,27 +16,32 @@
   body {
     min-height: 100vh;
     text-align: center;
-    padding-top: 70px;
+    padding-top: 90px;
+    box-sizing: border-box;
   }
   #canvas-container {
     position: relative;
     margin: 0 auto;
+    /* Высота и ширина canvas так, чтобы не заходить на верх/низ */
     width: 100vw;
     max-width: 520px;
-    height: 100vw;
+    height: calc(100vh - 230px); /* 90px сверху + 90px снизу + запас */
     max-height: 520px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     outline: none;
     cursor: pointer;
     background: none;
   }
   canvas {
     display: block;
-    width: 100vw;
-    max-width: 520px;
-    height: 100vw;
-    max-height: 520px;
+    width: 100%;
+    height: 100%;
     margin: 0 auto;
     background: transparent;
+    max-width: 520px;
+    max-height: 520px;
   }
   #seal-balance, #rare-message {
     left: 50%;
@@ -44,7 +49,9 @@
   }
   #seal-balance {
     position: absolute;
-    top: -34px;
+    top: calc(100% + 16px); /* чуть ниже canvas */
+    left: 50%;
+    transform: translateX(-50%);
     color: #fff;
     font-size: 1.1rem;
     font-weight: 700;
@@ -58,6 +65,7 @@
     text-align: center;
     box-sizing: border-box;
     user-select: none;
+    width: max-content;
   }
   #rare-message {
     position: absolute;
@@ -205,6 +213,22 @@
     margin-top: 10px;
     font-weight: 700;
   }
+  @media (max-width: 600px) {
+    #canvas-container {
+      max-width: 100vw;
+      max-height: calc(100vw - 32px);
+      height: calc(100vw - 32px);
+    }
+    canvas {
+      max-width: 100vw;
+      max-height: calc(100vw - 32px);
+      height: calc(100vw - 32px);
+    }
+    #seal-balance {
+      font-size: 1rem;
+      padding: 2px 8px 2px 8px;
+    }
+  }
 </style>
 </head>
 <body>
@@ -228,9 +252,9 @@
 <button id="mining-btn">Mining</button>
 
 <div id="canvas-container" tabindex="0">
-  <div id="seal-balance">$SEAL: <span id="seal-amount">0.000</span></div>
-  <canvas id="sealCanvas" width="520" height="520"></canvas>
+  <canvas id="sealCanvas"></canvas>
   <div id="rare-message"></div>
+  <div id="seal-balance">$SEAL: <span id="seal-amount">0.000</span></div>
 </div>
 
 <div id="bottom-nav">
@@ -296,6 +320,19 @@
 
 <script>
 (() => {
+  // Responsive canvas size
+  function resizeCanvas() {
+    const container = document.getElementById('canvas-container');
+    const canvas = document.getElementById('sealCanvas');
+    // Вычисляем доступную высоту: весь экран минус player-info, sphere-counter, mining, seal-balance, bottom-nav
+    const topSpace = 90; // px (player-info + mining)
+    const bottomSpace = 90; // px (bottom-nav + запас)
+    const avail = Math.min(window.innerWidth, window.innerHeight - topSpace - bottomSpace, 520);
+    container.style.width = canvas.style.width = canvas.width = avail;
+    container.style.height = canvas.style.height = canvas.height = avail;
+  }
+  window.addEventListener('resize', resizeCanvas);
+
   const colors = ['#1E90FF', '#00FFFF', '#7FFF00', '#FF69B4', '#FFD700', '#FF4500'];
   const figureTypes = ['circle', 'equilateralTriangle', 'square'];
   const sizeRange = [160, 190, 220, 250];
@@ -417,13 +454,14 @@
 
   let time = 0;
   function render() {
+    resizeCanvas();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     const cx = canvas.width / 2, cy = canvas.height / 2;
     const glowPulse = 0.75 + 0.25 * Math.sin(time * Math.PI * 2 / 3);
     for (let i = 0; i < sealFigures.length; i++) {
       const f = sealFigures[i];
       f.rotation += f.speed * f.direction;
-      drawShape(ctx, f.type, cx, cy, f.size, f.color, f.rotation, glowPulse);
+      drawShape(ctx, f.type, cx, cy, f.size * (canvas.width/520), f.color, f.rotation, glowPulse);
     }
     time += 1 / 60;
     requestAnimationFrame(render);
@@ -536,6 +574,7 @@
   };
   setInterval(updateMiningBtn, 1000);
 
+  resizeCanvas();
   generateRandomSeal();
   updateSphereCount();
   updateSeal();
