@@ -108,8 +108,6 @@
     left: 0; right: 0;
     top: 100px; /* ниже top-bar + seal-balance */
     bottom: 70px; /* выше bottom-nav */
-    width: 100vw;
-    height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -118,20 +116,15 @@
     overflow: visible;
   }
   canvas {
-    position: absolute;
-    left: 0; top: 0; width: 100vw; height: calc(100vh - 170px);
-    max-width: 100vw;
-    max-height: calc(100vh - 170px);
-    min-width: 100vw;
-    min-height: calc(100vh - 170px);
+    display: block;
     background: transparent;
-    margin: 0 auto;
     border-radius: 0;
     box-sizing: border-box;
     touch-action: manipulation;
     image-rendering: auto;
     z-index: 1;
     pointer-events: none;
+    margin: auto;
   }
   #rare-message {
     position: fixed;
@@ -327,12 +320,10 @@
 (() => {
   function resizeCanvas() {
     const canvas = document.getElementById('sealCanvas');
-    // Максимально возможная ширина/высота между панелями
-    const topSpace = 100; // px (верхняя панель + SEAL)
-    const bottomSpace = 70; // px (нижняя панель)
-    const availW = window.innerWidth;
-    const availH = window.innerHeight - topSpace - bottomSpace;
-    const avail = Math.max(availW, availH);
+    // Квадратный canvas, максимум между панелями
+    const topSpace = 100; // top-bar + seal-balance + mining
+    const bottomSpace = 90; // bottom-nav + запас
+    const avail = Math.min(window.innerWidth, window.innerHeight - topSpace - bottomSpace);
     const dpr = window.devicePixelRatio || 1;
     canvas.width = avail * dpr;
     canvas.height = avail * dpr;
@@ -340,7 +331,7 @@
     canvas.style.height = avail + 'px';
     return {size: avail, dpr};
   }
-  window.addEventListener('resize', () => { resizeCanvas(); });
+  window.addEventListener('resize', resizeCanvas);
 
   const colors = ['#1E90FF', '#00FFFF', '#7FFF00', '#FF69B4', '#FFD700', '#FF4500'];
   const figureTypes = ['circle', 'equilateralTriangle', 'square'];
