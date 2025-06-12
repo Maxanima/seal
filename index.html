@@ -20,22 +20,10 @@
     box-sizing: border-box;
     width: 100vw;
   }
-  #sealCanvas {
-    position: fixed;
-    left: 0; top: 0;
-    width: 100vw;
-    height: 100vh;
-    display: block;
-    margin: 0;
-    z-index: 0;
-    background: transparent;
-    pointer-events: auto;
-    outline: none;
-  }
   #top-bar {
     position: fixed;
     top: 0; left: 0; width: 100vw;
-    z-index: 10;
+    z-index: 20;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -113,6 +101,30 @@
     pointer-events: none;
     border: 2px solid #00ff88;
     filter: drop-shadow(0 0 5px #00ff88);
+  }
+  #canvas-container {
+    position: fixed;
+    left: 0; right: 0;
+    top: 100px; /* ниже top-bar + seal-balance + mining */
+    bottom: 90px; /* выше bottom-nav */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    background: none;
+    overflow: visible;
+    pointer-events: none;
+  }
+  #sealCanvas {
+    display: block;
+    background: transparent;
+    border-radius: 0;
+    box-sizing: border-box;
+    touch-action: manipulation;
+    image-rendering: auto;
+    z-index: 1;
+    pointer-events: auto;
+    margin: auto;
   }
   #rare-message {
     position: fixed;
@@ -218,8 +230,6 @@
 </head>
 <body>
 
-<canvas id="sealCanvas" tabindex="0"></canvas>
-
 <div id="top-bar">
   <div id="player-info">
     <button id="avatar-btn" title="Профиль">
@@ -239,6 +249,9 @@
 
 <button id="mining-btn">Mining</button>
 <div id="seal-balance">$SEAL: <span id="seal-amount">0.000</span></div>
+<div id="canvas-container">
+  <canvas id="sealCanvas" tabindex="0"></canvas>
+</div>
 <div id="rare-message"></div>
 
 <div id="bottom-nav">
@@ -306,12 +319,16 @@
 (() => {
   function resizeCanvas() {
     const canvas = document.getElementById('sealCanvas');
+    // Квадратный canvas, максимум между панелями
+    const topSpace = 100; // top-bar + seal-balance + mining
+    const bottomSpace = 90; // bottom-nav + запас
+    const avail = Math.min(window.innerWidth, window.innerHeight - topSpace - bottomSpace);
     const dpr = window.devicePixelRatio || 1;
-    canvas.width = window.innerWidth * dpr;
-    canvas.height = window.innerHeight * dpr;
-    canvas.style.width = window.innerWidth + 'px';
-    canvas.style.height = window.innerHeight + 'px';
-    return {w: canvas.width, h: canvas.height, dpr};
+    canvas.width = avail * dpr;
+    canvas.height = avail * dpr;
+    canvas.style.width = avail + 'px';
+    canvas.style.height = avail + 'px';
+    return {size: avail, dpr};
   }
   window.addEventListener('resize', resizeCanvas);
 
@@ -431,13 +448,12 @@
 
   let time = 0;
   function render() {
-    const {w, h, dpr} = resizeCanvas();
+    const {size, dpr} = resizeCanvas();
     ctx.setTransform(1,0,0,1,0,0);
-    ctx.clearRect(0, 0, w, h);
-    // Центр по центру экрана, размер — min(w,h)
-    const size = Math.min(w, h);
-    const cx = w / 2, cy = h / 2;
-    const scale = size / 520;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const cx = canvas.width / 2, cy = canvas.height / 2;
+    // Увеличиваем масштаб фигур на 35% сверх canvas!
+    const scale = size / 520 * 1.35 * dpr;
     const glowPulse = 0.75 + 0.25 * Math.sin(time * Math.PI * 2 / 3);
     for (let i = 0; i < sealFigures.length; i++) {
       const f = sealFigures[i];
@@ -484,9 +500,7 @@
     spheres--; updateSphereCount(); generateRandomSeal(); gainXP(1);
   }
 
-  // Клик по canvas — генерация новой печати
   canvas.addEventListener('click', function(e) {
-    // Можно добавить ограничение: только если клик не по интерфейсным элементам
     onClick();
   });
   canvas.addEventListener('keydown', e => {
