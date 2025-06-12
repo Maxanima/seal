@@ -9,14 +9,88 @@
     margin: 0; padding: 0; height: 100%;
     background: #000;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    overflow: hidden;
+    overflow-x: hidden;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
   }
+  body {
+    min-height: 100vh;
+    text-align: center;
+    padding-top: 70px;
+  }
+  #canvas-container {
+    position: relative;
+    margin: 0 auto;
+    width: 100vw;
+    max-width: 520px;
+    height: 100vw;
+    max-height: 520px;
+    outline: none;
+    cursor: pointer;
+    background: none;
+  }
+  canvas {
+    display: block;
+    width: 100vw;
+    max-width: 520px;
+    height: 100vw;
+    max-height: 520px;
+    margin: 0 auto;
+    background: transparent;
+  }
+  #seal-balance, #rare-message {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  #seal-balance {
+    position: absolute;
+    top: -34px;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-shadow: 0 2px 12px #fff3, 0 0 2px #fff;
+    z-index: 20;
+    background: rgba(0,0,0,0.13);
+    border-radius: 9px;
+    padding: 2px 18px 2px 14px;
+    min-width: 110px;
+    text-align: center;
+    box-sizing: border-box;
+    user-select: none;
+  }
+  #rare-message {
+    position: absolute;
+    bottom: 12px;
+    color: #00ff88;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: monospace;
+    text-shadow: 0 0 6px #00ff88;
+    text-align: center;
+    white-space: pre-line;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 19;
+    background: none;
+    border: none;
+    box-shadow: none;
+    min-width: 0;
+    padding: 0;
+  }
+  #rare-message.active { opacity: 1; }
   #player-info {
-    position: fixed; top: 12px; left: 12px;
-    color: #eee; font-size: 14px; z-index: 10;
-    background: rgba(0,0,0,0.5); padding: 6px 10px; border-radius: 6px; user-select: none;
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    color: #eee;
+    font-size: 14px;
+    z-index: 10;
+    background: rgba(0,0,0,0.5);
+    padding: 6px 10px;
+    border-radius: 6px;
+    user-select: none;
     display: flex; align-items: center; gap: 10px;
   }
   #avatar-btn {
@@ -54,51 +128,6 @@
   #mining-btn[disabled] {
     background: #444; color: #aaa; filter: grayscale(0.5) brightness(0.8); cursor: default; border-bottom: 2px solid #222;
   }
-  #canvas-container {
-    position: relative;
-    width: 520px;
-    height: 520px;
-    outline: none;
-    cursor: pointer;
-    margin: 0 auto;
-    margin-top: 80px;
-  }
-  canvas {
-    display: block;
-    width: 520px;
-    height: 520px;
-    background: transparent;
-  }
-  #seal-balance {
-    position: absolute; left: 50%; top: -34px; transform: translateX(-50%);
-    color: #fff; font-size: 1.1rem; font-weight: 700; letter-spacing: 1.2px;
-    text-shadow: 0 2px 12px #fff3, 0 0 2px #fff; z-index: 20;
-    background: rgba(0,0,0,0.13); border-radius: 9px; padding: 2px 18px 2px 14px;
-    min-width: 110px; text-align: center; box-sizing: border-box; user-select: none;
-  }
-  #rare-message {
-    position: absolute;
-    bottom: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: #00ff88;
-    font-size: 17px;
-    font-weight: bold;
-    font-family: monospace;
-    text-shadow: 0 0 12px #00ff88, 0 0 2px #00ff88;
-    text-align: center;
-    white-space: pre-line;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    z-index: 19;
-    background: none;
-    border: none;
-    box-shadow: none;
-    min-width: 0;
-    padding: 0;
-  }
-  #rare-message.active { opacity: 1; }
   .tab {
     position: fixed;
     top: 60px;
@@ -133,6 +162,7 @@
     display: flex;
     gap: 12px;
     z-index: 10;
+    background: none;
   }
   .nav-btn {
     background: #111;
@@ -271,7 +301,6 @@
   const sizeRange = [160, 190, 220, 250];
   const rotationSpeeds = [0.002, 0.004, 0.006, 0.008];
 
-  // Примерные шансы (для профиля)
   const CHANCES = {
     rare: '2%',
     mythic: '0.5%',
