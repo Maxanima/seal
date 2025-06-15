@@ -5,6 +5,67 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 <title>Магическая печать — Сферы + Mock</title>
 <style>
+.chest-container {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  align-items: flex-end;
+  margin: 36px 0 24px 0;
+}
+.chest-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.chest-svg {
+  width: 54px; height: 54px; vertical-align: middle; margin-bottom: 8px;
+  transition: transform 0.2s, filter 0.2s;
+  cursor: pointer;
+}
+.chest-svg.chest-common {
+  filter: drop-shadow(0 0 16px #ffd700aa);
+}
+.chest-svg.chest-rare {
+  filter: drop-shadow(0 0 18px #3fa7ffaa);
+}
+.chest-svg.chest-epic {
+  filter: drop-shadow(0 0 20px #a03fffcc);
+}
+.chest-svg.opening {
+  animation: chestOpenAnim 0.7s;
+}
+@keyframes chestOpenAnim {
+  0% { transform: scale(1) rotate(0deg); }
+  20% { transform: scale(1.1) rotate(-7deg);}
+  40% { transform: scale(1.12) rotate(7deg);}
+  70% { transform: scale(1.05) rotate(0deg);}
+  100% { transform: scale(1) rotate(0deg);}
+}
+.chest-label {
+  font-family: 'Orbitron', 'Arial Black', Arial, sans-serif;
+  font-size: 1.1em;
+  letter-spacing: 1px;
+  color: #fff;
+  text-shadow: 0 0 8px #fff, 0 0 24px var(--chest-color);
+}
+.chest-open-btn {
+  margin-top: 10px;
+  padding: 8px 24px;
+  background: linear-gradient(90deg, #222, var(--chest-color));
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 1em;
+  cursor: pointer;
+  box-shadow: 0 0 8px var(--chest-color, #fff);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.chest-open-btn:active {
+  background: linear-gradient(90deg, var(--chest-color), #222);
+  box-shadow: 0 0 16px var(--chest-color, #fff);
+}
+
   html, body {
     margin: 0; padding: 0; height: 100%; width: 100vw;
     background: #000;
@@ -226,10 +287,220 @@
     margin-top: 10px;
     font-weight: 700;
   }
+  .rune-collection-cell.filled {
+  animation: runeGlow 2s infinite alternate;
+  box-shadow: 0 0 16px 4px var(--rune-color, #fff), 0 0 8px 2px #fff3;
+  border-width: 3px;
+  cursor: pointer;
+  position: relative;
+  transition: box-shadow 0.2s, border-color 0.2s, color 0.2s;
+}
+@keyframes runeGlow {
+  0% { box-shadow: 0 0 8px 2px var(--rune-color, #fff), 0 0 4px 1px #fff3; }
+  100% { box-shadow: 0 0 32px 8px var(--rune-color, #fff), 0 0 16px 4px #fff3; }
+}
+.rune-collection-cell {
+  position: relative;
+}
+
+.rune-collection-cell {
+  position: relative; /* чтобы подсказка с absolute внутри позиционировалась относительно ячейки */
+  width: 60px;        /* фиксированная ширина ячейки (подбери под себя) */
+  height: 60px;       /* фиксированная высота ячейки */
+  display: flex;
+  align-items: center;
+  justify-content: center; /* центрируем содержимое по горизонтали и вертикали */
+  border-radius: 8px;       /* для красоты, опционально */
+  background-color: #111;   /* или любой другой фон */
+  cursor: pointer;          /* чтобы показывалось, что ячейка кликабельна */
+}
+
+
+.rune-tooltip {
+  display: none;
+  position: absolute;
+  left: 50%;
+  top: 110%;
+  transform: translateX(-50%);
+  background: #222;
+  color: #fff;
+  font-size: 11px;
+  padding: 7px 13px;
+  border-radius: 8px;
+  white-space: pre-line;
+  box-shadow: 0 4px 16px #000a;
+  z-index: 99;
+  max-width: 360px;
+  word-wrap: break-word;
+  white-space: normal;
+}
+
+.rune-collection-cell.filled:hover .rune-tooltip,
+.rune-collection-cell.filled:focus .rune-tooltip,
+.rune-collection-cell.selected .rune-tooltip {
+  display: block;
+}
+
+
+.rune-slot {
+  position: absolute;
+  width: 50px; height: 50px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  background: transparent !important;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none; /* ВАЖНО! */
+  user-select: none;
+}
+.rune-slot.filled {
+  border-color: var(--rune-color, #fff);
+  box-shadow: 0 0 32px 8px var(--rune-color, #fff);
+  background: transparent !important;
+}
+.rune-slot.empty {
+  border-style: dashed;
+  color: #888;
+  background: transparent !important;
+  opacity: 0.4;
+}
+.neon-rune {
+  font-size: 3em;
+  font-weight: bold;
+  color: var(--rune-color, #fff);
+  text-shadow:
+    0 0 12px var(--rune-color),
+    0 0 24px var(--rune-color),
+    0 0 48px var(--rune-color);
+  pointer-events: none;
+  user-select: none;
+}
+
+
+
+ 
+ 
+.chest-svg {
+  width: 54px; height: 54px; vertical-align: middle; margin-right: 12px;
+  filter: drop-shadow(0 0 12px #ffd700aa);
+  transition: transform 0.2s;
+}
+.chest-svg.opening {
+  animation: chestOpenAnim 0.7s;
+}
+@keyframes chestOpenAnim {
+  0% { transform: scale(1) rotate(0deg); }
+  20% { transform: scale(1.1) rotate(-7deg);}
+  40% { transform: scale(1.12) rotate(7deg);}
+  70% { transform: scale(1.05) rotate(0deg);}
+  100% { transform: scale(1) rotate(0deg);}
+}
+#main-rune-slots {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%,-50%);
+  width: 0; height: 0;
+  z-index: 10;
+  pointer-events: none; /* ВАЖНО! */
+}
+ 
+.rune-orbit {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%,-50%);
+  pointer-events: auto;
+}
+ 
+ 
+#main-rune-slots .neon-rune {
+  pointer-events: none;
+}
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+}
+.modal-content {
+  background: #222;
+  padding: 20px;
+  border-radius: 12px;
+  position: relative;
+  max-width: 90%;
+  width: 300px;
+  text-align: center;
+  color: white;
+}
+.modal-close {
+  position: absolute;
+  top: 10px; right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+}
+#confirmAddRune {
+  background: linear-gradient(90deg,#34c759,#00b894);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+#orbit-container {
+  position: none;
+  width: 300px;
+  height: 300px;
+  margin: 30px auto;
+  border-radius: 50%;
+  perspective: 800px;
+  z-index: 10;
+}
+
+
+#rune-orbit {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  animation: spin 20s linear infinite;
+}
+
+.rune-orbit-item {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.rune-orbit-item .neon-rune {
+  font-size: 1.8em;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#main-rune-slots,
+#main-rune-slots .rune-slot,
+#main-rune-slots .neon-rune {
+  pointer-events: none !important;
+}
+
+
+
+ 
 </style>
 </head>
 <body>
-
+ 
 <div id="top-bar">
   <div id="player-info">
     <button id="avatar-btn" title="Профиль">
@@ -246,20 +517,49 @@
     <span id="sphere-count">100</span>
   </div>
 </div>
-
+ 
 <button id="mining-btn">Mining</button>
 <div id="seal-balance">$SEAL: <span id="seal-amount">0.000</span></div>
+
 <div id="canvas-container">
-  <canvas id="sealCanvas" tabindex="0"></canvas>
+  <canvas id="sealCanvas" width="600" height="600"></canvas>
+  <div id="main-rune-slots"></div>
 </div>
+<div id="rune-orbit-container" style="position: relative; width: 300px; height: 300px; margin: 20px auto;">
+  <div id="rune-orbit" style="position: absolute; top: 50%; left: 50%; width: 0; height: 0;"></div>
+</div>
+
+<div id="orbit-container">
+  <div id="rune-orbit">
+    <!-- сюда появятся вращающиеся руны -->
+  </div>
+</div>
+
 <div id="rare-message"></div>
 
+<!-- Модалка для управления рунами (пример) -->
+<div id="manageRuneModal" class="modal" style="display:none; /* стили для модалки */">
+  <div class="modal-content">
+    <span class="modal-close" id="closeManageRuneModal">&times;</span>
+    <div id="manageRuneInfo"></div>
+    <button id="insertRuneBtn">Вставить в слот</button>
+    <button id="removeRuneBtn">Убрать из слота</button>
+    <button id="replaceRuneBtn">Заменить в слоте</button>
+  </div>
+</div>
+
+
+ 
+<div id="rare-message"></div>
+ 
 <div id="bottom-nav">
   <button class="nav-btn" onclick="openTab('shop-tab')">Shop</button>
   <button class="nav-btn" onclick="openTab('quests-tab')">Quests</button>
   <button class="nav-btn" onclick="openTab('friends-tab')">Friends</button>
+  <button class="nav-btn" onclick="openTab('rune-collection-tab')">Runes</button>
+  <button class="nav-btn" onclick="openTab('chest-tab')">Chest</button>
 </div>
-
+ 
 <div id="shop-tab" class="tab">
   <h2>Shop</h2>
   <ul>
@@ -272,7 +572,7 @@
   </ul>
   <button class="close-btn" onclick="closeTabs()">Close</button>
 </div>
-
+ 
 <div id="quests-tab" class="tab">
   <h2>Quests</h2>
   <ul>
@@ -282,7 +582,7 @@
   </ul>
   <button class="close-btn" onclick="closeTabs()">Close</button>
 </div>
-
+ 
 <div id="friends-tab" class="tab">
   <h2>Friends</h2>
   <p>Приглашённые друзья:</p>
@@ -291,7 +591,7 @@
   <ul><li>Игрок1 — Уровень 12</li><li>Игрок2 — Уровень 9</li></ul>
   <button class="close-btn" onclick="closeTabs()">Close</button>
 </div>
-
+ 
 <div id="profile-tab" class="tab">
   <h2>Profile</h2>
   <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
@@ -306,7 +606,7 @@
   </ul>
   <button class="close-btn" onclick="closeTabs()">Close</button>
 </div>
-
+ 
 <div id="mock-payment-modal">
   <h3>Mock Payment</h3>
   <p>Вы покупаете <span id="mock-payment-amount">0</span> сфер.</p>
@@ -314,9 +614,79 @@
   <button class="close-btn" onclick="closeMockPayment()">Отмена</button>
   <p id="mock-payment-result"></p>
 </div>
+<div id="rune-collection-tab" class="tab">
+ 
+  <h2>Коллекция рун</h2>
+ <div id="rune-collection-grid" style="display:grid; grid-template-columns:repeat(auto-fit,50px); gap:8px;"></div>
+ <div id="rune-tooltip-popup" style="display:none;position:fixed;z-index:9999;pointer-events:none;background:#222;color:#fff;padding:10px 16px;border-radius:10px;font-size:15px;box-shadow:0 4px 16px #000a;max-width:220px;white-space:normal;"></div>
+  <button class="close-btn" onclick="closeTabs()">Закрыть</button>
+</div>
+<div id="chest-tab" class="tab">
+  <h2>Сундуки</h2>
+  <div id="chest-list"><div class="chest-container">
+  <div class="chest-box">
+    <!-- Обычный сундук -->
+    <svg class="chest-svg chest-common" viewBox="0 0 64 64">
+      <rect x="8" y="20" width="48" height="28" rx="6" fill="#bfa76f" stroke="#fff" stroke-width="2"/>
+      <rect x="8" y="12" width="48" height="16" rx="8" fill="#e4c97b" stroke="#fff" stroke-width="2"/>
+    </svg>
+    <div class="chest-label" style="--chest-color:#ffd700">Обычный</div>
+    <button class="chest-open-btn" style="--chest-color:#ffd700" onclick="openChest('common')">Открыть</button>
+  </div>
+  <div class="chest-box">
+    <!-- Редкий сундук -->
+    <svg class="chest-svg chest-rare" viewBox="0 0 64 64">
+      <rect x="8" y="20" width="48" height="28" rx="6" fill="#3fa7ff" stroke="#fff" stroke-width="2"/>
+      <rect x="8" y="12" width="48" height="16" rx="8" fill="#6fd6ff" stroke="#fff" stroke-width="2"/>
+    </svg>
+    <div class="chest-label" style="--chest-color:#3fa7ff">Редкий</div>
+    <button class="chest-open-btn" style="--chest-color:#3fa7ff" onclick="openChest('rare')">Открыть</button>
+  </div>
+  <div class="chest-box">
+    <!-- Эпический сундук -->
+    <svg class="chest-svg chest-epic" viewBox="0 0 64 64">
+      <rect x="8" y="20" width="48" height="28" rx="6" fill="#a03fff" stroke="#fff" stroke-width="2"/>
+      <rect x="8" y="12" width="48" height="16" rx="8" fill="#d66fff" stroke="#fff" stroke-width="2"/>
+    </svg>
+    <div class="chest-label" style="--chest-color:#a03fff">Эпический</div>
+    <button class="chest-open-btn" style="--chest-color:#a03fff" onclick="openChest('epic')">Открыть</button>
+  </div>
+</div>
+</div>
+  <div id="chest-open-result"></div>
+  <button class="close-btn" onclick="closeTabs()">Закрыть</button>
+</div>
+<div id="main-rune-slots"></div>
+<div id="addRuneModal" class="modal">
+  <div class="modal-content">
+    <span class="modal-close" id="closeAddRuneModal">&times;</span>
+    <p>Add Rune?</p>
+    <button id="confirmAddRune">Add Rune To Seal</button>
+  </div>
+</div>
+ 
 
+  
+};
+ 
+ 
 <script>
 (() => {
+ let runeRotation = 0;
+function animateRunes() {
+  runeRotation += 0.002; // меньшее значение — плавнее вращение
+  updateRuneSlots();
+  requestAnimationFrame(animateRunes);
+}
+animateRunes(); // запусти анимацию один раз при старте
+
+document.getElementById('sealCanvas').addEventListener('click', function(e) {
+  // Здесь твоя логика появления новой печати
+  // Например:
+  showNewSeal(); // Замени на свою функцию генерации печати
+});
+
+ 
   function resizeCanvas() {
     const canvas = document.getElementById('sealCanvas');
     // Квадратный canvas, максимум между панелями
@@ -331,23 +701,23 @@
     return {size: avail, dpr};
   }
   window.addEventListener('resize', resizeCanvas);
-
+ 
   const colors = ['#1E90FF', '#00FFFF', '#7FFF00', '#FF69B4', '#FFD700', '#FF4500'];
   const figureTypes = ['circle', 'equilateralTriangle', 'square'];
   const sizeRange = [160, 190, 220, 250];
   const rotationSpeeds = [0.002, 0.004, 0.006, 0.008];
-
+ 
   const CHANCES = {
     rare: '2%',
     mythic: '0.5%',
     legendary: '0.2%',
     ethereal: '0.02%'
   };
-
+ 
   let spheres = 100, xp = 0, level = 1, seal = 0.000;
   let statTotal = 0, rare = 0, mythic = 0, legendary = 0, ethereal = 0;
   let sealFigures = [];
-
+ 
   const canvas = document.getElementById('sealCanvas');
   const ctx = canvas.getContext('2d');
   const rareMessageEl = document.getElementById('rare-message');
@@ -358,7 +728,20 @@
   const profileLevelEl = document.getElementById('profile-level');
   const miningBtn = document.getElementById('mining-btn');
   let miningCooldown = 0;
-
+ 
+function generateRuneSlots() {
+  const slotsContainer = document.getElementById('main-rune-slots');
+  slotsContainer.innerHTML = '';
+  for (let i = 0; i < 3; i++) {
+    const slot = document.createElement('div');
+    slot.className = 'rune-slot empty';
+    slot.dataset.slotIndex = i;
+    slotsContainer.appendChild(slot);
+  }
+  updateRuneSlots();
+}
+generateRuneSlots();
+ 
   function drawShape(ctx, type, x, y, size, color, rotation, glowAlpha, dpr) {
     ctx.save();
     ctx.translate(x, y);
@@ -384,17 +767,17 @@
     ctx.stroke();
     ctx.restore();
   }
-
+ 
   function getMatches(key) {
     const map = {};
     for (const f of sealFigures) map[f[key]] = (map[f[key]] || 0) + 1;
     return Object.values(map);
   }
-
+ 
   function checkRarity() {
     const colorMatch = Math.max(...getMatches('color'));
     const typeMatch = Math.max(...getMatches('type'));
-
+ 
     if (colorMatch === 4 && typeMatch === 4) {
       ethereal++; seal += 1;
       showRareMessage('✨ Ethereal Seal!', CHANCES.ethereal);
@@ -418,7 +801,7 @@
     showRareMessage('', '');
     return 'common';
   }
-
+ 
   function showRareMessage(title, chance) {
     if (title) {
       rareMessageEl.innerHTML = `${title}<br><span style="font-size:13px;">Chance: ${chance}</span>`;
@@ -431,7 +814,7 @@
     updateSeal();
     updateProfileStats && updateProfileStats();
   }
-
+ 
   function generateRandomSeal() {
     sealFigures = [];
     for (let i = 0; i < 4; i++) {
@@ -445,7 +828,7 @@
     statTotal++;
     checkRarity();
   }
-
+ 
   let time = 0;
   function render() {
     const {size, dpr} = resizeCanvas();
@@ -463,11 +846,11 @@
     time += 1 / 60;
     requestAnimationFrame(render);
   }
-
+ 
   function updateSphereCount() {
     document.getElementById('sphere-count').textContent = spheres;
   }
-
+ 
   function gainXP(amount) {
     xp += amount;
     while (xp >= 100) {
@@ -478,11 +861,11 @@
     levelEl.textContent = level;
     if (profileLevelEl) profileLevelEl.textContent = level;
   }
-
+ 
   function updateSeal() {
     sealBalanceEl.textContent = seal.toFixed(3);
   }
-
+ 
   function updateProfileStats() {
     if (!rareStatsEl) return;
     rareStatsEl.innerHTML = `
@@ -494,12 +877,12 @@
       <li>Баланс $SEAL: <span>${seal.toFixed(3)}</span></li>
     `;
   }
-
+ 
   function onClick() {
     if (spheres <= 0) return alert('Сферы закончились!');
     spheres--; updateSphereCount(); generateRandomSeal(); gainXP(1);
   }
-
+ 
   canvas.addEventListener('click', function(e) {
     onClick();
   });
@@ -509,7 +892,7 @@
       onClick();
     }
   });
-
+ 
   window.openTab = id => {
     document.querySelectorAll('.tab').forEach(t => t.style.display = 'none');
     document.getElementById(id).style.display = 'block';
@@ -518,9 +901,9 @@
     document.querySelectorAll('.tab').forEach(t => t.style.display = 'none');
     closeMockPayment && closeMockPayment();
   };
-
+ 
   document.getElementById('avatar-btn').onclick = () => openTab('profile-tab');
-
+ 
   const modal = document.getElementById('mock-payment-modal');
   const confirmBtn = document.getElementById('confirm-payment-btn');
   const result = document.getElementById('mock-payment-result');
@@ -548,7 +931,7 @@
       confirmBtn.disabled = false;
     }, 1500);
   };
-
+ 
   function updateMiningBtn() {
     const now = Math.floor(Date.now()/1000);
     if (miningCooldown > now) {
@@ -571,7 +954,7 @@
     updateMiningBtn();
   };
   setInterval(updateMiningBtn, 1000);
-
+ 
   resizeCanvas();
   generateRandomSeal();
   updateSphereCount();
@@ -579,7 +962,473 @@
   updateProfileStats();
   updateMiningBtn();
   render();
+  
+// === РУНЫ, СУНДУКИ, БОНУСЫ ===
+const RUNES = [
+  {id:1,symbol:'ᚠ',name:'Fehu',rarity:'common',color:'#B0BEC5',bonus:'+5% к $SEAL при выпадении редких печатей',effect:'sealBonusRare',value:0.05},
+  {id:2,symbol:'ᚢ',name:'Uruz',rarity:'common',color:'#2196F3',bonus:'+5 XP за генерацию',effect:'xpPerGen',value:5},
+  {id:3,symbol:'ᚦ',name:'Thurisaz',rarity:'common',color:'#43A047',bonus:'+5% к награде за приглашённых друзей',effect:'inviteBonus',value:0.05},
+  {id:4,symbol:'ᚨ',name:'Ansuz',rarity:'common',color:'#E53935',bonus:'+5% к скорости майнинга сфер',effect:'miningSpeed',value:0.05},
+  {id:5,symbol:'ᚱ',name:'Raido',rarity:'common',color:'#FB8C00',bonus:'+1 к сферам при нажатии на кнопку майнинга',effect:'spherePerClick',value:1},
+  {id:6,symbol:'ᛃ',name:'Jera',rarity:'common',color:'#F06292',bonus:'-5% к стоимости покупок в магазине',effect:'shopDiscount',value:0.05},
+  {id:7,symbol:'ᛉ',name:'Algiz',rarity:'rare',color:'#00FFD0',bonus:'+10% к $SEAL при выпадении редких печатей',effect:'sealBonusRare',value:0.10},
+  {id:8,symbol:'ᛟ',name:'Othala',rarity:'rare',color:'#FFD700',bonus:'+10 XP за генерацию',effect:'xpPerGen',value:10},
+  {id:9,symbol:'ᛈ',name:'Perthro',rarity:'rare',color:'#FF6F91',bonus:'+10% к награде за приглашённых друзей',effect:'inviteBonus',value:0.10},
+  {id:10,symbol:'ᛇ',name:'Eiwaz',rarity:'rare',color:'#7C4DFF',bonus:'+10% к скорости майнинга сфер',effect:'miningSpeed',value:0.10},
+  {id:11,symbol:'ᛜ',name:'Ingwaz',rarity:'rare',color:'#00E676',bonus:'+2 к сферам при нажатии на кнопку майнинга',effect:'spherePerClick',value:2},
+  {id:12,symbol:'ᛞ',name:'Dagaz',rarity:'rare',color:'#FFB300',bonus:'-10% к стоимости покупок в магазине',effect:'shopDiscount',value:0.10},
+  {id:13,symbol:'ᛯ',name:'Sol',rarity:'epic',color:'#00FFF7',bonus:'+25% к $SEAL при выпадении редких печатей',effect:'sealBonusRare',value:0.25},
+  {id:14,symbol:'᛬',name:'Star',rarity:'epic',color:'#FFD6FF',bonus:'+25 XP за генерацию',effect:'xpPerGen',value:25},
+  {id:15,symbol:'᛭',name:'Ether',rarity:'epic',color:'#A7FFEB',bonus:'+25% к награде за приглашённых друзей',effect:'inviteBonus',value:0.25},
+  {id:16,symbol:'ᛮ',name:'Lux',rarity:'epic',color:'#FFF176',bonus:'+25% к скорости майнинга сфер',effect:'miningSpeed',value:0.25},
+  {id:17,symbol:'ᚺ',name:'Nova',rarity:'epic',color:'#FF80AB',bonus:'+5 к сферам при нажатии на кнопку майнинга',effect:'spherePerClick',value:5},
+  {id:18,symbol:'ᛝ',name:'Aurora',rarity:'epic',color:'#00E6FF',bonus:'-20% к стоимости покупок в магазине',effect:'shopDiscount',value:0.20},
+];
+const CHESTS = [
+  {type:'common',name:'Обычный сундук',price:5,pool:['common','rare'],chances:[0.8,0.2]},
+  {type:'rare',name:'Редкий сундук',price:10,pool:['rare','epic'],chances:[0.7,0.3]},
+  {type:'epic',name:'Очень редкий сундук',price:15,pool:['epic'],chances:[1.0]},
+];
+let userRunes = [];
+let userRuneSlots = [null,null,null];
+let userChests = {common:0, rare:0, epic:0};
+let selectedRuneId = null;
+ 
+// Коллекция рун с анимацией и описанием
+function updateRuneCollectionGrid() {
+  const grid = document.getElementById('rune-collection-grid');
+  grid.innerHTML = '';
+  RUNES.forEach((rune, idx) => {
+    const owned = userRunes.includes(rune.id);
+    const isSelected = selectedRuneId === rune.id;
+    const cell = document.createElement('div');
+    cell.className = [
+      'rune-collection-cell',
+      owned ? 'filled' : '',
+      isSelected ? 'selected' : ''
+    ].join(' ');
+    cell.style.setProperty('--rune-color', rune.color);
+    cell.tabIndex = owned ? 0 : -1;
+    cell.setAttribute('aria-selected', isSelected);
+    cell.setAttribute('aria-disabled', !owned);
+
+    cell.innerHTML = `
+      <span class="neon-rune" style="--rune-color:${rune.color}">${rune.symbol}</span>
+      <div class="rune-tooltip">
+        <b>${rune.name}</b> <span class="rune-rarity">(${rune.rarity})</span><br>
+        <span class="rune-desc">${rune.bonus}</span>
+      </div>
+    `;
+    grid.appendChild(cell);
+  });
+}
+
+
+
+
+// Слоты рун с анимацией и кликами
+function renderRuneCollection() {
+  const container = document.getElementById('rune-collection-slots');
+  container.innerHTML = '';
+  ALL_RUNES.forEach(rune => {
+    const slot = document.createElement('div');
+    slot.innerHTML = `<span class="neon-rune" style="--rune-color:${rune.color}">${rune.symbol}</span>`;
+    container.appendChild(slot);
+  });
+}
+ const runeTooltipPopup = document.getElementById('rune-tooltip-popup');
+document.getElementById('rune-collection-grid').addEventListener('mousemove', function(e) {
+  const cell = e.target.closest('.rune-collection-cell');
+  if (cell && cell.dataset.runeId) {
+    const rune = ALL_RUNES.find(r => r.id == cell.dataset.runeId);
+    runeTooltipPopup.innerHTML = `
+      <div style="font-size:2em;margin-bottom:6px;">
+        <span class="neon-rune" style="--rune-color:${rune.color}">${rune.symbol}</span>
+      </div>
+      <b>${rune.name}</b> <span style="color:${rune.color};font-weight:bold;">[${rune.rarity}]</span><br>
+      <i>${rune.bonus}</i>
+    `;
+    runeTooltipPopup.style.display = 'block';
+    runeTooltipPopup.style.left = (e.pageX + 18) + 'px';
+    runeTooltipPopup.style.top = (e.pageY + 8) + 'px';
+  } else {
+    runeTooltipPopup.style.display = 'none';
+  }
+});
+document.getElementById('rune-collection-grid').addEventListener('mouseleave', function() {
+  runeTooltipPopup.style.display = 'none';
+});
+
+ 
+ 
+// Активные бонусы
+function getActiveBonuses() {
+  const bonuses = {};
+  for (const id of userRuneSlots) {
+    if (!id) continue;
+    const rune = RUNES.find(r => r.id === id);
+    if (!bonuses[rune.effect]) bonuses[rune.effect] = 0;
+    bonuses[rune.effect] += rune.value;
+  }
+  return bonuses;
+}
+ 
+// SVG сундук с анимацией
+function chestSVG(type) {
+  const color = type === "epic" ? "#ffd700" : type === "rare" ? "#00eaff" : "#b0bec5";
+  return `<svg class="chest-svg" viewBox="0 0 64 64"><rect x="8" y="20" width="48" height="28" rx="6" fill="${color}" 
+  stroke="#333" stroke-width="3"/><rect x="8" y="14" width="48" height="16" rx="6" fill="#fff6" stroke="#333" stroke-width="3"
+  /><rect x="26" y="34" width="12" height="14" rx="3" fill="#333" /></svg>`;
+}
+function updateChestTab() {
+  const chestList = document.getElementById('chest-list');
+  chestList.innerHTML = '';
+  for (const chest of CHESTS) {
+    const count = userChests[chest.type] || 0;
+    chestList.innerHTML += `
+      <div style="margin-bottom:12px;">
+        ${chestSVG(chest.type)}
+        <b>${chest.name}</b> (${count} шт.)
+        <button onclick="openChest('${chest.type}')">Открыть</button>
+        <button onclick="buyChest('${chest.type}')">Купить</button>
+      </div>`;
+  }
+}
+window.buyChest = function(type) {
+  userChests[type] = (userChests[type]||0)+1;
+  updateChestTab();
+};
+window.openChest = function(type) {
+  if (!userChests[type] || userChests[type]<=0) return alert('Нет сундуков этого типа!');
+  const chestResult = document.getElementById('chest-open-result');
+  const chestSVGEl = document.querySelector('.chest-svg.chest-' + type); // <-- вот тут!
+  if (chestSVGEl) {
+    chestSVGEl.classList.add('opening');
+    setTimeout(()=>chestSVGEl.classList.remove('opening'), 700);
+  }
+  setTimeout(()=>{
+    const chest = CHESTS.find(c=>c.type===type);
+    let pool = [];
+    chest.pool.forEach((rarity, i) => {
+      const runes = RUNES.filter(r=>r.rarity===rarity && !userRunes.includes(r.id));
+      for (let j=0;j<Math.round(chest.chances[i]*100);j++) pool.push(...runes);
+    });
+    if (pool.length===0) {
+      chestResult.innerHTML = 'Все руны этой редкости уже собраны!';
+      return;
+    }
+    const rune = pool[Math.floor(Math.random()*pool.length)];
+    userChests[type]--;
+    userRunes.push(rune.id);
+    chestResult.innerHTML = `<div style="font-size:22px;margin:14px 0;"><span style="color:${rune.color};font-size:2.2em;">${rune.symbol}</span><br><b>${rune.name}</b><br><span style="font-size:13px;">${rune.bonus}</span></div>`;
+    updateChestTab();
+    updateRuneCollectionGrid();
+    setTimeout(()=>chestResult.innerHTML='', 2500);
+  }, 700);
+};
+ 
+// Сохранение/загрузка прогресса
+function saveRuneProgress() {
+  localStorage.setItem('userRunes', JSON.stringify(userRunes));
+  localStorage.setItem('userRuneSlots', JSON.stringify(userRuneSlots));
+  localStorage.setItem('userChests', JSON.stringify(userChests));
+}
+function loadRuneProgress() {
+  try {
+    userRunes = JSON.parse(localStorage.getItem('userRunes')) || [];
+    userRuneSlots = JSON.parse(localStorage.getItem('userRuneSlots')) || [null,null,null];
+    userChests = JSON.parse(localStorage.getItem('userChests')) || {common:0, rare:0, epic:0};
+  } catch(e) {
+    userRunes = [];
+    userRuneSlots = [null,null,null];
+    userChests = {common:0, rare:0, epic:0};
+  }
+}
+setInterval(saveRuneProgress, 10000);
+window.addEventListener('beforeunload', saveRuneProgress);
+ 
+// При старте
+loadRuneProgress();
+updateRuneCollectionGrid();
+updateRuneSlots();
+updateChestTab();
+ 
+
+const MINING_COOLDOWN = 12 * 3600 * 1000; // 12 часов
+
+function onClickWithRunes() {
+  const bonuses = getActiveBonuses();
+  let spheresPerClick = 1 + (bonuses.spherePerClick || 0);
+  if (spheres < spheresPerClick) return alert('Сферы закончились!');
+  spheres -= spheresPerClick;
+  updateSphereCount();
+  let xpGain = 10 + (bonuses.xpPerGen || 0);
+  gainXP(xpGain);
+  generateRandomSeal();
+  updateProfileStats();
+
+  // Зачисляем 1 SEAL и ставим таймер
+  seal += 1;
+  sealBalanceEl.textContent = seal.toFixed(3);
+  localStorage.setItem('miningEndTime', Date.now() + MINING_COOLDOWN);
+  updateMiningButton();
+}
+
+
+function updateMiningButton() {
+  const endTime = parseInt(localStorage.getItem('miningEndTime')) || 0;
+  const now = Date.now();
+  if (endTime > now) {
+    miningBtn.disabled = true;
+    const remaining = endTime - now;
+    const hours = Math.floor(remaining / 3600000);
+    const minutes = Math.floor((remaining % 3600000) / 60000);
+    miningBtn.textContent = `Mining (${hours}ч ${minutes}м)`;
+  } else {
+    miningBtn.disabled = false;
+    miningBtn.textContent = "Mining";
+  }
+}
+setInterval(updateMiningButton, 1000);
+updateMiningButton();
+
+ 
+ 
+// --- Модалка для добавления руны ---
+let selectedRuneCell = null;
+ 
+function closeAddRuneModal() {
+  document.getElementById('addRuneModal').style.display = 'none';
+  selectedRuneCell = null;
+}
+document.getElementById('closeAddRuneModal').onclick = closeAddRuneModal;
+document.getElementById('addRuneModal').onclick = function(e) {
+  if (e.target === this) closeAddRuneModal();
+};
+document.getElementById('confirmAddRune').onclick = function() {
+  if (!selectedRuneCell) return;
+  // Найти первый пустой слот или заменить первую руну
+  const slots = document.querySelectorAll('#main-rune-slots .rune-slot');
+  let placed = false;
+  for (let slot of slots) {
+    if (!slot.classList.contains('filled')) {
+      slot.innerHTML = selectedRuneCell.innerHTML;
+      slot.classList.add('filled');
+      slot.classList.remove('empty');
+      slot.style.setProperty('--rune-color', selectedRuneCell.style.getPropertyValue('--rune-color'));
+      placed = true;
+      break;
+    }
+  }
+  
+  // Если все заняты, заменить первую
+  if (!placed && slots.length) {
+    const slot = slots[0];
+    slot.innerHTML = selectedRuneCell.innerHTML;
+    slot.classList.add('filled');
+    slot.classList.remove('empty');
+    slot.style.setProperty('--rune-color', selectedRuneCell.style.getPropertyValue('--rune-color'));
+  }
+  closeAddRuneModal();
+};
+ 
+ 
+function enableRuneCollectionClicks() {
+  document.querySelectorAll('#rune-collection-grid .rune-collection-cell.filled').forEach(cell => {
+    
+    cell.onclick = function() {
+      selectedRuneCell = this;
+      selectedSlot = null;
+      document.getElementById('addRuneModal').style.display = 'flex';
+    }
+  });
+}
+ 
+ 
+enableRuneCollectionClicks();
+ 
+function updateRuneSlots() {
+  const slots = document.querySelectorAll('#main-rune-slots .rune-slot');
+  const radius = 120;
+  slots.forEach((slot, i) => {
+    const angle = runeRotation + (Math.PI * 2 * i / slots.length);
+    const x = radius * Math.cos(angle) - slot.offsetWidth / 2;
+    const y = radius * Math.sin(angle) - slot.offsetHeight / 2;
+    slot.style.left = x + 'px';
+    slot.style.top = y + 'px';
+    // НЕ меняй innerHTML здесь!
+  });
+}
+
+
+
+// Пример вставки руны в слот:
+function insertRuneToSlot(slot, rune) {
+  slot.innerHTML = `<span class="neon-rune" style="--rune-color:${rune.color}">${rune.symbol}</span>`;
+slot.classList.add('filled');
+slot.classList.remove('empty');
+slot.style.setProperty('--rune-color', rune.color);
+slot.dataset.runeId = rune.id;
+
+}
+
+
+ 
+// Добавь в конец скрипта, перед закрывающими скобками IIFE
+generateRuneSlots();
+ 
+// После генерации коллекции рун (где-то в твоем коде)
+function createRuneGrid(showDetails = false) {
+  const grid = document.getElementById('rune-collection-grid');
+  grid.innerHTML = '';
+
+  for (let i = 0; i < ALL_RUNES.length; i++) {
+    const rune = ALL_RUNES[i];
+    const cell = document.createElement('div');
+    cell.className = 'rune-collection-cell filled';
+    cell.style.setProperty('--rune-color', rune.color);
+
+    cell.innerHTML = `
+      <span class="neon-rune">${rune.symbol}</span>
+      <div class="rune-tooltip">
+        <b>${rune.name}</b> <span class="rune-rarity">(${rune.rarity})</span><br>
+        <span class="rune-desc">${rune.bonus}</span>
+      </div>
+    `;
+    cell.dataset.runeId = rune.id;
+    grid.appendChild(cell);
+  }
+}
+
+
+function populateRuneOrbit() {
+  const orbit = document.getElementById('rune-orbit');
+  orbit.innerHTML = '';
+  const radius = 75;
+  const ownedRunes = ALL_RUNES.filter(r => userRunes.includes(r.id));
+  const total = ownedRunes.length;
+
+  ownedRunes.forEach((rune, i) => {
+    const angle = (360 / total) * i;
+    const x = radius * Math.cos(angle * Math.PI / 180);
+    const y = radius * Math.sin(angle * Math.PI / 180);
+
+    const el = document.createElement('div');
+    el.className = 'rune-orbit-item';
+    el.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px)`;
+    el.innerHTML = `<span class="neon-rune" style="--rune-color:${rune.color}">${rune.symbol}</span>`;
+    orbit.appendChild(el);
+  });
+}
+
+ 
+let selectedManageRuneId = null;
+ 
+function openManageRuneModal(runeId) {
+  selectedManageRuneId = runeId;
+  const rune = ALL_RUNES.find(r => r.id === runeId);
+  document.getElementById('manageRuneInfo').innerHTML =
+    `<div style="font-size:2em;margin-bottom:10px;">
+      <span class="neon-rune" style="--rune-color:${rune.color}">${rune.symbol}</span>
+    </div>
+    <b>${rune.name}</b> <span style="color:${rune.color};font-weight:bold;">[${rune.rarity}]</span><br>
+    <i>${rune.bonus}</i>`;
+  document.getElementById('manageRuneModal').style.display = 'flex';
+}
+ let showRuneDetails = false; // по умолчанию — на главном экране
+
+function openRunesTab() {
+  showRuneDetails = true;
+  document.getElementById('rune-tab').style.display = 'block'; // показать вкладку с рунами
+  document.getElementById('chest-tab').style.display = 'none'; // скрыть сундуки (если есть)
+  document.getElementById('main-rune-slots').style.display = 'none'; // скрыть печать (если есть)
+
+  createRuneGrid(showRuneDetails);       // отрисовать ячейки рун
+  populateRuneOrbit();                   // ← ДОБАВЬ ЭТО ЗДЕСЬ
+  enableRuneCollectionClicks();          // клики на ячейки
+}
+
+
+function closeTabs() {
+  showRuneDetails = false;
+  createRuneGrid(showRuneDetails);
+  // … скрытие вкладок …
+}
+
+ 
+document.getElementById('closeManageRuneModal').onclick = () => {
+  document.getElementById('manageRuneModal').style.display = 'none';
+};
+ 
+// Вставить руну в слот
+document.getElementById('insertRuneBtn').onclick = () => {
+  const rune = ALL_RUNES.find(r => r.id === selectedManageRuneId);
+  // Найти первый пустой слот
+  let slotIdx = userRuneSlots.findIndex(id => !id);
+  if (slotIdx === -1) slotIdx = 0; // если нет пустых, заменим первый
+  userRuneSlots[slotIdx] = rune.id;
+  updateRuneSlots();
+  document.getElementById('manageRuneModal').style.display = 'none';
+};
+
+ 
+// Убрать руну из слота
+document.getElementById('removeRuneBtn').onclick = () => {
+  // Найти слот с этой руной
+  let slotIdx = userRuneSlots.findIndex(id => id == selectedManageRuneId);
+  if (slotIdx !== -1) userRuneSlots[slotIdx] = null;
+  updateRuneSlots();
+  document.getElementById('manageRuneModal').style.display = 'none';
+};
+
+ 
+// Заменить руну в первом занятом слоте
+document.getElementById('replaceRuneBtn').onclick = () => {
+  const rune = ALL_RUNES.find(r => r.id === selectedManageRuneId);
+  // Найти первый занятый слот
+  let slotIdx = userRuneSlots.findIndex(id => id);
+  if (slotIdx === -1) slotIdx = 0; // если все пустые, заменим первый
+  userRuneSlots[slotIdx] = rune.id;
+  updateRuneSlots();
+  document.getElementById('manageRuneModal').style.display = 'none';
+};
+
+ document.querySelectorAll('.rune-collection-cell').forEach(cell => {
+  cell.addEventListener('mouseenter', () => {
+    const tooltip = cell.querySelector('.rune-tooltip');
+    if (tooltip) tooltip.style.display = 'block';
+  });
+  cell.addEventListener('mouseleave', () => {
+    const tooltip = cell.querySelector('.rune-tooltip');
+    if (tooltip) tooltip.style.display = 'none';
+  });
+});
+
+ function openChest(type) {
+  // Найти нужный сундук по классу
+  const svg = document.querySelector('.chest-svg.chest-' + type);
+  svg.classList.add('opening');
+
+  // Через 700мс (длительность анимации) показать награду
+  setTimeout(() => {
+    svg.classList.remove('opening');
+    showChestReward(type); // функция показа модального окна с наградой
+  }, 700);
+}
+
+function showChestReward(type) {
+  // Пример простого модального окна (замени на своё, если хочешь)
+  const rewards = {
+    common: "50 монет и 1 руна",
+    rare: "150 монет и 2 редких руны",
+    epic: "500 монет и 1 эпическая руна"
+  };
+  alert("Награда за " + (type === "common" ? "обычный" : type === "rare" ? "редкий" : "эпический") + " сундук:\n" + rewards[type]);
+}
+
+ 
 })();
 </script>
+<div id="rune-tooltip-popup" style="display:none;position:fixed;z-index:9999;pointer-events:none;background:#222;color:#fff;padding:10px 16px;border-radius:10px;font-size:15px;box-shadow:0 4px 16px #000a;max-width:220px;white-space:normal;"></div>
 </body>
 </html>
