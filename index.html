@@ -5,485 +5,292 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
 <title>Magical Seal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@700&family=IM+Fell+English+SC&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@700&family=MedievalSharp&display=swap" rel="stylesheet"/>
 <style>
-  :root {
-    --bg: #050508;
-    --surface: #0d0d14;
-    --surface2: #13131e;
-    --border: rgba(255,255,255,0.07);
-    --gold: #c8a96e;
-    --gold-light: #f0d090;
-    --cyan: #00d4ff;
-    --green: #00ff88;
-    --purple: #9b59ff;
-    --text: #e8e0d0;
-    --text-dim: #8a8070;
-    --radius: 12px;
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #04040a;
+  --surface: #0c0c18;
+  --surface2: #111122;
+  --surface3: #181830;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.13);
+  --gold: #c8a96e;
+  --gold-light: #f0d090;
+  --gold-dim: #8a6a30;
+  --cyan: #00d4ff;
+  --green: #00ff88;
+  --purple: #9b59ff;
+  --red: #ff4466;
+  --text: #e8e0d0;
+  --text-dim: #6a6060;
+  --text-mid: #9a9090;
+  --radius: 12px;
+  --seal-glow: rgba(200,169,110,0.15);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:var(--bg);font-family:'Cinzel',Georgia,serif;color:var(--text);overflow:hidden;user-select:none;-webkit-tap-highlight-color:transparent}
 
-  html, body {
-    width: 100%; height: 100%;
-    background: var(--bg);
-    font-family: 'Cinzel', Georgia, serif;
-    color: var(--text);
-    overflow: hidden;
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-  }
+/* STARS BG */
+body::before{content:'';position:fixed;inset:0;background:
+  radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.4) 0%, transparent 100%),
+  radial-gradient(1px 1px at 25% 60%, rgba(255,255,255,0.2) 0%, transparent 100%),
+  radial-gradient(1px 1px at 40% 30%, rgba(200,169,110,0.5) 0%, transparent 100%),
+  radial-gradient(1px 1px at 55% 80%, rgba(255,255,255,0.3) 0%, transparent 100%),
+  radial-gradient(1px 1px at 70% 20%, rgba(255,255,255,0.2) 0%, transparent 100%),
+  radial-gradient(1px 1px at 85% 70%, rgba(0,212,255,0.4) 0%, transparent 100%),
+  radial-gradient(1px 1px at 15% 85%, rgba(155,89,255,0.4) 0%, transparent 100%),
+  radial-gradient(1px 1px at 92% 45%, rgba(255,255,255,0.3) 0%, transparent 100%),
+  radial-gradient(1px 1px at 62% 55%, rgba(255,255,255,0.15) 0%, transparent 100%),
+  radial-gradient(1px 1px at 78% 90%, rgba(255,255,255,0.25) 0%, transparent 100%);
+pointer-events:none;z-index:0}
 
-  /* ── NOISE OVERLAY ─────────────────────────────── */
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none; z-index: 0; opacity: 0.6;
-  }
+/* TOP BAR */
+#top-bar{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:linear-gradient(180deg,rgba(4,4,10,0.98) 0%,transparent 100%);border-bottom:1px solid var(--border)}
+#player-info{display:flex;align-items:center;gap:10px}
+#avatar-btn{width:38px;height:38px;border-radius:50%;border:2px solid var(--gold);overflow:hidden;cursor:pointer;flex-shrink:0;box-shadow:0 0 12px rgba(200,169,110,0.35);transition:box-shadow 0.2s}
+#avatar-btn:hover{box-shadow:0 0 22px rgba(200,169,110,0.6)}
+#avatar-btn img{width:100%;height:100%;object-fit:cover}
+.info-block{display:flex;flex-direction:column;gap:2px}
+.info-label{font-size:9px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase}
+.info-val{font-size:12px;font-weight:700;color:var(--gold-light);font-family:'Cinzel',serif}
 
-  /* ── TOP BAR ───────────────────────────────────── */
-  #top-bar {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 10px 14px;
-    background: linear-gradient(180deg, rgba(5,5,8,0.95) 0%, transparent 100%);
-  }
+/* XP BAR */
+#xp-bar-wrap{height:3px;background:rgba(200,169,110,0.15);border-radius:2px;width:80px;margin-top:3px}
+#xp-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold-dim),var(--gold));border-radius:2px;transition:width 0.4s ease}
 
-  #player-info {
-    display: flex; align-items: center; gap: 10px;
-  }
-  #avatar-btn {
-    width: 38px; height: 38px; border-radius: 50%;
-    border: 2px solid var(--gold);
-    overflow: hidden; cursor: pointer; flex-shrink: 0;
-    box-shadow: 0 0 12px rgba(200,169,110,0.4);
-    transition: box-shadow 0.2s;
-  }
-  #avatar-btn:hover { box-shadow: 0 0 20px rgba(200,169,110,0.7); }
-  #avatar-btn img { width: 100%; height: 100%; object-fit: cover; }
+/* RESOURCES */
+#resources-bar{display:flex;align-items:center;gap:8px}
+.res-pill{display:flex;align-items:center;gap:6px;background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:20px;padding:5px 10px}
+.res-pill svg{width:18px;height:18px;flex-shrink:0}
+.res-val{font-size:13px;font-weight:700}
+#sphere-count{color:var(--cyan);text-shadow:0 0 8px rgba(0,212,255,0.5)}
+#seal-amount{color:var(--green);text-shadow:0 0 8px rgba(0,255,136,0.4)}
 
-  .info-block {
-    display: flex; flex-direction: column; gap: 2px;
-  }
-  .info-label {
-    font-size: 9px; letter-spacing: 2px; color: var(--text-dim); text-transform: uppercase;
-  }
-  .info-val {
-    font-size: 13px; font-weight: 700; color: var(--gold-light);
-    font-family: 'Cinzel', serif;
-  }
+/* STREAK */
+#streak-badge{display:flex;align-items:center;gap:5px;font-size:10px;color:#ff8844;letter-spacing:1px;background:rgba(255,100,30,0.1);border:1px solid rgba(255,100,30,0.25);border-radius:12px;padding:3px 8px;transition:all 0.3s}
+#streak-badge.hot{border-color:rgba(255,150,50,0.5);box-shadow:0 0 10px rgba(255,100,30,0.3)}
 
-  #sphere-counter {
-    display: flex; align-items: center; gap: 8px;
-    background: rgba(0,212,255,0.08);
-    border: 1px solid rgba(0,212,255,0.2);
-    border-radius: 8px; padding: 6px 12px;
-  }
-  #sphere-counter svg { width: 22px; height: 22px; }
-  #sphere-count {
-    font-size: 16px; font-weight: 700; color: var(--cyan);
-    text-shadow: 0 0 10px var(--cyan);
-  }
+/* RUNE TOGGLE */
+#rune-toggle-btn{position:fixed;top:62px;right:14px;z-index:51;width:32px;height:32px;border-radius:50%;background:rgba(4,4,10,0.7);border:1px solid rgba(200,169,110,0.3);color:var(--gold);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.25s;backdrop-filter:blur(6px);box-shadow:0 0 10px rgba(200,169,110,0.1)}
+#rune-toggle-btn:hover{border-color:rgba(200,169,110,0.6);box-shadow:0 0 18px rgba(200,169,110,0.25)}
+#rune-toggle-btn.runes-hidden{border-color:var(--border);color:var(--text-dim);box-shadow:none;opacity:0.55}
+#rune-slots-ring{transition:opacity 0.35s ease}
+#rune-slots-ring.hidden{opacity:0;pointer-events:none}
 
-  /* ── SEAL BALANCE BANNER ───────────────────────── */
-  #seal-banner {
-    position: fixed; top: 62px; left: 50%; transform: translateX(-50%);
-    z-index: 40; display: flex; align-items: center; gap: 8px;
-    background: rgba(0,255,136,0.06);
-    border: 1px solid rgba(0,255,136,0.25);
-    border-radius: 20px; padding: 4px 16px;
-    pointer-events: none;
-  }
-  #seal-banner .seal-icon {
-    width: 14px; height: 14px; border-radius: 50%;
-    background: var(--green); box-shadow: 0 0 8px var(--green);
-  }
-  #seal-banner span {
-    font-size: 12px; letter-spacing: 1.5px; color: var(--green);
-    text-shadow: 0 0 8px var(--green);
-  }
-  #seal-amount { font-weight: 700; }
+/* CANVAS */
+#canvas-wrap{position:fixed;top:96px;bottom:72px;left:0;right:0;display:flex;align-items:center;justify-content:center;z-index:1}
+#canvas-inner{position:relative;display:flex;align-items:center;justify-content:center}
+#sealCanvas{display:block;cursor:pointer;border-radius:50%;transition:filter 0.3s;filter:drop-shadow(0 0 30px rgba(200,169,110,0.08))}
+#sealCanvas:active{filter:brightness(1.2) drop-shadow(0 0 40px rgba(200,169,110,0.25))}
 
-  /* ── MINING BTN ────────────────────────────────── */
-  #mining-btn {
-    position: fixed; top: 62px; right: 14px; z-index: 40;
-    background: linear-gradient(135deg, #1a3a2a, #0d2018);
-    color: var(--green); border: 1px solid rgba(0,255,136,0.3);
-    border-radius: 8px; padding: 6px 14px;
-    font-family: 'Cinzel', serif; font-size: 11px; font-weight: 700;
-    letter-spacing: 1px; cursor: pointer;
-    box-shadow: 0 0 12px rgba(0,255,136,0.2);
-    transition: all 0.2s;
-  }
-  #mining-btn:not([disabled]):hover {
-    background: linear-gradient(135deg, #1f4530, #0f2a1e);
-    box-shadow: 0 0 20px rgba(0,255,136,0.4);
-  }
-  #mining-btn[disabled] {
-    color: var(--text-dim); border-color: var(--border);
-    box-shadow: none; cursor: default;
-    background: var(--surface);
-  }
+/* CLICK PARTICLES */
+.particle{position:fixed;pointer-events:none;z-index:60;font-size:14px;font-weight:700;animation:particleFly 1.2s ease-out forwards;white-space:nowrap}
+@keyframes particleFly{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-80px) scale(0.5)}}
 
-  /* ── CANVAS AREA ───────────────────────────────── */
-  #canvas-wrap {
-    position: fixed; top: 100px; bottom: 80px; left: 0; right: 0;
-    display: flex; align-items: center; justify-content: center;
-    z-index: 1;
-  }
-  #canvas-inner {
-    position: relative; display: flex; align-items: center; justify-content: center;
-  }
-  #sealCanvas {
-    display: block; cursor: pointer;
-    border-radius: 50%;
-    transition: filter 0.3s;
-  }
-  #sealCanvas:hover { filter: brightness(1.1); }
+/* HINT */
+#click-hint{position:absolute;bottom:-30px;left:50%;transform:translateX(-50%);font-size:9px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;pointer-events:none;animation:pulseHint 2.5s ease-in-out infinite}
+@keyframes pulseHint{0%,100%{opacity:0.3}50%{opacity:0.7}}
 
-  /* Click ripple */
-  #click-hint {
-    position: absolute; bottom: -28px; left: 50%; transform: translateX(-50%);
-    font-size: 10px; letter-spacing: 3px; color: var(--text-dim);
-    text-transform: uppercase; pointer-events: none;
-    animation: pulse-hint 2s ease-in-out infinite;
-  }
-  @keyframes pulse-hint {
-    0%,100% { opacity: 0.4; } 50% { opacity: 0.8; }
-  }
+/* COMBO */
+#combo-display{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:55;text-align:center;opacity:0;transition:opacity 0.2s}
+#combo-display.show{opacity:1}
+#combo-text{font-family:'Cinzel Decorative',serif;font-size:clamp(14px,4vw,22px);font-weight:700;letter-spacing:2px;animation:comboPop 0.35s ease}
+@keyframes comboPop{0%{transform:scale(0.4) translateY(20px);opacity:0}60%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
 
-  /* ── RUNE SLOTS ────────────────────────────────── */
-  #rune-slots-ring {
-    position: absolute; top: 50%; left: 50%;
-    width: 0; height: 0; pointer-events: none;
-  }
-  .rune-slot-el {
-    position: absolute;
-    width: 44px; height: 44px; border-radius: 50%;
-    border: 2px dashed rgba(255,255,255,0.2);
-    background: rgba(0,0,0,0.3);
-    display: flex; align-items: center; justify-content: center;
-    transform: translate(-50%, -50%);
-    transition: border-color 0.3s;
-  }
-  .rune-slot-el.filled {
-    border-style: solid;
-    border-color: var(--rune-color, #fff);
-    box-shadow: 0 0 16px var(--rune-color, #fff);
-    background: rgba(0,0,0,0.5);
-  }
-  .rune-slot-el .slot-symbol {
-    font-size: 1.4em; line-height: 1;
-    color: var(--rune-color, rgba(255,255,255,0.2));
-    text-shadow: 0 0 12px var(--rune-color, transparent);
-  }
+/* RUNE SLOTS RING */
+#rune-slots-ring{position:absolute;top:50%;left:50%;width:0;height:0;pointer-events:none;z-index:2}
+.rune-slot-el{position:absolute;width:46px;height:46px;border-radius:50%;border:1.5px dashed rgba(200,169,110,0.2);background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;transform:translate(-50%,-50%);transition:border-color 0.3s,box-shadow 0.3s;backdrop-filter:blur(4px)}
+.rune-slot-el.filled{border-style:solid;border-color:var(--rune-color,#fff);box-shadow:0 0 18px color-mix(in srgb,var(--rune-color,#fff) 50%,transparent),inset 0 0 10px color-mix(in srgb,var(--rune-color,#fff) 15%,transparent)}
+.slot-symbol{font-size:1.3em;line-height:1;color:var(--rune-color,rgba(255,255,255,0.15));text-shadow:0 0 12px var(--rune-color,transparent);transition:all 0.3s}
 
-  /* ── RARITY FLASH ──────────────────────────────── */
-  #rarity-flash {
-    position: fixed; top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    pointer-events: none; z-index: 60;
-    text-align: center; opacity: 0;
-    transition: opacity 0.3s;
-  }
-  #rarity-flash.show { opacity: 1; }
-  #rarity-flash .rf-title {
-    font-family: 'Cinzel Decorative', serif;
-    font-size: clamp(18px, 5vw, 28px);
-    font-weight: 700; letter-spacing: 2px;
-    text-shadow: 0 0 30px currentColor;
-    animation: rf-scale 0.4s ease;
-  }
-  #rarity-flash .rf-sub {
-    font-size: 11px; letter-spacing: 3px;
-    opacity: 0.7; margin-top: 4px;
-  }
-  @keyframes rf-scale {
-    0% { transform: scale(0.5); opacity: 0; }
-    60% { transform: scale(1.1); }
-    100% { transform: scale(1); opacity: 1; }
-  }
+/* BOTTOM NAV */
+#bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:50;display:flex;justify-content:space-around;align-items:center;padding:6px 4px 10px;background:linear-gradient(0deg,rgba(4,4,10,0.98) 0%,transparent 100%);border-top:1px solid var(--border)}
+.nav-btn{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;color:var(--text-dim);font-family:'Cinzel',serif;font-size:8px;letter-spacing:1px;cursor:pointer;padding:4px 10px;border-radius:8px;transition:color 0.2s,background 0.2s;text-transform:uppercase;position:relative}
+.nav-btn .nav-icon{font-size:20px;transition:transform 0.2s}
+.nav-btn:hover,.nav-btn.active{color:var(--gold)}
+.nav-btn:hover .nav-icon{transform:translateY(-2px)}
+.nav-badge{position:absolute;top:1px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 6px var(--red);display:none}
+.nav-badge.show{display:block}
 
-  /* ── BOTTOM NAV ────────────────────────────────── */
-  #bottom-nav {
-    position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
-    display: flex; justify-content: space-around; align-items: center;
-    padding: 8px 8px 12px;
-    background: linear-gradient(0deg, rgba(5,5,8,0.98) 0%, transparent 100%);
-    border-top: 1px solid var(--border);
-  }
-  .nav-btn {
-    display: flex; flex-direction: column; align-items: center; gap: 3px;
-    background: none; border: none; color: var(--text-dim);
-    font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 1px;
-    cursor: pointer; padding: 4px 8px; border-radius: 8px;
-    transition: color 0.2s;
-    text-transform: uppercase;
-  }
-  .nav-btn .nav-icon { font-size: 18px; }
-  .nav-btn:hover, .nav-btn.active { color: var(--gold); }
+/* PANELS */
+.panel-overlay{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);display:none;align-items:flex-end;justify-content:center}
+.panel-overlay.open{display:flex}
+.panel{width:100%;max-width:480px;background:var(--surface);border-top:1px solid var(--border2);border-radius:22px 22px 0 0;padding:0 18px 36px;max-height:80vh;overflow-y:auto;animation:slideUp 0.28s ease;position:relative}
+@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+.panel-handle{width:36px;height:4px;border-radius:2px;background:var(--border2);margin:12px auto 18px}
+.panel-close{position:absolute;top:12px;right:16px;background:none;border:none;color:var(--text-dim);font-size:22px;cursor:pointer;line-height:1;padding:4px}
+.panel h2{font-family:'Cinzel Decorative',serif;font-size:15px;letter-spacing:2px;color:var(--gold);margin-bottom:18px;text-align:center}
+.panel-tabs{display:flex;gap:4px;margin-bottom:16px;background:var(--surface2);border-radius:10px;padding:4px}
+.ptab{flex:1;background:none;border:none;color:var(--text-dim);font-family:'Cinzel',serif;font-size:10px;letter-spacing:1px;padding:7px 4px;border-radius:7px;cursor:pointer;transition:all 0.2s;text-transform:uppercase}
+.ptab.active{background:var(--surface3);color:var(--gold);border:1px solid rgba(200,169,110,0.2)}
 
-  /* ── PANELS (TABS) ─────────────────────────────── */
-  .panel-overlay {
-    position: fixed; inset: 0; z-index: 70;
-    background: rgba(0,0,0,0.7);
-    backdrop-filter: blur(4px);
-    display: none; align-items: flex-end; justify-content: center;
-  }
-  .panel-overlay.open { display: flex; }
+/* RUNE CARD (collection) */
+.rune-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.rune-card{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:all 0.25s;position:relative;overflow:hidden}
+.rune-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity 0.3s}
+.rune-card.owned{border-color:color-mix(in srgb,var(--rc) 40%,transparent);box-shadow:0 0 16px color-mix(in srgb,var(--rc) 15%,transparent)}
+.rune-card.owned::before{background:radial-gradient(ellipse at 50% 0%,color-mix(in srgb,var(--rc) 12%,transparent) 0%,transparent 70%);opacity:1}
+.rune-card.equipped{border-color:color-mix(in srgb,var(--rc) 70%,transparent);box-shadow:0 0 20px color-mix(in srgb,var(--rc) 25%,transparent)}
+.rune-card:not(.owned){opacity:0.4;filter:grayscale(0.8);cursor:default}
+.rune-card:not(.owned):hover{transform:none;box-shadow:none}
+.rune-card.owned:hover{transform:translateY(-3px);box-shadow:0 8px 24px color-mix(in srgb,var(--rc) 25%,transparent)}
+.rune-symbol{font-size:2.2em;line-height:1;text-shadow:0 0 16px var(--rc)}
+.rune-card:not(.owned) .rune-symbol{color:rgba(255,255,255,0.15);text-shadow:none}
+.rune-card.owned .rune-symbol{color:var(--rc)}
+.rune-name{font-size:10px;letter-spacing:1px;color:var(--text-mid);text-transform:uppercase}
+.rune-card.owned .rune-name{color:var(--text)}
+.rune-rarity-dot{width:6px;height:6px;border-radius:50%;background:var(--rc)}
+.rune-card:not(.owned) .rune-rarity-dot{background:rgba(255,255,255,0.15)}
+.equipped-badge{position:absolute;top:6px;right:6px;font-size:8px;letter-spacing:1px;background:rgba(0,0,0,0.6);color:var(--rc);border:1px solid color-mix(in srgb,var(--rc) 50%,transparent);border-radius:4px;padding:2px 5px}
+.lock-badge{position:absolute;top:6px;left:6px;font-size:10px;opacity:0.3}
 
-  .panel {
-    width: 100%; max-width: 480px;
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    border-radius: 20px 20px 0 0;
-    padding: 0 20px 32px;
-    max-height: 75vh; overflow-y: auto;
-    animation: slideUp 0.3s ease;
-  }
-  @keyframes slideUp {
-    from { transform: translateY(30px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
-  .panel-handle {
-    width: 36px; height: 4px; border-radius: 2px;
-    background: var(--border); margin: 12px auto 20px;
-  }
-  .panel h2 {
-    font-family: 'Cinzel Decorative', serif;
-    font-size: 16px; letter-spacing: 2px; color: var(--gold);
-    margin-bottom: 20px; text-align: center;
-  }
-  .panel-close {
-    position: absolute; top: 14px; right: 20px;
-    background: none; border: none; color: var(--text-dim);
-    font-size: 22px; cursor: pointer; line-height: 1;
-  }
+/* RUNE FILTER BAR */
+.filter-bar{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px}
+.filter-btn{background:var(--surface2);border:1px solid var(--border);border-radius:20px;color:var(--text-dim);font-family:'Cinzel',serif;font-size:9px;letter-spacing:1px;padding:5px 12px;cursor:pointer;white-space:nowrap;transition:all 0.2s;flex-shrink:0;text-transform:uppercase}
+.filter-btn.active{background:rgba(200,169,110,0.12);border-color:rgba(200,169,110,0.35);color:var(--gold)}
 
-  /* ── SHOP ──────────────────────────────────────── */
-  .shop-item {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 16px; border-radius: 10px;
-    background: var(--surface2); border: 1px solid var(--border);
-    margin-bottom: 8px;
-  }
-  .shop-item .item-info { display: flex; flex-direction: column; gap: 2px; }
-  .shop-item .item-name { font-size: 13px; color: var(--text); }
-  .shop-item .item-price { font-size: 11px; color: var(--cyan); }
-  .shop-btn {
-    background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(0,212,255,0.05));
-    border: 1px solid rgba(0,212,255,0.3);
-    color: var(--cyan); font-family: 'Cinzel', serif;
-    font-size: 11px; font-weight: 700; letter-spacing: 1px;
-    padding: 7px 14px; border-radius: 7px; cursor: pointer;
-    transition: all 0.2s;
-  }
-  .shop-btn:hover {
-    background: rgba(0,212,255,0.25);
-    box-shadow: 0 0 12px rgba(0,212,255,0.3);
-  }
+/* RUNE DETAIL PANEL */
+#rune-detail{background:var(--surface2);border:1px solid var(--border2);border-radius:14px;padding:18px;margin-top:12px;display:none}
+#rune-detail.open{display:block;animation:fadeIn 0.2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.rd-header{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.rd-symbol{font-size:2.8em;line-height:1}
+.rd-info .rd-name{font-size:16px;font-weight:700;color:var(--gold-light)}
+.rd-info .rd-rarity{font-size:10px;letter-spacing:2px;margin-top:3px}
+.rd-info .rd-bonus{font-size:12px;color:var(--text-mid);margin-top:5px}
+.rd-actions{display:flex;gap:8px;flex-wrap:wrap}
+.rd-btn{font-family:'Cinzel',serif;font-size:10px;font-weight:700;letter-spacing:1px;padding:8px 16px;border-radius:8px;cursor:pointer;border:1px solid;transition:all 0.2s;text-transform:uppercase}
+.rd-equip{background:rgba(200,169,110,0.1);border-color:rgba(200,169,110,0.35);color:var(--gold)}
+.rd-equip:hover{background:rgba(200,169,110,0.2);box-shadow:0 0 12px rgba(200,169,110,0.2)}
+.rd-unequip{background:rgba(155,89,255,0.1);border-color:rgba(155,89,255,0.35);color:var(--purple)}
+.rd-delete{background:rgba(255,68,102,0.08);border-color:rgba(255,68,102,0.3);color:var(--red)}
+.rd-delete:hover{background:rgba(255,68,102,0.18);box-shadow:0 0 10px rgba(255,68,102,0.2)}
+.slot-selector{display:flex;gap:8px;align-items:center;margin-top:10px}
+.slot-picker{width:44px;height:44px;border-radius:50%;border:1.5px dashed var(--border2);background:var(--surface);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.4em;transition:all 0.2s}
+.slot-picker:hover{border-style:solid;transform:scale(1.1)}
+.slot-picker.has-rune{border-style:solid}
+.slot-picker-label{font-size:10px;color:var(--text-dim);letter-spacing:1px}
 
-  /* ── RUNE GRID ─────────────────────────────────── */
-  #rune-collection-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 54px);
-    gap: 8px; justify-content: center;
-  }
-  .rc-cell {
-    width: 54px; height: 54px; border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.1);
-    background: var(--surface2);
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; position: relative;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  .rc-cell.owned {
-    border-color: var(--rune-color, #fff);
-    box-shadow: 0 0 10px color-mix(in srgb, var(--rune-color) 40%, transparent);
-    animation: rc-glow 2.5s ease-in-out infinite alternate;
-  }
-  @keyframes rc-glow {
-    from { box-shadow: 0 0 6px color-mix(in srgb, var(--rune-color) 30%, transparent); }
-    to { box-shadow: 0 0 18px color-mix(in srgb, var(--rune-color) 60%, transparent); }
-  }
-  .rc-symbol {
-    font-size: 1.8em; color: var(--rune-color, rgba(255,255,255,0.15));
-    text-shadow: 0 0 10px var(--rune-color, transparent);
-    line-height: 1;
-  }
-  .rc-cell:not(.owned) .rc-symbol { opacity: 0.15; filter: grayscale(1); }
+/* SHOP */
+.shop-section-title{font-size:10px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;margin:16px 0 10px;padding-left:2px}
+.shop-item{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border-radius:12px;background:var(--surface2);border:1px solid var(--border);margin-bottom:7px;transition:border-color 0.2s}
+.shop-item:hover{border-color:var(--border2)}
+.shop-item .item-info{display:flex;flex-direction:column;gap:3px}
+.shop-item .item-name{font-size:13px;color:var(--text)}
+.shop-item .item-desc{font-size:10px;color:var(--text-dim)}
+.shop-item .item-price{font-size:11px;color:var(--cyan);font-weight:700}
+.shop-btn{background:linear-gradient(135deg,rgba(0,212,255,0.12),rgba(0,212,255,0.04));border:1px solid rgba(0,212,255,0.25);color:var(--cyan);font-family:'Cinzel',serif;font-size:10px;font-weight:700;letter-spacing:1px;padding:7px 14px;border-radius:8px;cursor:pointer;transition:all 0.2s}
+.shop-btn:hover{background:rgba(0,212,255,0.22);box-shadow:0 0 14px rgba(0,212,255,0.25)}
 
-  /* Tooltip */
-  .rc-cell .rc-tooltip {
-    display: none; position: absolute;
-    left: 50%; top: calc(100% + 8px); transform: translateX(-50%);
-    background: #1a1a28; border: 1px solid var(--border);
-    border-radius: 8px; padding: 10px 14px;
-    min-width: 160px; max-width: 220px;
-    font-size: 11px; color: var(--text); text-align: left;
-    z-index: 99; pointer-events: none;
-    white-space: normal; line-height: 1.5;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.6);
-  }
-  .rc-cell.owned:hover .rc-tooltip { display: block; }
-  .rc-tooltip b { color: var(--gold); display: block; margin-bottom: 4px; }
-  .rc-tooltip em { color: var(--text-dim); font-style: normal; font-size: 10px; }
+/* BOOSTER SHOP */
+.booster-item{display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:12px;background:var(--surface2);border:1px solid var(--border);margin-bottom:7px}
+.booster-icon{font-size:26px;flex-shrink:0;width:42px;text-align:center}
+.booster-info{flex:1}
+.booster-name{font-size:12px;font-weight:700;color:var(--text)}
+.booster-desc{font-size:10px;color:var(--text-dim);margin-top:2px}
+.booster-price{font-size:10px;color:var(--gold);font-weight:700;margin-top:4px}
+.booster-btn{background:rgba(200,169,110,0.1);border:1px solid rgba(200,169,110,0.25);color:var(--gold);font-family:'Cinzel',serif;font-size:10px;padding:7px 12px;border-radius:8px;cursor:pointer;transition:all 0.2s;white-space:nowrap}
+.booster-btn:hover{background:rgba(200,169,110,0.2)}
 
-  /* ── CHESTS ────────────────────────────────────── */
-  .chest-row {
-    display: flex; align-items: center; gap: 14px;
-    padding: 14px 16px; border-radius: 12px;
-    background: var(--surface2); border: 1px solid var(--border);
-    margin-bottom: 10px;
-  }
-  .chest-icon { font-size: 32px; flex-shrink: 0; }
-  .chest-info { flex: 1; }
-  .chest-name { font-size: 13px; font-weight: 700; color: var(--text); }
-  .chest-rarity { font-size: 10px; letter-spacing: 1px; margin-top: 2px; }
-  .chest-count { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
-  .chest-btns { display: flex; gap: 6px; }
-  .chest-buy-btn, .chest-open-btn-2 {
-    font-family: 'Cinzel', serif; font-size: 10px; font-weight: 700;
-    letter-spacing: 0.5px; padding: 6px 10px; border-radius: 7px;
-    cursor: pointer; border: 1px solid; transition: all 0.2s;
-  }
-  .chest-open-btn-2 {
-    background: rgba(155,89,255,0.1); border-color: rgba(155,89,255,0.4);
-    color: var(--purple);
-  }
-  .chest-open-btn-2:hover { background: rgba(155,89,255,0.25); }
-  .chest-buy-btn {
-    background: rgba(200,169,110,0.1); border-color: rgba(200,169,110,0.3);
-    color: var(--gold);
-  }
-  .chest-buy-btn:hover { background: rgba(200,169,110,0.2); }
+/* QUESTS */
+.quest-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:var(--surface2);border:1px solid var(--border);margin-bottom:8px;position:relative;overflow:hidden}
+.quest-item.complete{border-color:rgba(0,255,136,0.3)}
+.quest-progress-bg{position:absolute;inset:0;background:rgba(0,255,136,0.04);transform-origin:left;transition:transform 0.5s}
+.quest-icon{font-size:20px;flex-shrink:0;z-index:1}
+.quest-body{flex:1;z-index:1}
+.quest-text{font-size:11px;color:var(--text)}
+.quest-prog{font-size:10px;color:var(--text-dim);margin-top:3px}
+.quest-reward{font-size:11px;color:var(--gold);font-weight:700;z-index:1;flex-shrink:0}
+.quest-done{font-size:16px;z-index:1}
+.claim-btn{background:linear-gradient(135deg,rgba(0,255,136,0.15),rgba(0,255,136,0.05));border:1px solid rgba(0,255,136,0.3);color:var(--green);font-family:'Cinzel',serif;font-size:9px;font-weight:700;padding:6px 10px;border-radius:6px;cursor:pointer;transition:all 0.2s;z-index:1}
+.claim-btn:hover{background:rgba(0,255,136,0.25)}
 
-  #chest-result {
-    text-align: center; padding: 14px; margin-top: 8px;
-    border-radius: 10px; background: var(--surface2);
-    display: none;
-  }
-  #chest-result .cr-symbol { font-size: 2.8em; }
-  #chest-result .cr-name { font-size: 15px; font-weight: 700; margin: 6px 0 2px; }
-  #chest-result .cr-bonus { font-size: 12px; color: var(--text-dim); }
+/* PROFILE */
+#profile-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding:16px;background:var(--surface2);border:1px solid var(--border);border-radius:14px}
+#profile-header img{width:56px;height:56px;border-radius:50%;border:2px solid var(--gold);box-shadow:0 0 16px rgba(200,169,110,0.3)}
+.profile-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.stat-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:13px;text-align:center;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--sc-color,var(--gold));opacity:0.6}
+.sc-val{font-size:20px;font-weight:700;color:var(--sc-color,var(--gold));text-shadow:0 0 10px color-mix(in srgb,var(--sc-color,var(--gold)) 40%,transparent)}
+.sc-label{font-size:9px;color:var(--text-dim);margin-top:4px;letter-spacing:1px;text-transform:uppercase}
 
-  /* ── QUESTS ────────────────────────────────────── */
-  .quest-item {
-    display: flex; align-items: center; gap: 12px;
-    padding: 12px 16px; border-radius: 10px;
-    background: var(--surface2); border: 1px solid var(--border);
-    margin-bottom: 8px;
-  }
-  .quest-icon { font-size: 20px; }
-  .quest-text { font-size: 12px; color: var(--text); flex: 1; }
-  .quest-reward { font-size: 11px; color: var(--gold); font-weight: 700; }
+/* CHESTS */
+.chest-row{display:flex;align-items:center;gap:14px;padding:14px;border-radius:14px;background:var(--surface2);border:1px solid var(--border);margin-bottom:10px;transition:border-color 0.2s}
+.chest-icon{font-size:34px;flex-shrink:0;filter:drop-shadow(0 0 8px rgba(155,89,255,0.4))}
+.chest-info{flex:1}
+.chest-name{font-size:13px;font-weight:700;color:var(--text)}
+.chest-rarity{font-size:9px;letter-spacing:1px;margin-top:2px;text-transform:uppercase}
+.chest-count{font-size:10px;color:var(--text-dim);margin-top:5px}
+.chest-btns{display:flex;gap:6px;flex-direction:column}
+.chest-open-btn{font-family:'Cinzel',serif;font-size:9px;font-weight:700;padding:6px 12px;border-radius:7px;cursor:pointer;border:1px solid rgba(155,89,255,0.4);background:rgba(155,89,255,0.1);color:var(--purple);transition:all 0.2s;letter-spacing:0.5px}
+.chest-open-btn:hover{background:rgba(155,89,255,0.22)}
+.chest-open-btn:disabled{opacity:0.4;cursor:default}
+.chest-buy-btn{font-family:'Cinzel',serif;font-size:9px;font-weight:700;padding:6px 12px;border-radius:7px;cursor:pointer;border:1px solid rgba(200,169,110,0.3);background:rgba(200,169,110,0.08);color:var(--gold);transition:all 0.2s;letter-spacing:0.5px}
+.chest-buy-btn:hover{background:rgba(200,169,110,0.18)}
+#chest-result{text-align:center;padding:18px 14px;margin-top:10px;border-radius:12px;background:var(--surface2);border:1px solid;display:none}
+.cr-symbol{font-size:3em;margin-bottom:6px;animation:popIn 0.4s ease}
+@keyframes popIn{0%{transform:scale(0.2) rotate(-20deg);opacity:0}60%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+.cr-name{font-size:15px;font-weight:700;margin-bottom:4px}
+.cr-bonus{font-size:11px;color:var(--text-dim)}
 
-  /* ── PROFILE ───────────────────────────────────── */
-  #profile-header {
-    display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
-  }
-  #profile-header img {
-    width: 60px; height: 60px; border-radius: 50%;
-    border: 2px solid var(--gold);
-    box-shadow: 0 0 16px rgba(200,169,110,0.4);
-  }
-  .profile-stats {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
-  }
-  .stat-card {
-    background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 10px; padding: 12px; text-align: center;
-  }
-  .stat-card .sc-val {
-    font-size: 20px; font-weight: 700; color: var(--gold);
-    text-shadow: 0 0 10px rgba(200,169,110,0.4);
-  }
-  .stat-card .sc-label {
-    font-size: 10px; color: var(--text-dim); margin-top: 4px;
-    letter-spacing: 1px; text-transform: uppercase;
-  }
+/* RARITY FLASH */
+#rarity-flash{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:65;text-align:center;opacity:0;transition:opacity 0.3s}
+#rarity-flash.show{opacity:1}
+.rf-bg{position:absolute;inset:-40px -60px;border-radius:50%;filter:blur(40px);opacity:0.15;animation:rfPulse 0.5s ease}
+@keyframes rfPulse{0%{transform:scale(0.3);opacity:0}100%{transform:scale(1);opacity:0.15}}
+.rf-title{font-family:'Cinzel Decorative',serif;font-size:clamp(16px,5vw,26px);font-weight:700;letter-spacing:2px;text-shadow:0 0 30px currentColor;animation:rfScale 0.4s ease;position:relative}
+.rf-sub{font-size:10px;letter-spacing:3px;opacity:0.65;margin-top:5px;position:relative}
+@keyframes rfScale{0%{transform:scale(0.4);opacity:0}60%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
 
-  /* ── RUNE INSERT MODAL ─────────────────────────── */
-  #insert-modal-overlay {
-    position: fixed; inset: 0; z-index: 80;
-    background: rgba(0,0,0,0.8); backdrop-filter: blur(6px);
-    display: none; align-items: center; justify-content: center;
-  }
-  #insert-modal-overlay.open { display: flex; }
-  #insert-modal {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 16px; padding: 24px 28px;
-    text-align: center; width: 280px;
-    animation: modalPop 0.3s ease;
-  }
-  @keyframes modalPop {
-    from { transform: scale(0.8); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-  }
-  #insert-modal .im-symbol { font-size: 3em; margin-bottom: 8px; }
-  #insert-modal .im-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
-  #insert-modal .im-rarity { font-size: 11px; letter-spacing: 2px; margin-bottom: 12px; }
-  #insert-modal .im-bonus { font-size: 12px; color: var(--text-dim); margin-bottom: 20px; }
-  .im-slots { display: flex; gap: 8px; justify-content: center; margin-bottom: 16px; }
-  .im-slot-btn {
-    width: 56px; height: 56px; border-radius: 50%;
-    border: 2px dashed rgba(255,255,255,0.2);
-    background: var(--surface2);
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; font-size: 1.5em; position: relative;
-    transition: all 0.2s;
-  }
-  .im-slot-btn.filled {
-    border-style: solid;
-    border-color: var(--slot-color, #fff);
-    box-shadow: 0 0 12px var(--slot-color, #fff);
-  }
-  .im-slot-btn:hover { transform: scale(1.1); }
-  .im-cancel {
-    background: none; border: 1px solid var(--border);
-    color: var(--text-dim); font-family: 'Cinzel', serif;
-    font-size: 11px; padding: 8px 20px; border-radius: 7px; cursor: pointer;
-    transition: all 0.2s;
-  }
-  .im-cancel:hover { border-color: rgba(255,255,255,0.3); color: var(--text); }
+/* BOOSTER ACTIVE */
+#booster-hud{position:fixed;top:100px;left:14px;z-index:40;display:none;flex-direction:column;gap:4px}
+#booster-hud.show{display:flex}
+.booster-active-pill{display:flex;align-items:center;gap:6px;background:rgba(155,89,255,0.12);border:1px solid rgba(155,89,255,0.3);border-radius:20px;padding:4px 10px;font-size:10px;color:var(--purple);animation:bPillIn 0.3s ease}
+@keyframes bPillIn{from{transform:translateX(-20px);opacity:0}to{transform:translateX(0);opacity:1}}
 
-  /* ── PAYMENT MODAL ─────────────────────────────── */
-  #payment-overlay {
-    position: fixed; inset: 0; z-index: 80;
-    background: rgba(0,0,0,0.8); backdrop-filter: blur(6px);
-    display: none; align-items: center; justify-content: center;
-  }
-  #payment-overlay.open { display: flex; }
-  #payment-modal {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 16px; padding: 24px 28px; text-align: center; width: 280px;
-    animation: modalPop 0.3s ease;
-  }
-  #payment-modal h3 { font-size: 14px; letter-spacing: 2px; color: var(--gold); margin-bottom: 12px; }
-  #payment-modal .pm-detail { font-size: 12px; color: var(--text-dim); margin-bottom: 20px; }
-  #payment-modal .pm-spheres { font-size: 28px; font-weight: 700; color: var(--cyan);
-    text-shadow: 0 0 12px var(--cyan); margin-bottom: 4px; }
-  .pm-btns { display: flex; gap: 10px; justify-content: center; }
-  .pm-confirm {
-    background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(0,212,255,0.05));
-    border: 1px solid rgba(0,212,255,0.4); color: var(--cyan);
-    font-family: 'Cinzel', serif; font-size: 12px; font-weight: 700;
-    padding: 9px 20px; border-radius: 8px; cursor: pointer; transition: all 0.2s;
-  }
-  .pm-confirm:hover { background: rgba(0,212,255,0.3); }
-  .pm-confirm[disabled] { opacity: 0.5; cursor: default; }
-  .pm-cancel {
-    background: none; border: 1px solid var(--border);
-    color: var(--text-dim); font-family: 'Cinzel', serif;
-    font-size: 12px; padding: 9px 20px; border-radius: 8px; cursor: pointer; transition: all 0.2s;
-  }
-  .pm-cancel:hover { border-color: rgba(255,255,255,0.3); color: var(--text); }
-  #pm-result { font-size: 12px; color: var(--green); margin-top: 10px; min-height: 18px; }
+/* MINING */
+#mining-section{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px}
+.mining-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.mining-title{font-size:12px;letter-spacing:2px;color:var(--text-mid);text-transform:uppercase}
+#mining-btn{background:linear-gradient(135deg,rgba(0,255,136,0.12),rgba(0,255,136,0.04));border:1px solid rgba(0,255,136,0.3);color:var(--green);font-family:'Cinzel',serif;font-size:10px;font-weight:700;letter-spacing:1px;padding:8px 16px;border-radius:8px;cursor:pointer;transition:all 0.2s}
+#mining-btn:hover:not([disabled]){background:rgba(0,255,136,0.2);box-shadow:0 0 14px rgba(0,255,136,0.3)}
+#mining-btn[disabled]{color:var(--text-dim);border-color:var(--border);cursor:default;background:var(--surface)}
+#mining-progress-bar{height:4px;background:rgba(0,255,136,0.1);border-radius:2px;margin-top:4px}
+#mining-fill{height:100%;background:linear-gradient(90deg,rgba(0,255,136,0.5),var(--green));border-radius:2px;width:100%;transition:width 1s linear}
 
-  /* ── SCROLLBAR ─────────────────────────────────── */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+/* DELETE CONFIRM */
+#delete-confirm{background:rgba(255,68,102,0.06);border:1px solid rgba(255,68,102,0.25);border-radius:10px;padding:12px 16px;margin-top:8px;display:none;animation:fadeIn 0.2s ease}
+#delete-confirm.open{display:block}
+.dc-text{font-size:11px;color:var(--text-mid);margin-bottom:10px}
+.dc-btns{display:flex;gap:8px}
+.dc-yes{background:rgba(255,68,102,0.15);border:1px solid rgba(255,68,102,0.4);color:var(--red);font-family:'Cinzel',serif;font-size:10px;font-weight:700;padding:7px 14px;border-radius:7px;cursor:pointer;transition:all 0.2s;flex:1}
+.dc-yes:hover{background:rgba(255,68,102,0.3)}
+.dc-no{background:none;border:1px solid var(--border);color:var(--text-dim);font-family:'Cinzel',serif;font-size:10px;padding:7px 14px;border-radius:7px;cursor:pointer;transition:all 0.2s;flex:1}
+.dc-no:hover{border-color:var(--border2);color:var(--text)}
+
+/* PAYMENT MODAL */
+#payment-overlay{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center}
+#payment-overlay.open{display:flex}
+#payment-modal{background:var(--surface);border:1px solid var(--border2);border-radius:18px;padding:28px 28px 24px;text-align:center;width:290px;animation:modalPop 0.3s ease}
+@keyframes modalPop{from{transform:scale(0.75);opacity:0}to{transform:scale(1);opacity:1}}
+#payment-modal h3{font-size:13px;letter-spacing:2px;color:var(--gold);margin-bottom:10px}
+.pm-spheres{font-size:32px;font-weight:700;color:var(--cyan);text-shadow:0 0 14px var(--cyan);margin-bottom:4px}
+.pm-detail{font-size:12px;color:var(--text-dim);margin-bottom:22px}
+.pm-btns{display:flex;gap:10px;justify-content:center}
+.pm-confirm{background:linear-gradient(135deg,rgba(0,212,255,0.2),rgba(0,212,255,0.06));border:1px solid rgba(0,212,255,0.4);color:var(--cyan);font-family:'Cinzel',serif;font-size:12px;font-weight:700;padding:10px 22px;border-radius:9px;cursor:pointer;transition:all 0.2s}
+.pm-confirm:hover{background:rgba(0,212,255,0.3)}
+.pm-confirm:disabled{opacity:0.5;cursor:default}
+.pm-cancel{background:none;border:1px solid var(--border);color:var(--text-dim);font-family:'Cinzel',serif;font-size:12px;padding:10px 22px;border-radius:9px;cursor:pointer;transition:all 0.2s}
+.pm-cancel:hover{border-color:var(--border2);color:var(--text)}
+#pm-result{font-size:12px;color:var(--green);margin-top:12px;min-height:18px}
+
+/* TOAST */
+#toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%);z-index:90;background:var(--surface2);border:1px solid var(--border2);border-radius:20px;padding:8px 18px;font-size:11px;color:var(--text);letter-spacing:1px;opacity:0;transition:opacity 0.25s;pointer-events:none;white-space:nowrap}
+#toast.show{opacity:1}
+
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 </style>
 </head>
 <body>
@@ -491,44 +298,47 @@
 <!-- TOP BAR -->
 <div id="top-bar">
   <div id="player-info">
-    <button id="avatar-btn" title="Profile">
-      <img src="https://i.pravatar.cc/100?u=sealuser" alt="Avatar"/>
-    </button>
+    <button id="avatar-btn" title="Profile"><img src="https://i.pravatar.cc/100?u=sealuser" alt="Avatar"/></button>
     <div class="info-block">
-      <span class="info-label">Rank</span>
-      <span class="info-val">Lv.<span id="level-val">1</span> &nbsp;·&nbsp; <span id="xp-val">0</span>/100 xp</span>
+      <span class="info-label">Seal Mage · Lv.<span id="level-val">1</span></span>
+      <span class="info-val"><span id="xp-val">0</span>/100 xp</span>
+      <div id="xp-bar-wrap"><div id="xp-bar-fill" style="width:0%"></div></div>
     </div>
   </div>
-  <div id="sphere-counter">
-    <svg viewBox="0 0 32 32" fill="none" stroke="var(--cyan)" stroke-width="1.8">
-      <circle cx="16" cy="16" r="14"/>
-      <circle cx="16" cy="16" r="8"/>
-      <circle cx="16" cy="16" r="3"/>
-    </svg>
-    <span id="sphere-count">100</span>
+  <div id="resources-bar">
+    <div id="streak-badge">🔥 <span id="streak-val">0</span>x</div>
+    <div class="res-pill">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+      <span class="res-val" id="sphere-count">100</span>
+    </div>
+    <div class="res-pill">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.8"><polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9"/></svg>
+      <span class="res-val" id="seal-amount">0.000</span>
+    </div>
   </div>
 </div>
 
-<!-- SEAL BALANCE -->
-<div id="seal-banner">
-  <div class="seal-icon"></div>
-  <span>$SEAL &nbsp;<span id="seal-amount">0.000</span></span>
-</div>
+<!-- RUNE VISIBILITY TOGGLE -->
+<button id="rune-toggle-btn" title="Toggle rune visibility">ᚠ</button>
 
-<!-- MINING BTN -->
-<button id="mining-btn">⛏ Mining</button>
+<!-- BOOSTER HUD -->
+<div id="booster-hud"></div>
 
 <!-- CANVAS -->
 <div id="canvas-wrap">
   <div id="canvas-inner">
     <canvas id="sealCanvas"></canvas>
     <div id="rune-slots-ring"></div>
-    <div id="click-hint">Tap to Seal</div>
+    <div id="click-hint">Tap the Seal</div>
   </div>
 </div>
 
+<!-- COMBO -->
+<div id="combo-display"><div class="rf-bg" id="combo-bg"></div><div id="combo-text"></div></div>
+
 <!-- RARITY FLASH -->
 <div id="rarity-flash">
+  <div class="rf-bg" id="rf-bg"></div>
   <div class="rf-title" id="rf-title"></div>
   <div class="rf-sub" id="rf-sub"></div>
 </div>
@@ -538,84 +348,113 @@
   <button class="nav-btn" onclick="openPanel('shop-panel')"><span class="nav-icon">🛒</span>Shop</button>
   <button class="nav-btn" onclick="openPanel('quests-panel')"><span class="nav-icon">📜</span>Quests</button>
   <button class="nav-btn" onclick="openPanel('profile-panel')"><span class="nav-icon">👤</span>Profile</button>
-  <button class="nav-btn" onclick="openPanel('runes-panel')"><span class="nav-icon">ᚠ</span>Runes</button>
-  <button class="nav-btn" onclick="openPanel('chest-panel')"><span class="nav-icon">📦</span>Chests</button>
+  <button class="nav-btn" onclick="openPanel('runes-panel')"><span class="nav-icon">ᚠ</span>Runes<div class="nav-badge" id="rune-badge"></div></button>
+  <button class="nav-btn" onclick="openPanel('chest-panel')"><span class="nav-icon">📦</span>Chests<div class="nav-badge" id="chest-badge"></div></button>
 </div>
 
-<!-- ══ PANELS ══ -->
-
-<!-- SHOP -->
+<!-- SHOP PANEL -->
 <div class="panel-overlay" id="shop-panel" onclick="closeIfBg(event,this)">
   <div class="panel">
     <div class="panel-handle"></div>
-    <h2>Arcane Shop</h2>
-    <div id="shop-items"></div>
+    <button class="panel-close" onclick="closePanel('shop-panel')">✕</button>
+    <h2>Arcane Emporium</h2>
+    <div class="panel-tabs">
+      <button class="ptab active" onclick="shopTab(this,'spheres')">⚡ Spheres</button>
+      <button class="ptab" onclick="shopTab(this,'boosters')">✨ Boosters</button>
+    </div>
+    <div id="shop-spheres"><div id="shop-items"></div></div>
+    <div id="shop-boosters" style="display:none"><div id="booster-items"></div></div>
   </div>
 </div>
 
-<!-- QUESTS -->
+<!-- QUESTS PANEL -->
 <div class="panel-overlay" id="quests-panel" onclick="closeIfBg(event,this)">
   <div class="panel">
     <div class="panel-handle"></div>
+    <button class="panel-close" onclick="closePanel('quests-panel')">✕</button>
     <h2>Sacred Quests</h2>
-    <div class="quest-item"><span class="quest-icon">🔮</span><span class="quest-text">Make 10 generations</span><span class="quest-reward">+10 XP</span></div>
-    <div class="quest-item"><span class="quest-icon">🔷</span><span class="quest-text">Collect 4 matching shapes</span><span class="quest-reward">+10 XP</span></div>
-    <div class="quest-item"><span class="quest-icon">🎨</span><span class="quest-text">3 color matches in a row</span><span class="quest-reward">+10 XP</span></div>
-    <div class="quest-item"><span class="quest-icon">⚡</span><span class="quest-text">Earn a Mythic seal</span><span class="quest-reward">+50 XP</span></div>
-    <div class="quest-item"><span class="quest-icon">✨</span><span class="quest-text">Earn an Ethereal seal</span><span class="quest-reward">+200 XP</span></div>
+    <div id="quest-list"></div>
   </div>
 </div>
 
-<!-- PROFILE -->
+<!-- PROFILE PANEL -->
 <div class="panel-overlay" id="profile-panel" onclick="closeIfBg(event,this)">
   <div class="panel">
     <div class="panel-handle"></div>
-    <h2>Profile</h2>
+    <button class="panel-close" onclick="closePanel('profile-panel')">✕</button>
+    <h2>Chronicle</h2>
     <div id="profile-header">
       <img src="https://i.pravatar.cc/100?u=sealuser" alt="Avatar"/>
       <div>
         <div style="font-size:15px;font-weight:700;color:var(--gold-light)">Seal Mage</div>
-        <div style="font-size:12px;color:var(--text-dim);margin-top:2px;">Level <span id="profile-level">1</span></div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:3px">Level <span id="profile-level">1</span> · <span id="profile-xp">0</span>/100 XP</div>
+        <div style="font-size:10px;color:var(--text-dim);margin-top:5px">Runes: <span id="profile-rune-count">0</span> / <span id="profile-rune-total">0</span></div>
       </div>
     </div>
     <div class="profile-stats" id="profile-stats"></div>
+    <div id="mining-section">
+      <div class="mining-header">
+        <span class="mining-title">⛏ Mining</span>
+        <button id="mining-btn">Collect Yield</button>
+      </div>
+      <div id="mining-progress-bar"><div id="mining-fill"></div></div>
+      <div style="font-size:9px;color:var(--text-dim);margin-top:6px;letter-spacing:1px" id="mining-label">Ready to mine</div>
+    </div>
   </div>
 </div>
 
-<!-- RUNES -->
+<!-- RUNES PANEL -->
 <div class="panel-overlay" id="runes-panel" onclick="closeIfBg(event,this)">
   <div class="panel">
     <div class="panel-handle"></div>
-    <h2>Rune Collection</h2>
-    <p style="font-size:11px;color:var(--text-dim);text-align:center;margin-bottom:16px;">Tap an owned rune to equip it</p>
-    <div id="rune-collection-grid"></div>
+    <button class="panel-close" onclick="closePanel('runes-panel')">✕</button>
+    <h2>Rune Grimoire</h2>
+    <div class="filter-bar" id="rune-filter-bar">
+      <button class="filter-btn active" onclick="setRuneFilter(this,'all')">All</button>
+      <button class="filter-btn" onclick="setRuneFilter(this,'owned')">Owned</button>
+      <button class="filter-btn" onclick="setRuneFilter(this,'equipped')">Equipped</button>
+      <button class="filter-btn" onclick="setRuneFilter(this,'Common')">Common</button>
+      <button class="filter-btn" onclick="setRuneFilter(this,'Rare')">Rare</button>
+      <button class="filter-btn" onclick="setRuneFilter(this,'Epic')">Epic</button>
+    </div>
+    <div class="rune-grid" id="rune-collection-grid"></div>
+    <div id="rune-detail">
+      <div class="rd-header">
+        <div class="rd-symbol" id="rd-symbol"></div>
+        <div class="rd-info">
+          <div class="rd-name" id="rd-name"></div>
+          <div class="rd-rarity" id="rd-rarity"></div>
+          <div class="rd-bonus" id="rd-bonus"></div>
+        </div>
+      </div>
+      <div class="rd-actions" id="rd-actions"></div>
+      <div class="slot-selector" id="slot-selector" style="display:none">
+        <span class="slot-picker-label">Equip in slot:</span>
+        <div id="slot-pickers"></div>
+      </div>
+      <div id="delete-confirm">
+        <div class="dc-text" id="dc-text"></div>
+        <div class="dc-btns">
+          <button class="dc-yes" id="dc-yes">Delete</button>
+          <button class="dc-no" onclick="closeDeleteConfirm()">Cancel</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- CHESTS -->
+<!-- CHESTS PANEL -->
 <div class="panel-overlay" id="chest-panel" onclick="closeIfBg(event,this)">
   <div class="panel">
     <div class="panel-handle"></div>
-    <h2>Sacred Chests</h2>
+    <button class="panel-close" onclick="closePanel('chest-panel')">✕</button>
+    <h2>Sacred Reliquary</h2>
     <div id="chest-list"></div>
     <div id="chest-result"></div>
   </div>
 </div>
 
-<!-- RUNE INSERT MODAL -->
-<div id="insert-modal-overlay" onclick="closeIfBg(event,this)">
-  <div id="insert-modal">
-    <div class="im-symbol" id="im-symbol"></div>
-    <div class="im-name" id="im-name"></div>
-    <div class="im-rarity" id="im-rarity"></div>
-    <div class="im-bonus" id="im-bonus"></div>
-    <p style="font-size:11px;color:var(--text-dim);margin-bottom:8px;">Choose a slot:</p>
-    <div class="im-slots" id="im-slots"></div>
-    <button class="im-cancel" onclick="closeInsertModal()">Cancel</button>
-  </div>
-</div>
-
-<!-- PAYMENT MODAL -->
+<!-- PAYMENT OVERLAY -->
 <div id="payment-overlay" onclick="closeIfBg(event,this)">
   <div id="payment-modal">
     <h3>Purchase Spheres</h3>
@@ -629,456 +468,838 @@
   </div>
 </div>
 
+<!-- TOAST -->
+<div id="toast"></div>
+
 <script>
 (() => {
-  // ── DATA ─────────────────────────────────────────
-  const RUNES = [
-    {id:1,symbol:'ᚠ',name:'Fehu',rarity:'Common',color:'#B0BEC5',bonus:'+5% $SEAL on rare seals',effect:'sealBonus',value:0.05},
-    {id:2,symbol:'ᚢ',name:'Uruz',rarity:'Common',color:'#4FC3F7',bonus:'+5 XP per generation',effect:'xpBonus',value:5},
-    {id:3,symbol:'ᚦ',name:'Thurisaz',rarity:'Common',color:'#81C784',bonus:'+5% invite reward',effect:'inviteBonus',value:0.05},
-    {id:4,symbol:'ᚨ',name:'Ansuz',rarity:'Common',color:'#EF9A9A',bonus:'+5% mining speed',effect:'miningSpeed',value:0.05},
-    {id:5,symbol:'ᚱ',name:'Raido',rarity:'Common',color:'#FFCC80',bonus:'+1 sphere per mining click',effect:'sphereClick',value:1},
-    {id:6,symbol:'ᛃ',name:'Jera',rarity:'Common',color:'#F48FB1',bonus:'-5% shop cost',effect:'shopDiscount',value:0.05},
-    {id:7,symbol:'ᛉ',name:'Algiz',rarity:'Rare',color:'#00FFD0',bonus:'+10% $SEAL on rare seals',effect:'sealBonus',value:0.10},
-    {id:8,symbol:'ᛟ',name:'Othala',rarity:'Rare',color:'#FFD700',bonus:'+10 XP per generation',effect:'xpBonus',value:10},
-    {id:9,symbol:'ᛈ',name:'Perthro',rarity:'Rare',color:'#FF6F91',bonus:'+10% invite reward',effect:'inviteBonus',value:0.10},
-    {id:10,symbol:'ᛇ',name:'Eiwaz',rarity:'Rare',color:'#B39DDB',bonus:'+10% mining speed',effect:'miningSpeed',value:0.10},
-    {id:11,symbol:'ᛜ',name:'Ingwaz',rarity:'Rare',color:'#69F0AE',bonus:'+2 spheres per mining click',effect:'sphereClick',value:2},
-    {id:12,symbol:'ᛞ',name:'Dagaz',rarity:'Rare',color:'#FFB300',bonus:'-10% shop cost',effect:'shopDiscount',value:0.10},
-    {id:13,symbol:'ᛯ',name:'Sol',rarity:'Epic',color:'#00FFF7',bonus:'+25% $SEAL on rare seals',effect:'sealBonus',value:0.25},
-    {id:14,symbol:'᛬',name:'Star',rarity:'Epic',color:'#FFD6FF',bonus:'+25 XP per generation',effect:'xpBonus',value:25},
-    {id:15,symbol:'᛭',name:'Ether',rarity:'Epic',color:'#A7FFEB',bonus:'+25% invite reward',effect:'inviteBonus',value:0.25},
-    {id:16,symbol:'ᛮ',name:'Lux',rarity:'Epic',color:'#FFF176',bonus:'+25% mining speed',effect:'miningSpeed',value:0.25},
-    {id:17,symbol:'ᚺ',name:'Nova',rarity:'Epic',color:'#FF80AB',bonus:'+5 spheres per mining click',effect:'sphereClick',value:5},
-    {id:18,symbol:'ᛝ',name:'Aurora',rarity:'Epic',color:'#00E6FF',bonus:'-20% shop cost',effect:'shopDiscount',value:0.20},
-  ];
-  const CHESTS = [
-    {type:'common',label:'Common Chest',icon:'📦',color:'#B0BEC5',pool:['Common','Rare'],chances:[0.8,0.2],price:'5 TON'},
-    {type:'rare',label:'Rare Chest',icon:'💎',color:'#00d4ff',pool:['Rare','Epic'],chances:[0.7,0.3],price:'10 TON'},
-    {type:'epic',label:'Epic Chest',icon:'✨',color:'#9b59ff',pool:['Epic'],chances:[1.0],price:'15 TON'},
-  ];
-  const SHOP_ITEMS = [
-    {spheres:10,price:'5 TON'},{spheres:25,price:'10 TON'},{spheres:50,price:'18 TON'},
-    {spheres:100,price:'30 TON'},{spheres:250,price:'60 TON'},{spheres:500,price:'100 TON'},
-  ];
-  const COLORS = ['#1E90FF','#00FFFF','#7FFF00','#FF69B4','#FFD700','#FF4500'];
-  const SHAPES = ['circle','triangle','square'];
-  const SIZES  = [150,175,200,225];
-  const SPEEDS = [0.003,0.005,0.007,0.009];
 
-  // ── STATE ─────────────────────────────────────────
-  let spheres = 100, xp = 0, level = 1, seal = 0;
-  let stats = {total:0,rare:0,mythic:0,legendary:0,ethereal:0};
-  let sealFigures = [];
-  let userRunes = [], userRuneSlots = [null,null,null], userChests = {common:0,rare:0,epic:0};
-  let runeRotAngle = 0, selectedRuneForInsert = null;
+// ── DATA ──────────────────────────────────────────────────────────────────
+const RUNES = [
+  {id:1,symbol:'ᚠ',name:'Fehu',rarity:'Common',color:'#88aacc',bonus:'+5% $SEAL on rare seals',effect:'sealBonus',value:0.05,lore:'Rune of wealth and cattle.'},
+  {id:2,symbol:'ᚢ',name:'Uruz',rarity:'Common',color:'#77cc99',bonus:'+5 XP per tap',effect:'xpBonus',value:5,lore:'Rune of strength and primal force.'},
+  {id:3,symbol:'ᚦ',name:'Thurisaz',rarity:'Common',color:'#cc8888',bonus:'+5% sphere reward',effect:'sphereBonus',value:0.05,lore:'Rune of the thorn and giant.'},
+  {id:4,symbol:'ᚨ',name:'Ansuz',rarity:'Common',color:'#cc99cc',bonus:'+5% mining yield',effect:'miningYield',value:0.05,lore:'Rune of the divine and Odin.'},
+  {id:5,symbol:'ᚱ',name:'Raido',rarity:'Common',color:'#ccaa66',bonus:'+1 bonus sphere chance 15%',effect:'sphereClick',value:1,lore:'Rune of the journey.'},
+  {id:6,symbol:'ᚲ',name:'Kenaz',rarity:'Common',color:'#ff9966',bonus:'-8% shop cost',effect:'shopDiscount',value:0.08,lore:'Rune of the torch and knowledge.'},
+  {id:7,symbol:'ᛉ',name:'Algiz',rarity:'Rare',color:'#00ffd0',bonus:'+12% $SEAL on rare seals',effect:'sealBonus',value:0.12,lore:'Rune of protection and the elk.'},
+  {id:8,symbol:'ᛟ',name:'Othala',rarity:'Rare',color:'#ffd700',bonus:'+12 XP per tap',effect:'xpBonus',value:12,lore:'Rune of heritage and home.'},
+  {id:9,symbol:'ᛈ',name:'Perthro',rarity:'Rare',color:'#ff6f91',bonus:'+12% sphere reward',effect:'sphereBonus',value:0.12,lore:'Rune of fate and mystery.'},
+  {id:10,symbol:'ᛇ',name:'Eiwaz',rarity:'Rare',color:'#b39ddb',bonus:'+15% mining yield',effect:'miningYield',value:0.15,lore:'Rune of the yew tree and death.'},
+  {id:11,symbol:'ᛜ',name:'Ingwaz',rarity:'Rare',color:'#69f0ae',bonus:'+3 bonus spheres chance 20%',effect:'sphereClick',value:3,lore:'Rune of the earth god Ing.'},
+  {id:12,symbol:'ᛞ',name:'Dagaz',rarity:'Rare',color:'#ffb300',bonus:'-15% shop cost',effect:'shopDiscount',value:0.15,lore:'Rune of the dawn and day.'},
+  {id:13,symbol:'ᛯ',name:'Sol',rarity:'Epic',color:'#00fff7',bonus:'+30% $SEAL on rare seals',effect:'sealBonus',value:0.30,lore:'The Solar rune of infinite light.'},
+  {id:14,symbol:'᛬',name:'Starweave',rarity:'Epic',color:'#ffd6ff',bonus:'+30 XP per tap',effect:'xpBonus',value:30,lore:'Woven from the light of distant stars.'},
+  {id:15,symbol:'᛭',name:'Ether',rarity:'Epic',color:'#a7ffeb',bonus:'+30% sphere reward',effect:'sphereBonus',value:0.30,lore:'Pure quintessence made manifest.'},
+  {id:16,symbol:'ᛮ',name:'Lux',rarity:'Epic',color:'#fff176',bonus:'+30% mining yield',effect:'miningYield',value:0.30,lore:'Condensed luminance of creation.'},
+  {id:17,symbol:'ᚺ',name:'Nova',rarity:'Epic',color:'#ff80ab',bonus:'+5 bonus spheres chance 25%',effect:'sphereClick',value:5,lore:'Born from the death of ancient stars.'},
+  {id:18,symbol:'ᛝ',name:'Aurora',rarity:'Epic',color:'#00e6ff',bonus:'-25% shop cost',effect:'shopDiscount',value:0.25,lore:'The celestial dance of charged light.'},
+];
+const RARITY_ORDER = {Common:0,Rare:1,Epic:2};
+const RARITY_COLORS = {Common:'#88aacc',Rare:'#ffd700',Epic:'#a855f7'};
 
-  // ── LOAD/SAVE ─────────────────────────────────────
-  function save() {
-    localStorage.setItem('ms_state', JSON.stringify({
-      spheres, xp, level, seal, stats, userRunes, userRuneSlots, userChests
-    }));
+const CHESTS = [
+  {type:'common',label:'Common Chest',icon:'📦',color:'#aabbcc',pool:['Common','Rare'],chances:[0.85,0.15],price:5,currency:'spheres'},
+  {type:'rare',label:'Rare Chest',icon:'💎',color:'#00d4ff',pool:['Rare','Epic'],chances:[0.75,0.25],price:20,currency:'spheres'},
+  {type:'epic',label:'Epic Chest',icon:'✨',color:'#9b59ff',pool:['Epic'],chances:[1.0],price:50,currency:'spheres'},
+];
+
+const SHOP_ITEMS = [
+  {spheres:10,price:'5 TON'},{spheres:25,price:'10 TON'},{spheres:50,price:'18 TON'},
+  {spheres:100,price:'30 TON'},{spheres:250,price:'60 TON'},{spheres:500,price:'100 TON'},
+];
+
+const BOOSTERS = [
+  {id:'double_seal',icon:'💎',name:'Double Seal',desc:'2× $SEAL for 10 minutes',price:15,currency:'spheres',duration:600},
+  {id:'xp_rush',icon:'⚡',name:'XP Rush',desc:'3× XP for 5 minutes',price:10,currency:'spheres',duration:300},
+  {id:'lucky_tap',icon:'🍀',name:'Lucky Touch',desc:'2× chance for Rare+ for 3 minutes',price:8,currency:'spheres',duration:180},
+  {id:'sphere_rain',icon:'🌊',name:'Sphere Rain',desc:'+50 spheres instantly',price:5,currency:'spheres',duration:0},
+];
+
+const QUESTS_DEFS = [
+  {id:'q1',icon:'🔮',text:'Make 10 seals',reward:{xp:15,spheres:5},goal:10,track:'total',repeatable:true},
+  {id:'q2',icon:'🔷',text:'Get 3 Rare seals',reward:{xp:30,spheres:10},goal:3,track:'rare',repeatable:false},
+  {id:'q3',icon:'⚡',text:'Get a Mythic seal',reward:{xp:60,spheres:15},goal:1,track:'mythic',repeatable:false},
+  {id:'q4',icon:'💫',text:'Get a Legendary seal',reward:{xp:150,spheres:30},goal:1,track:'legendary',repeatable:false},
+  {id:'q5',icon:'✨',text:'Get an Ethereal seal',reward:{xp:500,spheres:100},goal:1,track:'ethereal',repeatable:false},
+  {id:'q6',icon:'ᚠ',text:'Equip a Rune',reward:{xp:20,spheres:5},goal:1,track:'runesEquipped',repeatable:false},
+  {id:'q7',icon:'📦',text:'Open 3 Chests',reward:{xp:50,spheres:20},goal:3,track:'chestsOpened',repeatable:false},
+  {id:'q8',icon:'🔥',text:'Get a 10× streak',reward:{xp:40,spheres:10},goal:10,track:'maxStreak',repeatable:false},
+];
+
+const COLORS = ['#1E90FF','#00FFFF','#7FFF00','#FF69B4','#FFD700','#FF4500','#E040FB','#FF6B6B'];
+const SHAPES = ['circle','triangle','square','pentagon'];
+const SIZES  = [130,155,180,205,225];
+const SPEEDS = [0.003,0.005,0.007,0.009,0.011];
+
+// ── STATE ─────────────────────────────────────────────────────────────────
+let spheres=100, xp=0, level=1, seal=0;
+let stats={total:0,rare:0,mythic:0,legendary:0,ethereal:0,chestsOpened:0,runesEquipped:0,maxStreak:0};
+let sealFigures=[];
+let userRunes=[], userRuneSlots=[null,null,null], userChests={common:0,rare:0,epic:0};
+let questProgress={}, questClaimed={};
+let activeBoosters={};
+let currentStreak=0, lastSealRarity=null;
+let runeRotAngle=0, selectedRune=null, runeFilter='all';
+
+// ── LOAD/SAVE ─────────────────────────────────────────────────────────────
+function save(){
+  localStorage.setItem('ms2_state',JSON.stringify({
+    spheres,xp,level,seal,stats,userRunes,userRuneSlots,userChests,
+    questProgress,questClaimed,activeBoosters,currentStreak
+  }));
+}
+function load(){
+  try{
+    const s=JSON.parse(localStorage.getItem('ms2_state'));
+    if(!s)return;
+    spheres=s.spheres??100; xp=s.xp??0; level=s.level??1; seal=s.seal??0;
+    stats=s.stats??{total:0,rare:0,mythic:0,legendary:0,ethereal:0,chestsOpened:0,runesEquipped:0,maxStreak:0};
+    if(!stats.chestsOpened)stats.chestsOpened=0;
+    if(!stats.runesEquipped)stats.runesEquipped=0;
+    if(!stats.maxStreak)stats.maxStreak=0;
+    userRunes=s.userRunes??[]; userRuneSlots=s.userRuneSlots??[null,null,null];
+    userChests=s.userChests??{common:0,rare:0,epic:0};
+    questProgress=s.questProgress??{}; questClaimed=s.questClaimed??{};
+    activeBoosters=s.activeBoosters??{}; currentStreak=s.currentStreak??0;
+    // Clean expired boosters
+    const now=Date.now();
+    Object.keys(activeBoosters).forEach(k=>{if(activeBoosters[k].end<now)delete activeBoosters[k]});
+  }catch(e){}
+}
+load();
+setInterval(save,10000);
+window.addEventListener('beforeunload',save);
+
+// ── DOM ────────────────────────────────────────────────────────────────────
+const canvas=document.getElementById('sealCanvas');
+const ctx=canvas.getContext('2d');
+const levelEl=document.getElementById('level-val');
+const xpEl=document.getElementById('xp-val');
+const xpBar=document.getElementById('xp-bar-fill');
+const sphereEl=document.getElementById('sphere-count');
+const sealEl=document.getElementById('seal-amount');
+const miningBtn=document.getElementById('mining-btn');
+const slotsRing=document.getElementById('rune-slots-ring');
+const streakEl=document.getElementById('streak-val');
+const streakBadge=document.getElementById('streak-badge');
+const comboEl=document.getElementById('combo-display');
+const comboText=document.getElementById('combo-text');
+const comboBg=document.getElementById('combo-bg');
+
+// ── CANVAS RESIZE ──────────────────────────────────────────────────────────
+function resizeCanvas(){
+  const avail=Math.min(window.innerWidth*0.88,window.innerHeight-190,400);
+  const dpr=window.devicePixelRatio||1;
+  canvas.width=avail*dpr; canvas.height=avail*dpr;
+  canvas.style.width=avail+'px'; canvas.style.height=avail+'px';
+}
+window.addEventListener('resize',resizeCanvas);
+resizeCanvas();
+
+// ── DRAW ───────────────────────────────────────────────────────────────────
+function drawShape(type,x,y,size,color,rot,glow,dpr){
+  ctx.save(); ctx.translate(x,y); ctx.rotate(rot);
+  ctx.lineWidth=5*dpr; ctx.strokeStyle=color;
+  ctx.shadowColor=color; ctx.shadowBlur=24*glow*dpr;
+  ctx.beginPath();
+  if(type==='circle'){
+    ctx.arc(0,0,size/2,0,Math.PI*2);
+  }else if(type==='triangle'){
+    for(let i=0;i<3;i++){const a=i*2*Math.PI/3-Math.PI/2;const r=size/Math.sqrt(3);i===0?ctx.moveTo(r*Math.cos(a),r*Math.sin(a)):ctx.lineTo(r*Math.cos(a),r*Math.sin(a))}
+    ctx.closePath();
+  }else if(type==='pentagon'){
+    for(let i=0;i<5;i++){const a=i*2*Math.PI/5-Math.PI/2;const r=size/2;i===0?ctx.moveTo(r*Math.cos(a),r*Math.sin(a)):ctx.lineTo(r*Math.cos(a),r*Math.sin(a))}
+    ctx.closePath();
+  }else{
+    const s=size/Math.sqrt(2);ctx.rect(-s/2,-s/2,s,s);
   }
-  function load() {
-    try {
-      const s = JSON.parse(localStorage.getItem('ms_state'));
-      if (!s) return;
-      spheres = s.spheres ?? 100;
-      xp = s.xp ?? 0; level = s.level ?? 1; seal = s.seal ?? 0;
-      stats = s.stats ?? {total:0,rare:0,mythic:0,legendary:0,ethereal:0};
-      userRunes = s.userRunes ?? []; userRuneSlots = s.userRuneSlots ?? [null,null,null];
-      userChests = s.userChests ?? {common:0,rare:0,epic:0};
-    } catch(e) {}
-  }
-  load();
-  setInterval(save, 15000);
-  window.addEventListener('beforeunload', save);
+  ctx.stroke(); ctx.restore();
+}
 
-  // ── DOM REFS ──────────────────────────────────────
-  const canvas = document.getElementById('sealCanvas');
-  const ctx = canvas.getContext('2d');
-  const levelEl = document.getElementById('level-val');
-  const xpEl = document.getElementById('xp-val');
-  const sphereEl = document.getElementById('sphere-count');
-  const sealEl = document.getElementById('seal-amount');
-  const rfEl = document.getElementById('rarity-flash');
-  const rfTitle = document.getElementById('rf-title');
-  const rfSub = document.getElementById('rf-sub');
-  const miningBtn = document.getElementById('mining-btn');
-  const slotsRing = document.getElementById('rune-slots-ring');
+// Center symbol
+function drawCenterSymbol(){
+  if(!runesVisible)return;
+  if(userRuneSlots.filter(Boolean).length===0)return;
+  const dpr=window.devicePixelRatio||1;
+  const cx=canvas.width/2,cy=canvas.height/2;
+  const equippedRunes=userRuneSlots.filter(Boolean).map(id=>RUNES.find(r=>r.id===id)).filter(Boolean);
+  if(equippedRunes.length===0)return;
+  const r=equippedRunes[0];
+  ctx.save();
+  ctx.font=`${28*dpr}px Cinzel`;
+  ctx.fillStyle=r.color;
+  ctx.shadowColor=r.color; ctx.shadowBlur=20*dpr;
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.globalAlpha=0.4+0.2*Math.sin(Date.now()/800);
+  ctx.fillText(r.symbol,cx,cy);
+  ctx.restore();
+}
 
-  // ── CANVAS RESIZE ─────────────────────────────────
-  function resizeCanvas() {
-    const avail = Math.min(window.innerWidth * 0.9, window.innerHeight - 200);
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = avail * dpr;
-    canvas.height = avail * dpr;
-    canvas.style.width = avail + 'px';
-    canvas.style.height = avail + 'px';
-  }
-  window.addEventListener('resize', () => { resizeCanvas(); });
+let time=0;
+function render(){
   resizeCanvas();
+  const dpr=window.devicePixelRatio||1;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  const cx=canvas.width/2,cy=canvas.height/2;
+  const scale=(canvas.width/(500*dpr))*1.3;
+  const glow=0.65+0.35*Math.sin(time*Math.PI*2/3.5);
+  for(const f of sealFigures){
+    f.rotation+=f.speed*f.direction;
+    drawShape(f.type,cx,cy,f.size*scale*dpr,f.color,f.rotation,glow,dpr);
+  }
+  drawCenterSymbol();
+  time+=1/60;
+  runeRotAngle+=0.005;
+  if(runesVisible)updateRuneSlotsRing();
+  requestAnimationFrame(render);
+}
 
-  // ── DRAW ──────────────────────────────────────────
-  function drawShape(type, x, y, size, color, rot, glow, dpr) {
-    ctx.save();
-    ctx.translate(x, y); ctx.rotate(rot);
-    ctx.lineWidth = 6 * dpr; ctx.strokeStyle = color;
-    ctx.shadowColor = color; ctx.shadowBlur = 28 * glow * dpr;
-    ctx.beginPath();
-    if (type === 'circle') {
-      ctx.arc(0, 0, size/2, 0, Math.PI*2);
-    } else if (type === 'triangle') {
-      for (let i=0;i<3;i++) {
-        const a = i*2*Math.PI/3 - Math.PI/2;
-        const px = (size/Math.sqrt(3))*Math.cos(a), py = (size/Math.sqrt(3))*Math.sin(a);
-        i===0 ? ctx.moveTo(px,py) : ctx.lineTo(px,py);
-      }
-      ctx.closePath();
-    } else {
-      const s = size/Math.sqrt(2);
-      ctx.rect(-s/2,-s/2,s,s);
+// ── RUNE SLOTS RING ────────────────────────────────────────────────────────
+function buildRuneSlotsRing(){
+  slotsRing.innerHTML='';
+  for(let i=0;i<3;i++){
+    const el=document.createElement('div');
+    el.className='rune-slot-el';
+    el.dataset.idx=i;
+    el.innerHTML='<span class="slot-symbol">○</span>';
+    slotsRing.appendChild(el);
+  }
+}
+function updateRuneSlotsRing(){
+  const els=slotsRing.querySelectorAll('.rune-slot-el');
+  const cw=canvas.offsetWidth,ch=canvas.offsetHeight;
+  const radius=(Math.min(cw,ch)/2)*0.7+26;
+  els.forEach((el,i)=>{
+    const angle=runeRotAngle+(Math.PI*2*i/3);
+    el.style.left=Math.cos(angle)*radius+'px';
+    el.style.top=Math.sin(angle)*radius+'px';
+    const runeId=userRuneSlots[i];
+    const rune=runeId?RUNES.find(r=>r.id===runeId):null;
+    if(rune){
+      el.classList.add('filled');
+      el.style.setProperty('--rune-color',rune.color);
+      el.querySelector('.slot-symbol').textContent=rune.symbol;
+      el.querySelector('.slot-symbol').style.color=rune.color;
+    }else{
+      el.classList.remove('filled');
+      el.style.removeProperty('--rune-color');
+      el.querySelector('.slot-symbol').textContent='○';
+      el.querySelector('.slot-symbol').style.color='';
     }
-    ctx.stroke(); ctx.restore();
-  }
-
-  let time = 0;
-  function render() {
-    resizeCanvas();
-    const dpr = window.devicePixelRatio || 1;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const cx = canvas.width/2, cy = canvas.height/2;
-    const scale = (canvas.width / (520*dpr)) * 1.3;
-    const glow = 0.7 + 0.3*Math.sin(time*Math.PI*2/3);
-    for (const f of sealFigures) {
-      f.rotation += f.speed * f.direction;
-      drawShape(f.type, cx, cy, f.size*scale*dpr, f.color, f.rotation, glow, dpr);
-    }
-    time += 1/60;
-    runeRotAngle += 0.006;
-    updateRuneSlotsRing();
-    requestAnimationFrame(render);
-  }
-
-  // ── RUNE SLOTS RING ───────────────────────────────
-  function buildRuneSlotsRing() {
-    slotsRing.innerHTML = '';
-    for (let i=0;i<3;i++) {
-      const el = document.createElement('div');
-      el.className = 'rune-slot-el';
-      el.dataset.idx = i;
-      el.innerHTML = '<span class="slot-symbol">○</span>';
-      slotsRing.appendChild(el);
-    }
-    updateRuneSlotsRing();
-  }
-  function updateRuneSlotsRing() {
-    const els = slotsRing.querySelectorAll('.rune-slot-el');
-    const cw = canvas.offsetWidth, ch = canvas.offsetHeight;
-    const radius = (Math.min(cw,ch)/2) * 0.72 + 24;
-    els.forEach((el, i) => {
-      const angle = runeRotAngle + (Math.PI*2*i/3);
-      const x = Math.cos(angle)*radius;
-      const y = Math.sin(angle)*radius;
-      el.style.left = x + 'px';
-      el.style.top = y + 'px';
-      const runeId = userRuneSlots[i];
-      const rune = runeId ? RUNES.find(r=>r.id===runeId) : null;
-      if (rune) {
-        el.classList.add('filled');
-        el.style.setProperty('--rune-color', rune.color);
-        el.querySelector('.slot-symbol').textContent = rune.symbol;
-        el.querySelector('.slot-symbol').style.color = rune.color;
-        el.querySelector('.slot-symbol').style.textShadow = `0 0 12px ${rune.color}`;
-      } else {
-        el.classList.remove('filled');
-        el.style.removeProperty('--rune-color');
-        el.querySelector('.slot-symbol').textContent = '○';
-        el.querySelector('.slot-symbol').style.color = '';
-        el.querySelector('.slot-symbol').style.textShadow = '';
-      }
-    });
-  }
-
-  // ── SEAL GENERATION ───────────────────────────────
-  function getBonus(effect) {
-    return userRuneSlots.reduce((sum, id) => {
-      if (!id) return sum;
-      const r = RUNES.find(x=>x.id===id);
-      return r && r.effect===effect ? sum+r.value : sum;
-    }, 0);
-  }
-
-  function generateSeal() {
-    sealFigures = Array.from({length:4}, () => ({
-      type: SHAPES[Math.floor(Math.random()*SHAPES.length)],
-      color: COLORS[Math.floor(Math.random()*COLORS.length)],
-      size: SIZES[Math.floor(Math.random()*SIZES.length)],
-      speed: SPEEDS[Math.floor(Math.random()*SPEEDS.length)],
-      direction: Math.random()<0.5?1:-1,
-      rotation: 0,
-    }));
-    stats.total++;
-    checkRarity();
-  }
-
-  function checkRarity() {
-    const countMap = (key) => {
-      const m={};
-      for (const f of sealFigures) m[f[key]]=(m[f[key]]||0)+1;
-      return Math.max(...Object.values(m));
-    };
-    const cm = countMap('color'), tm = countMap('type');
-    const bonus = getBonus('sealBonus');
-    if (cm===4&&tm===4) { stats.ethereal++; seal+=1*(1+bonus); flashRarity('✦ ETHEREAL SEAL ✦','#b0e0ff','Chance: 0.02%'); }
-    else if (cm===3&&tm===3) { stats.legendary++; seal+=0.1*(1+bonus); flashRarity('⊛ LEGENDARY ⊛','#ffd700','Chance: 0.2%'); }
-    else if (cm===4||tm===4) { stats.mythic++; seal+=0.01*(1+bonus); flashRarity('◈ MYTHIC ◈','#c084fc','Chance: 0.5%'); }
-    else if (cm===3||tm===3) { stats.rare++; seal+=0.001*(1+bonus); flashRarity('✧ RARE ✧','#00d4ff','Chance: 2%'); }
-    updateSeal();
-    updateProfileStats();
-  }
-
-  function flashRarity(title, color, sub) {
-    rfTitle.textContent = title;
-    rfTitle.style.color = color;
-    rfSub.textContent = sub;
-    rfEl.classList.add('show');
-    setTimeout(() => rfEl.classList.remove('show'), 2200);
-  }
-
-  // ── CLICK ─────────────────────────────────────────
-  canvas.addEventListener('click', () => {
-    if (spheres <= 0) return;
-    spheres--; updateSpheres();
-    gainXP(10 + getBonus('xpBonus'));
-    generateSeal();
   });
+}
 
-  // ── XP / SPHERES / SEAL ───────────────────────────
-  function gainXP(amount) {
-    xp += amount;
-    while (xp >= 100) { xp -= 100; level++; }
-    levelEl.textContent = level;
-    xpEl.textContent = Math.floor(xp);
-    document.getElementById('profile-level').textContent = level;
+// ── BONUS HELPERS ──────────────────────────────────────────────────────────
+function getBonus(effect){
+  return userRuneSlots.reduce((sum,id)=>{
+    if(!id)return sum;
+    const r=RUNES.find(x=>x.id===id);
+    return r&&r.effect===effect?sum+r.value:sum;
+  },0);
+}
+function boosterActive(id){
+  return activeBoosters[id]&&activeBoosters[id].end>Date.now();
+}
+function getDiscount(){
+  const disc=getBonus('shopDiscount');
+  return Math.min(disc,0.5);
+}
+
+// ── SEAL GENERATION ────────────────────────────────────────────────────────
+function generateSeal(){
+  sealFigures=Array.from({length:4},()=>({
+    type:SHAPES[Math.floor(Math.random()*SHAPES.length)],
+    color:COLORS[Math.floor(Math.random()*COLORS.length)],
+    size:SIZES[Math.floor(Math.random()*SIZES.length)],
+    speed:SPEEDS[Math.floor(Math.random()*SPEEDS.length)],
+    direction:Math.random()<0.5?1:-1,
+    rotation:Math.random()*Math.PI*2,
+  }));
+  stats.total++;
+  const rarity=checkRarity();
+  updateStreak(rarity);
+  checkQuests();
+  updateHUD();
+}
+
+function checkRarity(){
+  const luckMult=boosterActive('lucky_tap')?2:1;
+  const countMap=(key)=>{const m={};for(const f of sealFigures)m[f[key]]=(m[f[key]]||0)+1;return Math.max(...Object.values(m))};
+  const cm=countMap('color'),tm=countMap('type');
+  const sealBonus=getBonus('sealBonus');
+  const sealMult=boosterActive('double_seal')?2:1;
+  let rarity='common';
+  if(cm===4&&tm===4){
+    stats.ethereal++; seal+=1*(1+sealBonus)*sealMult;
+    flashRarity('✦ ETHEREAL SEAL ✦','#b0e0ff','All matches · 0.02% chance');
+    spawnParticles('✦','#b0e0ff',6); rarity='ethereal';
+  }else if(cm===3&&tm===3){
+    stats.legendary++; seal+=0.1*(1+sealBonus)*sealMult;
+    flashRarity('⊛ LEGENDARY ⊛','#ffd700','Triple match · 0.2% chance');
+    spawnParticles('★','#ffd700',4); rarity='legendary';
+  }else if((cm===4||tm===4)*luckMult){
+    const r=Math.random();
+    if(r<(0.005*luckMult)){stats.mythic++;seal+=0.01*(1+sealBonus)*sealMult;flashRarity('◈ MYTHIC ◈','#c084fc','Quad match · 0.5%');spawnParticles('◈','#c084fc',3);rarity='mythic';}
+    else if(r<(0.02*luckMult)){stats.rare++;seal+=0.001*(1+sealBonus)*sealMult;flashRarity('✧ RARE ✧','#00d4ff','Triple form · 2%');spawnParticles('✧','#00d4ff',2);rarity='rare';}
+  }else if((cm===3||tm===3)*luckMult&&Math.random()<(0.02*luckMult)){
+    stats.rare++;seal+=0.001*(1+sealBonus)*sealMult;
+    flashRarity('✧ RARE ✧','#00d4ff','Shape match · 2%');
+    spawnParticles('✧','#00d4ff',2); rarity='rare';
   }
-  function updateSpheres() { sphereEl.textContent = spheres; }
-  function updateSeal() { sealEl.textContent = seal.toFixed(3); }
-
-  // ── MINING ────────────────────────────────────────
-  const MINING_CD = 12*3600*1000;
-  function updateMiningBtn() {
-    const end = parseInt(localStorage.getItem('ms_miningEnd')||0);
-    const left = end - Date.now();
-    if (left > 0) {
-      miningBtn.disabled = true;
-      const h = Math.floor(left/3600000), m = Math.floor((left%3600000)/60000), s = Math.floor((left%60000)/1000);
-      miningBtn.textContent = `⏳ ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-    } else {
-      miningBtn.disabled = false;
-      miningBtn.textContent = '⛏ Mining';
-    }
-  }
-  miningBtn.addEventListener('click', () => {
-    if (miningBtn.disabled) return;
-    seal += 0.10; updateSeal();
-    localStorage.setItem('ms_miningEnd', Date.now()+MINING_CD);
-    updateMiningBtn();
-  });
-  setInterval(updateMiningBtn, 1000);
-  updateMiningBtn();
-
-  // ── PROFILE STATS ─────────────────────────────────
-  function updateProfileStats() {
-    const el = document.getElementById('profile-stats');
-    el.innerHTML = `
-      <div class="stat-card"><div class="sc-val">${stats.total}</div><div class="sc-label">Total Seals</div></div>
-      <div class="stat-card"><div class="sc-val">${seal.toFixed(3)}</div><div class="sc-label">$SEAL</div></div>
-      <div class="stat-card" style="border-color:rgba(0,212,255,0.3)"><div class="sc-val" style="color:#00d4ff">${stats.rare}</div><div class="sc-label">Rare</div></div>
-      <div class="stat-card" style="border-color:rgba(192,132,252,0.3)"><div class="sc-val" style="color:#c084fc">${stats.mythic}</div><div class="sc-label">Mythic</div></div>
-      <div class="stat-card" style="border-color:rgba(255,215,0,0.3)"><div class="sc-val" style="color:#ffd700">${stats.legendary}</div><div class="sc-label">Legendary</div></div>
-      <div class="stat-card" style="border-color:rgba(176,224,255,0.3)"><div class="sc-val" style="color:#b0e0ff">${stats.ethereal}</div><div class="sc-label">Ethereal</div></div>
-    `;
-  }
-
-  // ── RUNE COLLECTION ───────────────────────────────
-  function buildRuneGrid() {
-    const grid = document.getElementById('rune-collection-grid');
-    grid.innerHTML = '';
-    RUNES.forEach(rune => {
-      const owned = userRunes.includes(rune.id);
-      const cell = document.createElement('div');
-      cell.className = 'rc-cell' + (owned?' owned':'');
-      cell.style.setProperty('--rune-color', rune.color);
-      cell.innerHTML = `
-        <span class="rc-symbol">${rune.symbol}</span>
-        <div class="rc-tooltip">
-          <b>${rune.name}</b>
-          <em>${rune.rarity}</em><br/>
-          ${rune.bonus}
-        </div>`;
-      if (owned) {
-        cell.addEventListener('click', () => openInsertModal(rune));
-      }
-      grid.appendChild(cell);
-    });
-  }
-
-  // ── INSERT MODAL ──────────────────────────────────
-  function openInsertModal(rune) {
-    selectedRuneForInsert = rune;
-    document.getElementById('im-symbol').textContent = rune.symbol;
-    document.getElementById('im-symbol').style.color = rune.color;
-    document.getElementById('im-symbol').style.textShadow = `0 0 20px ${rune.color}`;
-    document.getElementById('im-name').textContent = rune.name;
-    document.getElementById('im-rarity').textContent = rune.rarity.toUpperCase();
-    document.getElementById('im-rarity').style.color = rune.color;
-    document.getElementById('im-bonus').textContent = rune.bonus;
-    buildImSlots(rune);
-    document.getElementById('insert-modal-overlay').classList.add('open');
-  }
-  function buildImSlots(rune) {
-    const el = document.getElementById('im-slots');
-    el.innerHTML = '';
-    for (let i=0;i<3;i++) {
-      const btn = document.createElement('button');
-      btn.className = 'im-slot-btn';
-      const slotRune = userRuneSlots[i] ? RUNES.find(r=>r.id===userRuneSlots[i]) : null;
-      if (slotRune) {
-        btn.classList.add('filled');
-        btn.style.setProperty('--slot-color', slotRune.color);
-        btn.textContent = slotRune.symbol;
-        btn.title = `Replace ${slotRune.name}`;
-      } else {
-        btn.textContent = '·';
-        btn.title = `Empty slot ${i+1}`;
-      }
-      btn.addEventListener('click', () => {
-        userRuneSlots[i] = rune.id;
-        closeInsertModal();
-        updateRuneSlotsRing();
-      });
-      el.appendChild(btn);
-    }
-  }
-  window.closeInsertModal = function() {
-    document.getElementById('insert-modal-overlay').classList.remove('open');
-    selectedRuneForInsert = null;
-  };
-
-  // ── CHESTS ────────────────────────────────────────
-  function buildChestList() {
-    const el = document.getElementById('chest-list');
-    el.innerHTML = '';
-    CHESTS.forEach(chest => {
-      const row = document.createElement('div');
-      row.className = 'chest-row';
-      row.innerHTML = `
-        <div class="chest-icon">${chest.icon}</div>
-        <div class="chest-info">
-          <div class="chest-name">${chest.label}</div>
-          <div class="chest-rarity" style="color:${chest.color}">${chest.pool.join(' / ')}</div>
-          <div class="chest-count">Owned: ${userChests[chest.type]||0}</div>
-        </div>
-        <div class="chest-btns">
-          <button class="chest-open-btn-2" onclick="openChest('${chest.type}')">Open</button>
-          <button class="chest-buy-btn" onclick="buyChest('${chest.type}')">Buy</button>
-        </div>`;
-      el.appendChild(row);
-    });
-  }
-  window.buyChest = function(type) {
-    userChests[type] = (userChests[type]||0)+1;
-    buildChestList();
-  };
-  window.openChest = function(type) {
-    if (!(userChests[type]>0)) return;
-    const chest = CHESTS.find(c=>c.type===type);
-    let pool = [];
-    chest.pool.forEach((rarity,i) => {
-      const available = RUNES.filter(r=>r.rarity===rarity && !userRunes.includes(r.id));
-      const weight = Math.round(chest.chances[i]*100);
-      for (let j=0;j<weight;j++) pool.push(...available);
-    });
-    if (!pool.length) { alert('All runes of this type collected!'); return; }
-    const rune = pool[Math.floor(Math.random()*pool.length)];
-    userRunes.push(rune.id);
-    userChests[type]--;
-    buildChestList();
-    buildRuneGrid();
-    const res = document.getElementById('chest-result');
-    res.style.display = 'block';
-    res.style.borderColor = rune.color;
-    res.style.border = `1px solid ${rune.color}`;
-    res.innerHTML = `
-      <div class="cr-symbol" style="color:${rune.color};text-shadow:0 0 20px ${rune.color}">${rune.symbol}</div>
-      <div class="cr-name" style="color:${rune.color}">${rune.name}</div>
-      <div class="cr-bonus">${rune.bonus}</div>`;
-    setTimeout(() => { res.style.display='none'; }, 3000);
-  };
-
-  // ── SHOP ─────────────────────────────────────────
-  function buildShop() {
-    const el = document.getElementById('shop-items');
-    el.innerHTML = '';
-    SHOP_ITEMS.forEach(item => {
-      el.innerHTML += `
-        <div class="shop-item">
-          <div class="item-info">
-            <span class="item-name">${item.spheres} Spheres</span>
-            <span class="item-price">${item.price}</span>
-          </div>
-          <button class="shop-btn" onclick="startPayment(${item.spheres},'${item.price}')">Buy</button>
-        </div>`;
-    });
-  }
-
-  // ── PAYMENT ───────────────────────────────────────
-  let paymentAmt = 0;
-  window.startPayment = function(amt, price) {
-    paymentAmt = amt;
-    document.getElementById('pm-spheres').textContent = amt;
-    document.getElementById('pm-detail').textContent = `Cost: ${price}`;
-    document.getElementById('pm-result').textContent = '';
-    const btn = document.getElementById('pm-confirm');
-    btn.disabled = false;
-    document.getElementById('payment-overlay').classList.add('open');
-  };
-  window.closePayment = function() {
-    document.getElementById('payment-overlay').classList.remove('open');
-  };
-  document.getElementById('pm-confirm').addEventListener('click', function() {
-    this.disabled = true;
-    document.getElementById('pm-result').textContent = 'Processing...';
-    setTimeout(() => {
-      spheres += paymentAmt; updateSpheres();
-      document.getElementById('pm-result').textContent = `✓ ${paymentAmt} spheres added!`;
-      setTimeout(() => closePayment(), 1500);
-    }, 1500);
-  });
-
-  // ── PANELS ───────────────────────────────────────
-  window.openPanel = function(id) {
-    document.querySelectorAll('.panel-overlay').forEach(p=>p.classList.remove('open'));
-    document.getElementById(id).classList.add('open');
-    if (id==='runes-panel') buildRuneGrid();
-    if (id==='profile-panel') updateProfileStats();
-    if (id==='chest-panel') buildChestList();
-  };
-  window.closeIfBg = function(e, el) {
-    if (e.target === el) el.classList.remove('open');
-  };
-  document.getElementById('avatar-btn').addEventListener('click', () => openPanel('profile-panel'));
-
-  // ── INIT ─────────────────────────────────────────
-  buildRuneSlotsRing();
-  buildShop();
-  buildChestList();
-  updateSpheres();
   updateSeal();
-  updateProfileStats();
+  return rarity;
+}
+
+// ── STREAK ─────────────────────────────────────────────────────────────────
+function updateStreak(rarity){
+  if(rarity==='common'){
+    currentStreak=0;
+  }else{
+    currentStreak++;
+    if(currentStreak>stats.maxStreak)stats.maxStreak=currentStreak;
+    if(currentStreak>=3){
+      showCombo(currentStreak,rarity);
+    }
+  }
+  streakEl.textContent=currentStreak;
+  streakBadge.classList.toggle('hot',currentStreak>=3);
+}
+
+function showCombo(streak,rarity){
+  const colors={rare:'#00d4ff',mythic:'#c084fc',legendary:'#ffd700',ethereal:'#b0e0ff'};
+  const col=colors[rarity]||'#ffffff';
+  comboText.textContent=`${streak}× CHAIN!`;
+  comboText.style.color=col;
+  comboBg.style.background=col;
+  comboEl.classList.add('show');
+  setTimeout(()=>comboEl.classList.remove('show'),1800);
+}
+
+// ── PARTICLES ──────────────────────────────────────────────────────────────
+function spawnParticles(symbol,color,count){
+  for(let i=0;i<count;i++){
+    const p=document.createElement('div');
+    p.className='particle';
+    p.textContent=symbol;
+    p.style.color=color;
+    p.style.left=(window.innerWidth/2+((Math.random()-0.5)*80))+'px';
+    p.style.top=(window.innerHeight/2+((Math.random()-0.5)*60))+'px';
+    p.style.animationDelay=(i*0.1)+'s';
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),1500);
+  }
+}
+
+// ── RARITY FLASH ───────────────────────────────────────────────────────────
+const rfEl=document.getElementById('rarity-flash');
+const rfTitle=document.getElementById('rf-title');
+const rfSub=document.getElementById('rf-sub');
+const rfBg=document.getElementById('rf-bg');
+let rfTimer;
+function flashRarity(title,color,sub){
+  clearTimeout(rfTimer);
+  rfTitle.textContent=title; rfTitle.style.color=color;
+  rfSub.textContent=sub; rfBg.style.background=color;
+  rfEl.classList.add('show');
+  rfTimer=setTimeout(()=>rfEl.classList.remove('show'),2400);
+}
+
+// ── CLICK ──────────────────────────────────────────────────────────────────
+canvas.addEventListener('click',(e)=>{
+  if(spheres<=0){showToast('No spheres remaining!');return;}
+  spheres--;
+  // Sphere bonus chance
+  const sr=getBonus('sphereBonus');
+  if(Math.random()<0.15+sr)spheres++;
+  // Rune sphere click bonus
+  const scBonus=getBonus('sphereClick');
+  if(scBonus>0&&Math.random()<0.2)spheres+=scBonus;
+  updateSpheres();
+  const xpGain=(10+getBonus('xpBonus'))*(boosterActive('xp_rush')?3:1);
+  gainXP(xpGain);
   generateSeal();
-  render();
+  // Click ripple feel
+  canvas.style.filter='brightness(1.18) drop-shadow(0 0 28px rgba(200,169,110,0.3))';
+  setTimeout(()=>canvas.style.filter='drop-shadow(0 0 30px rgba(200,169,110,0.08))',120);
+});
+
+// ── XP / LEVEL ──────────────────────────────────────────────────────────────
+function gainXP(amount){
+  xp+=amount;
+  const needed=level*100;
+  if(xp>=needed){xp-=needed;level++;showToast(`⬆ Level ${level}!`);updateHUD();}
+  levelEl.textContent=level;
+  xpEl.textContent=Math.floor(xp);
+  xpBar.style.width=(xp/Math.max(1,level*100)*100)+'%';
+  document.getElementById('profile-level').textContent=level;
+  document.getElementById('profile-xp').textContent=Math.floor(xp);
+}
+function updateSpheres(){sphereEl.textContent=spheres}
+function updateSeal(){sealEl.textContent=seal.toFixed(3)}
+function updateHUD(){
+  updateSpheres(); updateSeal();
+  updateBoosterHud();
+}
+
+// ── MINING ─────────────────────────────────────────────────────────────────
+const MINING_CD=12*3600*1000;
+function getMiningYield(){return 0.10*(1+getBonus('miningYield'));}
+function updateMiningBtn(){
+  const end=parseInt(localStorage.getItem('ms2_miningEnd')||0);
+  const left=end-Date.now();
+  const fill=document.getElementById('mining-fill');
+  const label=document.getElementById('mining-label');
+  if(left>0){
+    miningBtn.disabled=true;
+    const h=Math.floor(left/3600000),m=Math.floor((left%3600000)/60000),s=Math.floor((left%60000)/1000);
+    miningBtn.textContent=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    const pct=Math.max(0,(MINING_CD-left)/MINING_CD*100);
+    if(fill)fill.style.width=pct+'%';
+    if(label)label.textContent=`Mining… ${Math.round(pct)}% complete`;
+  }else{
+    miningBtn.disabled=false;
+    miningBtn.textContent='Collect Yield';
+    if(fill)fill.style.width='100%';
+    if(label)label.textContent='Ready to collect!';
+  }
+}
+miningBtn.addEventListener('click',()=>{
+  if(miningBtn.disabled)return;
+  const yield_=getMiningYield();
+  seal+=yield_; updateSeal();
+  showToast(`⛏ Mined ${yield_.toFixed(3)} $SEAL`);
+  localStorage.setItem('ms2_miningEnd',Date.now()+MINING_CD);
+  updateMiningBtn();
+});
+setInterval(updateMiningBtn,1000);
+updateMiningBtn();
+
+// ── BOOSTER HUD ────────────────────────────────────────────────────────────
+function updateBoosterHud(){
+  const hud=document.getElementById('booster-hud');
+  hud.innerHTML='';
+  const now=Date.now();
+  let any=false;
+  Object.entries(activeBoosters).forEach(([k,v])=>{
+    if(v.end<now)return;
+    any=true;
+    const left=Math.ceil((v.end-now)/1000);
+    const pill=document.createElement('div');
+    pill.className='booster-active-pill';
+    pill.textContent=`${v.icon} ${v.name} ${left}s`;
+    hud.appendChild(pill);
+  });
+  hud.classList.toggle('show',any);
+}
+setInterval(updateBoosterHud,1000);
+
+// ── QUESTS ──────────────────────────────────────────────────────────────────
+function checkQuests(){
+  QUESTS_DEFS.forEach(q=>{
+    if(questClaimed[q.id]&&!q.repeatable)return;
+    const prog=questProgress[q.id]||0;
+    const cur=stats[q.track]||0;
+    questProgress[q.id]=Math.max(prog,cur);
+  });
+  const badge=document.getElementById('rune-badge');
+  const hasReady=QUESTS_DEFS.some(q=>{
+    if(questClaimed[q.id]&&!q.repeatable)return false;
+    return (questProgress[q.id]||0)>=q.goal;
+  });
+}
+
+function buildQuestList(){
+  const el=document.getElementById('quest-list');
+  el.innerHTML='';
+  QUESTS_DEFS.forEach(q=>{
+    const prog=questProgress[q.id]||0;
+    const done=prog>=q.goal;
+    const claimed=questClaimed[q.id]&&!q.repeatable;
+    const pct=Math.min(100,prog/q.goal*100);
+    const div=document.createElement('div');
+    div.className='quest-item'+(done&&!claimed?' complete':'');
+    div.innerHTML=`
+      <div class="quest-progress-bg" style="transform:scaleX(${pct/100})"></div>
+      <div class="quest-icon">${q.icon}</div>
+      <div class="quest-body">
+        <div class="quest-text">${q.text}</div>
+        <div class="quest-prog">${Math.min(prog,q.goal)} / ${q.goal}${claimed?' · Claimed':''}</div>
+      </div>
+      <div class="quest-reward">+${q.reward.xp}xp${q.reward.spheres?` +${q.reward.spheres}⚡`:''}</div>
+      ${done&&!claimed?`<button class="claim-btn" onclick="claimQuest('${q.id}')">Claim</button>`:claimed?`<div class="quest-done">✓</div>`:''}
+    `;
+    el.appendChild(div);
+  });
+}
+
+window.claimQuest=function(qid){
+  const q=QUESTS_DEFS.find(x=>x.id===qid);
+  if(!q)return;
+  gainXP(q.reward.xp);
+  spheres+=q.reward.spheres||0;
+  questClaimed[qid]=true;
+  if(q.repeatable)questProgress[qid]=0;
+  updateSpheres();
+  showToast(`Quest complete! +${q.reward.xp} XP`);
+  buildQuestList();
+};
+
+// ── RUNE COLLECTION ─────────────────────────────────────────────────────────
+function buildRuneGrid(){
+  const grid=document.getElementById('rune-collection-grid');
+  grid.innerHTML='';
+  let filtered=RUNES;
+  if(runeFilter==='owned')filtered=RUNES.filter(r=>userRunes.includes(r.id));
+  else if(runeFilter==='equipped')filtered=RUNES.filter(r=>userRuneSlots.includes(r.id));
+  else if(runeFilter==='Common'||runeFilter==='Rare'||runeFilter==='Epic')filtered=RUNES.filter(r=>r.rarity===runeFilter);
+  // Sort: owned first, then by rarity
+  filtered.sort((a,b)=>{
+    const ao=userRunes.includes(a.id)?1:0,bo=userRunes.includes(b.id)?1:0;
+    if(ao!==bo)return bo-ao;
+    return RARITY_ORDER[b.rarity]-RARITY_ORDER[a.rarity];
+  });
+  filtered.forEach(rune=>{
+    const owned=userRunes.includes(rune.id);
+    const equipped=userRuneSlots.includes(rune.id);
+    const cell=document.createElement('div');
+    cell.className='rune-card'+(owned?' owned':'')+(equipped?' equipped':'');
+    cell.style.setProperty('--rc',rune.color);
+    cell.innerHTML=`
+      ${equipped?`<div class="equipped-badge">EQUIPPED</div>`:''}
+      ${!owned?`<div class="lock-badge">🔒</div>`:''}
+      <div class="rune-symbol">${rune.symbol}</div>
+      <div class="rune-name">${rune.name}</div>
+      <div class="rune-rarity-dot" title="${rune.rarity}"></div>
+    `;
+    if(owned){
+      cell.addEventListener('click',()=>openRuneDetail(rune));
+    }
+    grid.appendChild(cell);
+  });
+  document.getElementById('profile-rune-count').textContent=userRunes.length;
+  document.getElementById('profile-rune-total').textContent=RUNES.length;
+}
+
+window.setRuneFilter=function(btn,filter){
+  runeFilter=filter;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  buildRuneGrid();
+  closeRuneDetail();
+};
+
+function openRuneDetail(rune){
+  selectedRune=rune;
+  const det=document.getElementById('rune-detail');
+  const sym=document.getElementById('rd-symbol');
+  sym.textContent=rune.symbol; sym.style.color=rune.color; sym.style.textShadow=`0 0 20px ${rune.color}`;
+  document.getElementById('rd-name').textContent=rune.name;
+  document.getElementById('rd-name').style.color=rune.color;
+  const rarEl=document.getElementById('rd-rarity');
+  rarEl.textContent=rune.rarity.toUpperCase();
+  rarEl.style.color=RARITY_COLORS[rune.rarity];
+  document.getElementById('rd-bonus').textContent=rune.bonus;
+  buildDetailActions(rune);
+  det.classList.add('open');
+  closeDeleteConfirm();
+  document.getElementById('slot-selector').style.display='none';
+  det.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function buildDetailActions(rune){
+  const actions=document.getElementById('rd-actions');
+  const equipped=userRuneSlots.includes(rune.id);
+  const slotIdx=userRuneSlots.indexOf(rune.id);
+  actions.innerHTML='';
+  if(equipped){
+    const unequipBtn=document.createElement('button');
+    unequipBtn.className='rd-btn rd-unequip';
+    unequipBtn.textContent='Unequip';
+    unequipBtn.onclick=()=>{
+      userRuneSlots[slotIdx]=null;
+      showToast(`${rune.name} unequipped`);
+      buildRuneGrid(); buildDetailActions(rune); updateRuneSlotsRing();
+    };
+    actions.appendChild(unequipBtn);
+  }else{
+    const equipBtn=document.createElement('button');
+    equipBtn.className='rd-btn rd-equip';
+    equipBtn.textContent='Equip Rune';
+    equipBtn.onclick=()=>showSlotSelector(rune);
+    actions.appendChild(equipBtn);
+  }
+  const delBtn=document.createElement('button');
+  delBtn.className='rd-btn rd-delete';
+  delBtn.textContent='Delete Rune';
+  delBtn.onclick=()=>showDeleteConfirm(rune);
+  actions.appendChild(delBtn);
+}
+
+function showSlotSelector(rune){
+  const ss=document.getElementById('slot-selector');
+  const pickers=document.getElementById('slot-pickers');
+  ss.style.display='flex';
+  pickers.innerHTML='';
+  for(let i=0;i<3;i++){
+    const existing=userRuneSlots[i]?RUNES.find(r=>r.id===userRuneSlots[i]):null;
+    const btn=document.createElement('div');
+    btn.className='slot-picker'+(existing?' has-rune':'');
+    btn.title=existing?`Replace ${existing.name}`:`Empty slot ${i+1}`;
+    btn.style.borderColor=existing?existing.color:'';
+    btn.textContent=existing?existing.symbol:'·';
+    btn.style.fontSize='1.4em';
+    btn.style.color=existing?existing.color:'var(--text-dim)';
+    btn.onclick=()=>{
+      userRuneSlots[i]=rune.id;
+      stats.runesEquipped=userRuneSlots.filter(Boolean).length;
+      showToast(`${rune.name} equipped in slot ${i+1}`);
+      document.getElementById('slot-selector').style.display='none';
+      buildRuneGrid(); buildDetailActions(rune); updateRuneSlotsRing(); checkQuests();
+    };
+    pickers.appendChild(btn);
+  }
+}
+
+function showDeleteConfirm(rune){
+  const dc=document.getElementById('delete-confirm');
+  document.getElementById('dc-text').textContent=`Delete "${rune.name}"? This cannot be undone. The rune will be lost forever.`;
+  document.getElementById('dc-yes').onclick=()=>deleteRune(rune);
+  dc.classList.add('open');
+  document.getElementById('slot-selector').style.display='none';
+}
+
+window.closeDeleteConfirm=function(){
+  document.getElementById('delete-confirm').classList.remove('open');
+};
+
+function deleteRune(rune){
+  userRunes=userRunes.filter(id=>id!==rune.id);
+  userRuneSlots=userRuneSlots.map(id=>id===rune.id?null:id);
+  showToast(`${rune.name} deleted`);
+  closeDeleteConfirm();
+  closeRuneDetail();
+  buildRuneGrid(); updateRuneSlotsRing();
+}
+
+function closeRuneDetail(){
+  document.getElementById('rune-detail').classList.remove('open');
+  document.getElementById('slot-selector').style.display='none';
+  selectedRune=null;
+}
+
+// ── CHESTS ──────────────────────────────────────────────────────────────────
+function buildChestList(){
+  const el=document.getElementById('chest-list');
+  el.innerHTML='';
+  CHESTS.forEach(chest=>{
+    const cnt=userChests[chest.type]||0;
+    const disc=getDiscount();
+    const price=Math.round(chest.price*(1-disc));
+    const row=document.createElement('div');
+    row.className='chest-row';
+    row.innerHTML=`
+      <div class="chest-icon">${chest.icon}</div>
+      <div class="chest-info">
+        <div class="chest-name">${chest.label}</div>
+        <div class="chest-rarity" style="color:${chest.color}">${chest.pool.join(' / ')}</div>
+        <div class="chest-count">Owned: ${cnt} · ${price}⚡${disc>0?` <span style="color:var(--green);font-size:9px">(-${Math.round(disc*100)}%)</span>`:''}</div>
+      </div>
+      <div class="chest-btns">
+        <button class="chest-open-btn" ${cnt===0?'disabled':''} onclick="openChest('${chest.type}')">Open</button>
+        <button class="chest-buy-btn" onclick="buyChest('${chest.type}',${price})">Buy</button>
+      </div>`;
+    el.appendChild(row);
+  });
+  const cb=document.getElementById('chest-badge');
+  const total=Object.values(userChests).reduce((a,b)=>a+b,0);
+  cb.classList.toggle('show',total>0);
+}
+
+window.buyChest=function(type,price){
+  if(spheres<price){showToast('Not enough spheres!');return;}
+  spheres-=price; updateSpheres();
+  userChests[type]=(userChests[type]||0)+1;
+  showToast(`${CHESTS.find(c=>c.type===type).label} acquired!`);
+  buildChestList();
+};
+
+window.openChest=function(type){
+  if(!(userChests[type]>0))return;
+  const chest=CHESTS.find(c=>c.type===type);
+  let pool=[];
+  chest.pool.forEach((rarity,i)=>{
+    const avail=RUNES.filter(r=>r.rarity===rarity&&!userRunes.includes(r.id));
+    const weight=Math.round(chest.chances[i]*100);
+    for(let j=0;j<weight;j++)pool.push(...avail);
+  });
+  if(!pool.length){
+    // Give spheres refund instead
+    const ref=CHESTS.find(c=>c.type===type).price;
+    spheres+=ref; updateSpheres();
+    userChests[type]--;
+    showToast('All runes collected! Refunded spheres.');
+    buildChestList(); return;
+  }
+  const rune=pool[Math.floor(Math.random()*pool.length)];
+  userRunes.push(rune.id);
+  userChests[type]--;
+  stats.chestsOpened++;
+  checkQuests();
+  buildChestList(); buildRuneGrid();
+  const res=document.getElementById('chest-result');
+  res.style.display='block';
+  res.style.borderColor=rune.color;
+  res.innerHTML=`
+    <div class="cr-symbol" style="color:${rune.color};text-shadow:0 0 24px ${rune.color}">${rune.symbol}</div>
+    <div class="cr-name" style="color:${rune.color}">${rune.name}</div>
+    <div style="font-size:10px;letter-spacing:2px;color:${RARITY_COLORS[rune.rarity]};margin-bottom:4px">${rune.rarity.toUpperCase()}</div>
+    <div class="cr-bonus">${rune.bonus}</div>`;
+  spawnParticles(rune.symbol,rune.color,4);
+  setTimeout(()=>{res.style.display='none';},4000);
+};
+
+// ── SHOP ────────────────────────────────────────────────────────────────────
+window.shopTab=function(btn,tab){
+  document.querySelectorAll('#shop-panel .ptab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('shop-spheres').style.display=tab==='spheres'?'block':'none';
+  document.getElementById('shop-boosters').style.display=tab==='boosters'?'block':'none';
+};
+
+function buildShop(){
+  const el=document.getElementById('shop-items');
+  el.innerHTML='<div class="shop-section-title">Sphere Packs</div>';
+  SHOP_ITEMS.forEach(item=>{
+    el.innerHTML+=`
+      <div class="shop-item">
+        <div class="item-info">
+          <span class="item-name">${item.spheres} Spheres</span>
+          <span class="item-price">${item.price}</span>
+        </div>
+        <button class="shop-btn" onclick="startPayment(${item.spheres},'${item.price}')">Buy</button>
+      </div>`;
+  });
+  const bl=document.getElementById('booster-items');
+  bl.innerHTML='<div class="shop-section-title">Arcane Boosters</div>';
+  BOOSTERS.forEach(b=>{
+    const disc=getDiscount();
+    const price=Math.round(b.price*(1-disc));
+    const active=boosterActive(b.id);
+    bl.innerHTML+=`
+      <div class="booster-item">
+        <div class="booster-icon">${b.icon}</div>
+        <div class="booster-info">
+          <div class="booster-name">${b.name}</div>
+          <div class="booster-desc">${b.desc}</div>
+          <div class="booster-price">${price}⚡${disc>0?` <span style="color:var(--green);font-size:9px">(-${Math.round(disc*100)}%)</span>`:''}</div>
+        </div>
+        <button class="booster-btn" onclick="buyBooster('${b.id}',${price})" ${active?'disabled style="opacity:0.5"':''}>
+          ${active?'Active':'Get'}
+        </button>
+      </div>`;
+  });
+}
+
+window.buyBooster=function(id,price){
+  if(spheres<price){showToast('Not enough spheres!');return;}
+  const b=BOOSTERS.find(x=>x.id===id);
+  if(!b)return;
+  spheres-=price; updateSpheres();
+  if(b.duration>0){
+    activeBoosters[id]={end:Date.now()+b.duration*1000,icon:b.icon,name:b.name};
+    showToast(`${b.name} activated!`);
+  }else{
+    // instant effect
+    if(id==='sphere_rain'){spheres+=50;updateSpheres();showToast('🌊 +50 Spheres!');}
+  }
+  buildShop(); updateBoosterHud();
+};
+
+// ── PAYMENT ─────────────────────────────────────────────────────────────────
+let paymentAmt=0;
+window.startPayment=function(amt,price){
+  paymentAmt=amt;
+  document.getElementById('pm-spheres').textContent=amt;
+  document.getElementById('pm-detail').textContent=`Cost: ${price}`;
+  document.getElementById('pm-result').textContent='';
+  document.getElementById('pm-confirm').disabled=false;
+  document.getElementById('payment-overlay').classList.add('open');
+};
+window.closePayment=function(){document.getElementById('payment-overlay').classList.remove('open');};
+document.getElementById('pm-confirm').addEventListener('click',function(){
+  this.disabled=true;
+  document.getElementById('pm-result').textContent='Processing…';
+  setTimeout(()=>{
+    spheres+=paymentAmt; updateSpheres();
+    document.getElementById('pm-result').textContent=`✓ ${paymentAmt} spheres added!`;
+    setTimeout(closePayment,1500);
+  },1200);
+});
+
+// ── PROFILE STATS ────────────────────────────────────────────────────────────
+function updateProfileStats(){
+  const el=document.getElementById('profile-stats');
+  el.innerHTML=`
+    <div class="stat-card"><div class="sc-val">${stats.total}</div><div class="sc-label">Total Seals</div></div>
+    <div class="stat-card"><div class="sc-val">${seal.toFixed(3)}</div><div class="sc-label">$SEAL Balance</div></div>
+    <div class="stat-card" style="--sc-color:#00d4ff"><div class="sc-val">${stats.rare}</div><div class="sc-label">Rare</div></div>
+    <div class="stat-card" style="--sc-color:#c084fc"><div class="sc-val">${stats.mythic}</div><div class="sc-label">Mythic</div></div>
+    <div class="stat-card" style="--sc-color:#ffd700"><div class="sc-val">${stats.legendary}</div><div class="sc-label">Legendary</div></div>
+    <div class="stat-card" style="--sc-color:#b0e0ff"><div class="sc-val">${stats.ethereal}</div><div class="sc-label">Ethereal</div></div>
+    <div class="stat-card" style="--sc-color:#ff8844"><div class="sc-val">${stats.maxStreak}</div><div class="sc-label">Best Chain</div></div>
+    <div class="stat-card" style="--sc-color:#9b59ff"><div class="sc-val">${userRunes.length}</div><div class="sc-label">Runes</div></div>
+  `;
+}
+
+// ── PANELS ────────────────────────────────────────────────────────────────────
+window.openPanel=function(id){
+  document.querySelectorAll('.panel-overlay').forEach(p=>p.classList.remove('open'));
+  document.getElementById(id).classList.add('open');
+  if(id==='runes-panel'){buildRuneGrid();closeRuneDetail();}
+  if(id==='profile-panel'){updateProfileStats();updateMiningBtn();}
+  if(id==='chest-panel'){buildChestList();}
+  if(id==='shop-panel'){buildShop();}
+  if(id==='quests-panel'){buildQuestList();}
+};
+window.closePanel=function(id){document.getElementById(id).classList.remove('open');};
+window.closeIfBg=function(e,el){if(e.target===el)el.classList.remove('open');};
+document.getElementById('avatar-btn').addEventListener('click',()=>openPanel('profile-panel'));
+
+// ── TOAST ──────────────────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+// ── RUNE VISIBILITY TOGGLE ───────────────────────────────────────────────────
+let runesVisible=true;
+const runeToggleBtn=document.getElementById('rune-toggle-btn');
+runeToggleBtn.addEventListener('click',()=>{
+  runesVisible=!runesVisible;
+  slotsRing.classList.toggle('hidden',!runesVisible);
+  runeToggleBtn.classList.toggle('runes-hidden',!runesVisible);
+  runeToggleBtn.textContent=runesVisible?'ᚠ':'○';
+  runeToggleBtn.title=runesVisible?'Hide runes':'Show runes';
+  showToast(runesVisible?'Runes visible':'Runes hidden');
+});
+
+// ── INIT ────────────────────────────────────────────────────────────────────
+buildRuneSlotsRing();
+buildShop();
+buildChestList();
+buildQuestList();
+updateSpheres();
+updateSeal();
+updateProfileStats();
+checkQuests();
+gainXP(0);
+generateSeal();
+render();
 
 })();
 </script>
