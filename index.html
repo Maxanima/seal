@@ -245,8 +245,7 @@ pointer-events:none;z-index:0}
 /* BOOSTER ACTIVE */
 #booster-hud{position:fixed;top:100px;left:14px;z-index:40;display:none;flex-direction:column;gap:4px}
 #booster-hud.show{display:flex}
-.booster-active-pill{display:flex;align-items:center;gap:6px;background:rgba(155,89,255,0.12);border:1px solid rgba(155,89,255,0.3);border-radius:20px;padding:4px 10px;font-size:10px;color:var(--purple);animation:bPillIn 0.3s ease}
-@keyframes bPillIn{from{transform:translateX(-20px);opacity:0}to{transform:translateX(0);opacity:1}}
+.booster-active-pill{display:flex;align-items:center;gap:6px;background:rgba(155,89,255,0.12);border:1px solid rgba(155,89,255,0.3);border-radius:20px;padding:4px 10px;font-size:10px;color:var(--purple)}
 
 /* MINING */
 #mining-section{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px}
@@ -530,7 +529,7 @@ const QUESTS_DEFS = [
 const COLORS = ['#1E90FF','#00FFFF','#7FFF00','#FF69B4','#FFD700','#FF4500','#E040FB','#FF6B6B'];
 const SHAPES = ['circle','triangle','square','pentagon'];
 const SIZES  = [130,155,180,205,225];
-const SPEEDS = [0.003,0.005,0.007,0.009,0.011];
+const SPEEDS = [0.001,0.002,0.003,0.004,0.005];
 
 // ── STATE ─────────────────────────────────────────────────────────────────
 let spheres=100, xp=0, level=1, seal=0;
@@ -839,11 +838,10 @@ function updateSpheres(){sphereEl.textContent=spheres}
 function updateSeal(){sealEl.textContent=seal.toFixed(3)}
 function updateHUD(){
   updateSpheres(); updateSeal();
-  updateBoosterHud();
 }
 
 // ── MINING ─────────────────────────────────────────────────────────────────
-const MINING_CD=12*3600*1000;
+const MINING_CD=8*3600*1000;
 function getMiningYield(){return 0.10*(1+getBonus('miningYield'));}
 function updateMiningBtn(){
   const end=parseInt(localStorage.getItem('ms2_miningEnd')||0);
@@ -878,19 +876,26 @@ updateMiningBtn();
 // ── BOOSTER HUD ────────────────────────────────────────────────────────────
 function updateBoosterHud(){
   const hud=document.getElementById('booster-hud');
-  hud.innerHTML='';
   const now=Date.now();
-  let any=false;
-  Object.entries(activeBoosters).forEach(([k,v])=>{
-    if(v.end<now)return;
-    any=true;
+  const active=Object.entries(activeBoosters).filter(([,v])=>v.end>now);
+  hud.classList.toggle('show',active.length>0);
+  // Update existing pills in-place; add/remove only when count changes
+  const existing=hud.querySelectorAll('.booster-active-pill');
+  active.forEach(([k,v],i)=>{
     const left=Math.ceil((v.end-now)/1000);
-    const pill=document.createElement('div');
-    pill.className='booster-active-pill';
-    pill.textContent=`${v.icon} ${v.name} ${left}s`;
-    hud.appendChild(pill);
+    const mins=Math.floor(left/60), secs=left%60;
+    const timeStr=mins>0?`${mins}m ${secs}s`:`${secs}s`;
+    if(existing[i]){
+      existing[i].querySelector('.b-time').textContent=timeStr;
+    }else{
+      const pill=document.createElement('div');
+      pill.className='booster-active-pill';
+      pill.innerHTML=`<span>${v.icon} ${v.name}</span><span class="b-time" style="opacity:0.65;margin-left:4px">${timeStr}</span>`;
+      hud.appendChild(pill);
+    }
   });
-  hud.classList.toggle('show',any);
+  // Remove pills for expired boosters
+  for(let i=active.length;i<existing.length;i++)existing[i].remove();
 }
 setInterval(updateBoosterHud,1000);
 
