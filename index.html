@@ -5,287 +5,338 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
 <title>Magical Seal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@700&family=MedievalSharp&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet"/>
 <style>
-:root {
-  --bg: #04040a;
-  --surface: #0c0c18;
-  --surface2: #111122;
-  --surface3: #181830;
-  --border: rgba(255,255,255,0.07);
-  --border2: rgba(255,255,255,0.13);
-  --gold: #c8a96e;
-  --gold-light: #f0d090;
-  --gold-dim: #8a6a30;
-  --cyan: #00d4ff;
-  --green: #00ff88;
-  --purple: #9b59ff;
-  --red: #ff4466;
-  --text: #e8e0d0;
-  --text-dim: #6a6060;
-  --text-mid: #9a9090;
-  --radius: 12px;
-  --seal-glow: rgba(200,169,110,0.15);
+:root{
+  --bg:#04040a;--surface:#0c0c18;--surface2:#111122;--surface3:#181830;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.14);
+  --gold:#c8a96e;--gold-light:#f0d090;--gold-dim:#8a6a30;
+  --cyan:#00d4ff;--green:#00ff88;--purple:#9b59ff;--red:#ff4466;--orange:#ff8844;
+  --text:#e8e0d0;--text-dim:#6a6060;--text-mid:#9a9090;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{width:100%;height:100%;background:var(--bg);font-family:'Cinzel',Georgia,serif;color:var(--text);overflow:hidden;user-select:none;-webkit-tap-highlight-color:transparent}
 
-/* STARS BG */
-body::before{content:'';position:fixed;inset:0;background:
-  radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.4) 0%, transparent 100%),
-  radial-gradient(1px 1px at 25% 60%, rgba(255,255,255,0.2) 0%, transparent 100%),
-  radial-gradient(1px 1px at 40% 30%, rgba(200,169,110,0.5) 0%, transparent 100%),
-  radial-gradient(1px 1px at 55% 80%, rgba(255,255,255,0.3) 0%, transparent 100%),
-  radial-gradient(1px 1px at 70% 20%, rgba(255,255,255,0.2) 0%, transparent 100%),
-  radial-gradient(1px 1px at 85% 70%, rgba(0,212,255,0.4) 0%, transparent 100%),
-  radial-gradient(1px 1px at 15% 85%, rgba(155,89,255,0.4) 0%, transparent 100%),
-  radial-gradient(1px 1px at 92% 45%, rgba(255,255,255,0.3) 0%, transparent 100%),
-  radial-gradient(1px 1px at 62% 55%, rgba(255,255,255,0.15) 0%, transparent 100%),
-  radial-gradient(1px 1px at 78% 90%, rgba(255,255,255,0.25) 0%, transparent 100%);
-pointer-events:none;z-index:0}
+/* STARS */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:
+  radial-gradient(1px 1px at 10% 15%,rgba(255,255,255,0.45) 0%,transparent 100%),
+  radial-gradient(1px 1px at 25% 60%,rgba(255,255,255,0.2) 0%,transparent 100%),
+  radial-gradient(1px 1px at 40% 30%,rgba(200,169,110,0.55) 0%,transparent 100%),
+  radial-gradient(1px 1px at 55% 80%,rgba(255,255,255,0.3) 0%,transparent 100%),
+  radial-gradient(1px 1px at 70% 20%,rgba(255,255,255,0.2) 0%,transparent 100%),
+  radial-gradient(1px 1px at 85% 70%,rgba(0,212,255,0.45) 0%,transparent 100%),
+  radial-gradient(1px 1px at 15% 85%,rgba(155,89,255,0.45) 0%,transparent 100%),
+  radial-gradient(1px 1px at 92% 45%,rgba(255,255,255,0.3) 0%,transparent 100%),
+  radial-gradient(1px 1px at 62% 55%,rgba(255,255,255,0.15) 0%,transparent 100%),
+  radial-gradient(1px 1px at 78% 90%,rgba(255,255,255,0.25) 0%,transparent 100%)}
 
 /* TOP BAR */
 #top-bar{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:linear-gradient(180deg,rgba(4,4,10,0.98) 0%,transparent 100%);border-bottom:1px solid var(--border)}
 #player-info{display:flex;align-items:center;gap:10px}
 #avatar-btn{width:38px;height:38px;border-radius:50%;border:2px solid var(--gold);overflow:hidden;cursor:pointer;flex-shrink:0;box-shadow:0 0 12px rgba(200,169,110,0.35);transition:box-shadow 0.2s}
-#avatar-btn:hover{box-shadow:0 0 22px rgba(200,169,110,0.6)}
+#avatar-btn:hover{box-shadow:0 0 22px rgba(200,169,110,0.65)}
 #avatar-btn img{width:100%;height:100%;object-fit:cover}
 .info-block{display:flex;flex-direction:column;gap:2px}
 .info-label{font-size:9px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase}
-.info-val{font-size:12px;font-weight:700;color:var(--gold-light);font-family:'Cinzel',serif}
-
-/* XP BAR */
+.info-val{font-size:12px;font-weight:700;color:var(--gold-light)}
 #xp-bar-wrap{height:3px;background:rgba(200,169,110,0.15);border-radius:2px;width:80px;margin-top:3px}
 #xp-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold-dim),var(--gold));border-radius:2px;transition:width 0.4s ease}
-
-/* RESOURCES */
-#resources-bar{display:flex;align-items:center;gap:8px}
-.res-pill{display:flex;align-items:center;gap:6px;background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:20px;padding:5px 10px}
-.res-pill svg{width:18px;height:18px;flex-shrink:0}
-.res-val{font-size:13px;font-weight:700}
+#resources-bar{display:flex;align-items:center;gap:6px}
+.res-pill{display:flex;align-items:center;gap:5px;background:rgba(0,0,0,0.42);border:1px solid var(--border);border-radius:20px;padding:5px 9px}
+.res-pill svg{width:16px;height:16px;flex-shrink:0}
+.res-val{font-size:12px;font-weight:700}
 #sphere-count{color:var(--cyan);text-shadow:0 0 8px rgba(0,212,255,0.5)}
 #seal-amount{color:var(--green);text-shadow:0 0 8px rgba(0,255,136,0.4)}
-
-/* STREAK */
-#streak-badge{display:flex;align-items:center;gap:5px;font-size:10px;color:#ff8844;letter-spacing:1px;background:rgba(255,100,30,0.1);border:1px solid rgba(255,100,30,0.25);border-radius:12px;padding:3px 8px;transition:all 0.3s}
+#streak-badge{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--orange);letter-spacing:1px;background:rgba(255,100,30,0.1);border:1px solid rgba(255,100,30,0.25);border-radius:12px;padding:3px 7px;transition:all 0.3s;cursor:default}
 #streak-badge.hot{border-color:rgba(255,150,50,0.5);box-shadow:0 0 10px rgba(255,100,30,0.3)}
 
 /* RUNE TOGGLE */
-#rune-toggle-btn{position:fixed;top:62px;right:14px;z-index:51;width:32px;height:32px;border-radius:50%;background:rgba(4,4,10,0.7);border:1px solid rgba(200,169,110,0.3);color:var(--gold);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.25s;backdrop-filter:blur(6px);box-shadow:0 0 10px rgba(200,169,110,0.1)}
-#rune-toggle-btn:hover{border-color:rgba(200,169,110,0.6);box-shadow:0 0 18px rgba(200,169,110,0.25)}
-#rune-toggle-btn.runes-hidden{border-color:var(--border);color:var(--text-dim);box-shadow:none;opacity:0.55}
+#rune-toggle-btn{position:fixed;top:62px;right:14px;z-index:51;width:30px;height:30px;border-radius:50%;background:rgba(4,4,10,0.8);border:1px solid rgba(200,169,110,0.3);color:var(--gold);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.25s;backdrop-filter:blur(6px)}
+#rune-toggle-btn:hover{box-shadow:0 0 14px rgba(200,169,110,0.25)}
+#rune-toggle-btn.runes-hidden{border-color:var(--border);color:var(--text-dim);opacity:0.5}
 #rune-slots-ring{transition:opacity 0.35s ease}
 #rune-slots-ring.hidden{opacity:0;pointer-events:none}
+
+/* BOOSTER HUD */
+#booster-hud{position:fixed;top:100px;left:12px;z-index:40;display:none;flex-direction:column;gap:4px}
+#booster-hud.show{display:flex}
+.booster-active-pill{display:flex;align-items:center;gap:6px;background:rgba(155,89,255,0.12);border:1px solid rgba(155,89,255,0.28);border-radius:20px;padding:4px 10px;font-size:9.5px;color:var(--purple)}
 
 /* CANVAS */
 #canvas-wrap{position:fixed;top:96px;bottom:72px;left:0;right:0;display:flex;align-items:center;justify-content:center;z-index:1}
 #canvas-inner{position:relative;display:flex;align-items:center;justify-content:center}
-#sealCanvas{display:block;cursor:pointer;border-radius:50%;transition:filter 0.3s;filter:drop-shadow(0 0 30px rgba(200,169,110,0.08))}
-#sealCanvas:active{filter:brightness(1.2) drop-shadow(0 0 40px rgba(200,169,110,0.25))}
-
-/* CLICK PARTICLES */
-.particle{position:fixed;pointer-events:none;z-index:60;font-size:14px;font-weight:700;animation:particleFly 1.2s ease-out forwards;white-space:nowrap}
-@keyframes particleFly{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-80px) scale(0.5)}}
-
-/* HINT */
+#sealCanvas{display:block;cursor:pointer;border-radius:50%;transition:filter 0.3s;filter:drop-shadow(0 0 28px rgba(200,169,110,0.08))}
+#sealCanvas:active{filter:brightness(1.18) drop-shadow(0 0 38px rgba(200,169,110,0.25))}
+#rune-slots-ring{position:absolute;top:50%;left:50%;width:0;height:0;pointer-events:none;z-index:2}
+.rune-slot-el{position:absolute;width:44px;height:44px;border-radius:50%;border:1.5px dashed rgba(200,169,110,0.2);background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;transform:translate(-50%,-50%);transition:border-color 0.3s,box-shadow 0.3s;backdrop-filter:blur(4px)}
+.rune-slot-el.filled{border-style:solid;border-color:var(--rune-color,#fff);box-shadow:0 0 16px color-mix(in srgb,var(--rune-color,#fff) 45%,transparent)}
+.slot-symbol{font-size:1.25em;line-height:1;color:var(--rune-color,rgba(255,255,255,0.15));text-shadow:0 0 10px var(--rune-color,transparent);transition:all 0.3s}
 #click-hint{position:absolute;bottom:-30px;left:50%;transform:translateX(-50%);font-size:9px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;pointer-events:none;animation:pulseHint 2.5s ease-in-out infinite}
 @keyframes pulseHint{0%,100%{opacity:0.3}50%{opacity:0.7}}
+
+/* SEAL HISTORY FEED */
+#history-feed{position:fixed;bottom:76px;left:0;right:0;z-index:9;display:flex;justify-content:center;gap:5px;padding:0 12px;pointer-events:none;overflow:hidden}
+.hf-pill{display:flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;border:1px solid;font-size:9px;letter-spacing:1px;white-space:nowrap;animation:hfSlide 0.3s ease forwards;opacity:0;flex-shrink:0}
+@keyframes hfSlide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* PARTICLES */
+.particle{position:fixed;pointer-events:none;z-index:60;font-size:13px;font-weight:700;animation:particleFly 1.1s ease-out forwards;white-space:nowrap}
+@keyframes particleFly{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-75px) scale(0.4)}}
 
 /* COMBO */
 #combo-display{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:55;text-align:center;opacity:0;transition:opacity 0.2s}
 #combo-display.show{opacity:1}
-#combo-text{font-family:'Cinzel Decorative',serif;font-size:clamp(14px,4vw,22px);font-weight:700;letter-spacing:2px;animation:comboPop 0.35s ease}
+.rf-bg{position:absolute;inset:-40px -60px;border-radius:50%;filter:blur(40px);opacity:0.12;pointer-events:none}
+#combo-text{font-family:'Cinzel Decorative',serif;font-size:clamp(14px,4vw,22px);font-weight:700;letter-spacing:2px;animation:comboPop 0.35s ease;position:relative}
 @keyframes comboPop{0%{transform:scale(0.4) translateY(20px);opacity:0}60%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
-
-/* RUNE SLOTS RING */
-#rune-slots-ring{position:absolute;top:50%;left:50%;width:0;height:0;pointer-events:none;z-index:2}
-.rune-slot-el{position:absolute;width:46px;height:46px;border-radius:50%;border:1.5px dashed rgba(200,169,110,0.2);background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;transform:translate(-50%,-50%);transition:border-color 0.3s,box-shadow 0.3s;backdrop-filter:blur(4px)}
-.rune-slot-el.filled{border-style:solid;border-color:var(--rune-color,#fff);box-shadow:0 0 18px color-mix(in srgb,var(--rune-color,#fff) 50%,transparent),inset 0 0 10px color-mix(in srgb,var(--rune-color,#fff) 15%,transparent)}
-.slot-symbol{font-size:1.3em;line-height:1;color:var(--rune-color,rgba(255,255,255,0.15));text-shadow:0 0 12px var(--rune-color,transparent);transition:all 0.3s}
-
-/* BOTTOM NAV */
-#bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:50;display:flex;justify-content:space-around;align-items:center;padding:6px 4px 10px;background:linear-gradient(0deg,rgba(4,4,10,0.98) 0%,transparent 100%);border-top:1px solid var(--border)}
-.nav-btn{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;color:var(--text-dim);font-family:'Cinzel',serif;font-size:8px;letter-spacing:1px;cursor:pointer;padding:4px 10px;border-radius:8px;transition:color 0.2s,background 0.2s;text-transform:uppercase;position:relative}
-.nav-btn .nav-icon{font-size:20px;transition:transform 0.2s}
-.nav-btn:hover,.nav-btn.active{color:var(--gold)}
-.nav-btn:hover .nav-icon{transform:translateY(-2px)}
-.nav-badge{position:absolute;top:1px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 6px var(--red);display:none}
-.nav-badge.show{display:block}
-
-/* PANELS */
-.panel-overlay{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);display:none;align-items:flex-end;justify-content:center}
-.panel-overlay.open{display:flex}
-.panel{width:100%;max-width:480px;background:var(--surface);border-top:1px solid var(--border2);border-radius:22px 22px 0 0;padding:0 18px 36px;max-height:80vh;overflow-y:auto;animation:slideUp 0.28s ease;position:relative}
-@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
-.panel-handle{width:36px;height:4px;border-radius:2px;background:var(--border2);margin:12px auto 18px}
-.panel-close{position:absolute;top:12px;right:16px;background:none;border:none;color:var(--text-dim);font-size:22px;cursor:pointer;line-height:1;padding:4px}
-.panel h2{font-family:'Cinzel Decorative',serif;font-size:15px;letter-spacing:2px;color:var(--gold);margin-bottom:18px;text-align:center}
-.panel-tabs{display:flex;gap:4px;margin-bottom:16px;background:var(--surface2);border-radius:10px;padding:4px}
-.ptab{flex:1;background:none;border:none;color:var(--text-dim);font-family:'Cinzel',serif;font-size:10px;letter-spacing:1px;padding:7px 4px;border-radius:7px;cursor:pointer;transition:all 0.2s;text-transform:uppercase}
-.ptab.active{background:var(--surface3);color:var(--gold);border:1px solid rgba(200,169,110,0.2)}
-
-/* RUNE CARD (collection) */
-.rune-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.rune-card{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:all 0.25s;position:relative;overflow:hidden}
-.rune-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity 0.3s}
-.rune-card.owned{border-color:color-mix(in srgb,var(--rc) 40%,transparent);box-shadow:0 0 16px color-mix(in srgb,var(--rc) 15%,transparent)}
-.rune-card.owned::before{background:radial-gradient(ellipse at 50% 0%,color-mix(in srgb,var(--rc) 12%,transparent) 0%,transparent 70%);opacity:1}
-.rune-card.equipped{border-color:color-mix(in srgb,var(--rc) 70%,transparent);box-shadow:0 0 20px color-mix(in srgb,var(--rc) 25%,transparent)}
-.rune-card:not(.owned){opacity:0.4;filter:grayscale(0.8);cursor:default}
-.rune-card:not(.owned):hover{transform:none;box-shadow:none}
-.rune-card.owned:hover{transform:translateY(-3px);box-shadow:0 8px 24px color-mix(in srgb,var(--rc) 25%,transparent)}
-.rune-symbol{font-size:2.2em;line-height:1;text-shadow:0 0 16px var(--rc)}
-.rune-card:not(.owned) .rune-symbol{color:rgba(255,255,255,0.15);text-shadow:none}
-.rune-card.owned .rune-symbol{color:var(--rc)}
-.rune-name{font-size:10px;letter-spacing:1px;color:var(--text-mid);text-transform:uppercase}
-.rune-card.owned .rune-name{color:var(--text)}
-.rune-rarity-dot{width:6px;height:6px;border-radius:50%;background:var(--rc)}
-.rune-card:not(.owned) .rune-rarity-dot{background:rgba(255,255,255,0.15)}
-.equipped-badge{position:absolute;top:6px;right:6px;font-size:8px;letter-spacing:1px;background:rgba(0,0,0,0.6);color:var(--rc);border:1px solid color-mix(in srgb,var(--rc) 50%,transparent);border-radius:4px;padding:2px 5px}
-.lock-badge{position:absolute;top:6px;left:6px;font-size:10px;opacity:0.3}
-
-/* RUNE FILTER BAR */
-.filter-bar{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px}
-.filter-btn{background:var(--surface2);border:1px solid var(--border);border-radius:20px;color:var(--text-dim);font-family:'Cinzel',serif;font-size:9px;letter-spacing:1px;padding:5px 12px;cursor:pointer;white-space:nowrap;transition:all 0.2s;flex-shrink:0;text-transform:uppercase}
-.filter-btn.active{background:rgba(200,169,110,0.12);border-color:rgba(200,169,110,0.35);color:var(--gold)}
-
-/* RUNE DETAIL PANEL */
-#rune-detail{background:var(--surface2);border:1px solid var(--border2);border-radius:14px;padding:18px;margin-top:12px;display:none}
-#rune-detail.open{display:block;animation:fadeIn 0.2s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.rd-header{display:flex;align-items:center;gap:14px;margin-bottom:14px}
-.rd-symbol{font-size:2.8em;line-height:1}
-.rd-info .rd-name{font-size:16px;font-weight:700;color:var(--gold-light)}
-.rd-info .rd-rarity{font-size:10px;letter-spacing:2px;margin-top:3px}
-.rd-info .rd-bonus{font-size:12px;color:var(--text-mid);margin-top:5px}
-.rd-actions{display:flex;gap:8px;flex-wrap:wrap}
-.rd-btn{font-family:'Cinzel',serif;font-size:10px;font-weight:700;letter-spacing:1px;padding:8px 16px;border-radius:8px;cursor:pointer;border:1px solid;transition:all 0.2s;text-transform:uppercase}
-.rd-equip{background:rgba(200,169,110,0.1);border-color:rgba(200,169,110,0.35);color:var(--gold)}
-.rd-equip:hover{background:rgba(200,169,110,0.2);box-shadow:0 0 12px rgba(200,169,110,0.2)}
-.rd-unequip{background:rgba(155,89,255,0.1);border-color:rgba(155,89,255,0.35);color:var(--purple)}
-.rd-delete{background:rgba(255,68,102,0.08);border-color:rgba(255,68,102,0.3);color:var(--red)}
-.rd-delete:hover{background:rgba(255,68,102,0.18);box-shadow:0 0 10px rgba(255,68,102,0.2)}
-.slot-selector{display:flex;gap:8px;align-items:center;margin-top:10px}
-.slot-picker{width:44px;height:44px;border-radius:50%;border:1.5px dashed var(--border2);background:var(--surface);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.4em;transition:all 0.2s}
-.slot-picker:hover{border-style:solid;transform:scale(1.1)}
-.slot-picker.has-rune{border-style:solid}
-.slot-picker-label{font-size:10px;color:var(--text-dim);letter-spacing:1px}
-
-/* SHOP */
-.shop-section-title{font-size:10px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;margin:16px 0 10px;padding-left:2px}
-.shop-item{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border-radius:12px;background:var(--surface2);border:1px solid var(--border);margin-bottom:7px;transition:border-color 0.2s}
-.shop-item:hover{border-color:var(--border2)}
-.shop-item .item-info{display:flex;flex-direction:column;gap:3px}
-.shop-item .item-name{font-size:13px;color:var(--text)}
-.shop-item .item-desc{font-size:10px;color:var(--text-dim)}
-.shop-item .item-price{font-size:11px;color:var(--cyan);font-weight:700}
-.shop-btn{background:linear-gradient(135deg,rgba(0,212,255,0.12),rgba(0,212,255,0.04));border:1px solid rgba(0,212,255,0.25);color:var(--cyan);font-family:'Cinzel',serif;font-size:10px;font-weight:700;letter-spacing:1px;padding:7px 14px;border-radius:8px;cursor:pointer;transition:all 0.2s}
-.shop-btn:hover{background:rgba(0,212,255,0.22);box-shadow:0 0 14px rgba(0,212,255,0.25)}
-
-/* BOOSTER SHOP */
-.booster-item{display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:12px;background:var(--surface2);border:1px solid var(--border);margin-bottom:7px}
-.booster-icon{font-size:26px;flex-shrink:0;width:42px;text-align:center}
-.booster-info{flex:1}
-.booster-name{font-size:12px;font-weight:700;color:var(--text)}
-.booster-desc{font-size:10px;color:var(--text-dim);margin-top:2px}
-.booster-price{font-size:10px;color:var(--gold);font-weight:700;margin-top:4px}
-.booster-btn{background:rgba(200,169,110,0.1);border:1px solid rgba(200,169,110,0.25);color:var(--gold);font-family:'Cinzel',serif;font-size:10px;padding:7px 12px;border-radius:8px;cursor:pointer;transition:all 0.2s;white-space:nowrap}
-.booster-btn:hover{background:rgba(200,169,110,0.2)}
-
-/* QUESTS */
-.quest-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:var(--surface2);border:1px solid var(--border);margin-bottom:8px;position:relative;overflow:hidden}
-.quest-item.complete{border-color:rgba(0,255,136,0.3)}
-.quest-progress-bg{position:absolute;inset:0;background:rgba(0,255,136,0.04);transform-origin:left;transition:transform 0.5s}
-.quest-icon{font-size:20px;flex-shrink:0;z-index:1}
-.quest-body{flex:1;z-index:1}
-.quest-text{font-size:11px;color:var(--text)}
-.quest-prog{font-size:10px;color:var(--text-dim);margin-top:3px}
-.quest-reward{font-size:11px;color:var(--gold);font-weight:700;z-index:1;flex-shrink:0}
-.quest-done{font-size:16px;z-index:1}
-.claim-btn{background:linear-gradient(135deg,rgba(0,255,136,0.15),rgba(0,255,136,0.05));border:1px solid rgba(0,255,136,0.3);color:var(--green);font-family:'Cinzel',serif;font-size:9px;font-weight:700;padding:6px 10px;border-radius:6px;cursor:pointer;transition:all 0.2s;z-index:1}
-.claim-btn:hover{background:rgba(0,255,136,0.25)}
-
-/* PROFILE */
-#profile-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding:16px;background:var(--surface2);border:1px solid var(--border);border-radius:14px}
-#profile-header img{width:56px;height:56px;border-radius:50%;border:2px solid var(--gold);box-shadow:0 0 16px rgba(200,169,110,0.3)}
-.profile-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
-.stat-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:13px;text-align:center;position:relative;overflow:hidden}
-.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--sc-color,var(--gold));opacity:0.6}
-.sc-val{font-size:20px;font-weight:700;color:var(--sc-color,var(--gold));text-shadow:0 0 10px color-mix(in srgb,var(--sc-color,var(--gold)) 40%,transparent)}
-.sc-label{font-size:9px;color:var(--text-dim);margin-top:4px;letter-spacing:1px;text-transform:uppercase}
-
-/* CHESTS */
-.chest-row{display:flex;align-items:center;gap:14px;padding:14px;border-radius:14px;background:var(--surface2);border:1px solid var(--border);margin-bottom:10px;transition:border-color 0.2s}
-.chest-icon{font-size:34px;flex-shrink:0;filter:drop-shadow(0 0 8px rgba(155,89,255,0.4))}
-.chest-info{flex:1}
-.chest-name{font-size:13px;font-weight:700;color:var(--text)}
-.chest-rarity{font-size:9px;letter-spacing:1px;margin-top:2px;text-transform:uppercase}
-.chest-count{font-size:10px;color:var(--text-dim);margin-top:5px}
-.chest-btns{display:flex;gap:6px;flex-direction:column}
-.chest-open-btn{font-family:'Cinzel',serif;font-size:9px;font-weight:700;padding:6px 12px;border-radius:7px;cursor:pointer;border:1px solid rgba(155,89,255,0.4);background:rgba(155,89,255,0.1);color:var(--purple);transition:all 0.2s;letter-spacing:0.5px}
-.chest-open-btn:hover{background:rgba(155,89,255,0.22)}
-.chest-open-btn:disabled{opacity:0.4;cursor:default}
-.chest-buy-btn{font-family:'Cinzel',serif;font-size:9px;font-weight:700;padding:6px 12px;border-radius:7px;cursor:pointer;border:1px solid rgba(200,169,110,0.3);background:rgba(200,169,110,0.08);color:var(--gold);transition:all 0.2s;letter-spacing:0.5px}
-.chest-buy-btn:hover{background:rgba(200,169,110,0.18)}
-#chest-result{text-align:center;padding:18px 14px;margin-top:10px;border-radius:12px;background:var(--surface2);border:1px solid;display:none}
-.cr-symbol{font-size:3em;margin-bottom:6px;animation:popIn 0.4s ease}
-@keyframes popIn{0%{transform:scale(0.2) rotate(-20deg);opacity:0}60%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
-.cr-name{font-size:15px;font-weight:700;margin-bottom:4px}
-.cr-bonus{font-size:11px;color:var(--text-dim)}
+#combo-sub{font-size:10px;letter-spacing:2px;opacity:0.65;margin-top:4px;position:relative}
 
 /* RARITY FLASH */
 #rarity-flash{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:65;text-align:center;opacity:0;transition:opacity 0.3s}
 #rarity-flash.show{opacity:1}
-.rf-bg{position:absolute;inset:-40px -60px;border-radius:50%;filter:blur(40px);opacity:0.15;animation:rfPulse 0.5s ease}
-@keyframes rfPulse{0%{transform:scale(0.3);opacity:0}100%{transform:scale(1);opacity:0.15}}
 .rf-title{font-family:'Cinzel Decorative',serif;font-size:clamp(16px,5vw,26px);font-weight:700;letter-spacing:2px;text-shadow:0 0 30px currentColor;animation:rfScale 0.4s ease;position:relative}
 .rf-sub{font-size:10px;letter-spacing:3px;opacity:0.65;margin-top:5px;position:relative}
 @keyframes rfScale{0%{transform:scale(0.4);opacity:0}60%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
 
-/* BOOSTER ACTIVE */
-#booster-hud{position:fixed;top:100px;left:14px;z-index:40;display:none;flex-direction:column;gap:4px}
-#booster-hud.show{display:flex}
-.booster-active-pill{display:flex;align-items:center;gap:6px;background:rgba(155,89,255,0.12);border:1px solid rgba(155,89,255,0.3);border-radius:20px;padding:4px 10px;font-size:10px;color:var(--purple)}
+/* BOTTOM NAV */
+#bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:50;display:flex;justify-content:space-around;align-items:center;padding:6px 2px 10px;background:linear-gradient(0deg,rgba(4,4,10,0.98) 0%,transparent 100%);border-top:1px solid var(--border)}
+.nav-btn{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;color:var(--text-dim);font-family:'Cinzel',serif;font-size:7px;letter-spacing:0.5px;cursor:pointer;padding:3px 6px;border-radius:8px;transition:color 0.2s;text-transform:uppercase;position:relative}
+.nav-btn .nav-icon{font-size:18px;transition:transform 0.2s}
+.nav-btn:hover,.nav-btn.active{color:var(--gold)}
+.nav-btn:hover .nav-icon{transform:translateY(-2px)}
+.nav-badge{position:absolute;top:0px;right:3px;width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 5px var(--red);display:none}
+.nav-badge.show{display:block}
+
+/* PANELS */
+.panel-overlay{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,0.78);backdrop-filter:blur(6px);display:none;align-items:flex-end;justify-content:center}
+.panel-overlay.open{display:flex}
+.panel{width:100%;max-width:480px;background:var(--surface);border-top:1px solid var(--border2);border-radius:22px 22px 0 0;padding:0 16px 36px;max-height:83vh;overflow-y:auto;animation:slideUp 0.28s ease;position:relative}
+@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+.panel-handle{width:36px;height:4px;border-radius:2px;background:var(--border2);margin:12px auto 16px}
+.panel-close{position:absolute;top:12px;right:14px;background:none;border:none;color:var(--text-dim);font-size:20px;cursor:pointer;line-height:1;padding:4px}
+.panel h2{font-family:'Cinzel Decorative',serif;font-size:15px;letter-spacing:2px;color:var(--gold);margin-bottom:16px;text-align:center}
+.panel-tabs{display:flex;gap:3px;margin-bottom:14px;background:var(--surface2);border-radius:10px;padding:3px}
+.ptab{flex:1;background:none;border:none;color:var(--text-dim);font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.8px;padding:7px 2px;border-radius:7px;cursor:pointer;transition:all 0.2s;text-transform:uppercase}
+.ptab.active{background:var(--surface3);color:var(--gold);border:1px solid rgba(200,169,110,0.2)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* SECTION CARDS */
+.section-card{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px}
+.section-title{font-size:10px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;margin-bottom:12px}
+
+/* DAILY LOGIN */
+.daily-days{display:flex;gap:5px;overflow-x:auto;padding-bottom:4px}
+.daily-day{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 6px;border-radius:10px;border:1px solid var(--border);background:var(--surface);min-width:38px;flex-shrink:0;transition:all 0.2s}
+.daily-day.claimed{border-color:rgba(0,255,136,0.35);background:rgba(0,255,136,0.05)}
+.daily-day.claimed .dd-num{color:var(--green)}
+.daily-day.today{border-color:rgba(200,169,110,0.5);background:rgba(200,169,110,0.07);animation:todayPulse 2.5s ease-in-out infinite}
+@keyframes todayPulse{0%,100%{box-shadow:0 0 0 rgba(200,169,110,0)}50%{box-shadow:0 0 12px rgba(200,169,110,0.28)}}
+.daily-day.future{opacity:0.3}
+.dd-num{font-size:8px;color:var(--text-dim);letter-spacing:1px}
+.dd-icon{font-size:14px}
+.dd-val{font-size:8px;color:var(--gold);font-weight:700}
+.daily-claim-btn{width:100%;margin-top:10px;background:linear-gradient(135deg,rgba(200,169,110,0.14),rgba(200,169,110,0.04));border:1px solid rgba(200,169,110,0.35);color:var(--gold);font-family:'Cinzel',serif;font-size:10px;font-weight:700;letter-spacing:1px;padding:9px;border-radius:9px;cursor:pointer;transition:all 0.2s;text-transform:uppercase}
+.daily-claim-btn:hover{background:rgba(200,169,110,0.22);box-shadow:0 0 14px rgba(200,169,110,0.2)}
+.daily-claim-btn:disabled{opacity:0.35;cursor:default;box-shadow:none}
+
+/* PROFILE STATS */
+.profile-stats{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:12px}
+.stat-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--sc-color,var(--gold));opacity:0.55}
+.sc-val{font-size:18px;font-weight:700;color:var(--sc-color,var(--gold));text-shadow:0 0 8px color-mix(in srgb,var(--sc-color,var(--gold)) 35%,transparent)}
+.sc-label{font-size:8.5px;color:var(--text-dim);margin-top:3px;letter-spacing:1px;text-transform:uppercase}
 
 /* MINING */
-#mining-section{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px}
-.mining-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.mining-title{font-size:12px;letter-spacing:2px;color:var(--text-mid);text-transform:uppercase}
-#mining-btn{background:linear-gradient(135deg,rgba(0,255,136,0.12),rgba(0,255,136,0.04));border:1px solid rgba(0,255,136,0.3);color:var(--green);font-family:'Cinzel',serif;font-size:10px;font-weight:700;letter-spacing:1px;padding:8px 16px;border-radius:8px;cursor:pointer;transition:all 0.2s}
-#mining-btn:hover:not([disabled]){background:rgba(0,255,136,0.2);box-shadow:0 0 14px rgba(0,255,136,0.3)}
+#mining-section{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:12px}
+.mining-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.mining-title{font-size:10px;letter-spacing:2px;color:var(--text-mid);text-transform:uppercase}
+#mining-btn{background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.28);color:var(--green);font-family:'Cinzel',serif;font-size:9.5px;font-weight:700;letter-spacing:0.8px;padding:8px 14px;border-radius:8px;cursor:pointer;transition:all 0.2s}
+#mining-btn:hover:not([disabled]){background:rgba(0,255,136,0.18);box-shadow:0 0 12px rgba(0,255,136,0.25)}
 #mining-btn[disabled]{color:var(--text-dim);border-color:var(--border);cursor:default;background:var(--surface)}
-#mining-progress-bar{height:4px;background:rgba(0,255,136,0.1);border-radius:2px;margin-top:4px}
-#mining-fill{height:100%;background:linear-gradient(90deg,rgba(0,255,136,0.5),var(--green));border-radius:2px;width:100%;transition:width 1s linear}
+#mining-progress-bar{height:4px;background:rgba(0,255,136,0.08);border-radius:2px;margin-top:4px}
+#mining-fill{height:100%;background:linear-gradient(90deg,rgba(0,255,136,0.4),var(--green));border-radius:2px;transition:width 1s linear}
+#mining-label{font-size:9px;color:var(--text-dim);margin-top:5px;letter-spacing:1px}
 
-/* DELETE CONFIRM */
-#delete-confirm{background:rgba(255,68,102,0.06);border:1px solid rgba(255,68,102,0.25);border-radius:10px;padding:12px 16px;margin-top:8px;display:none;animation:fadeIn 0.2s ease}
+/* RUNE GRID */
+.rune-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.rune-card{background:var(--surface2);border:1px solid var(--border);border-radius:13px;padding:13px 8px;display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;transition:all 0.25s;position:relative;overflow:hidden}
+.rune-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity 0.3s}
+.rune-card.owned{border-color:color-mix(in srgb,var(--rc) 40%,transparent);box-shadow:0 0 14px color-mix(in srgb,var(--rc) 12%,transparent)}
+.rune-card.owned::before{background:radial-gradient(ellipse at 50% 0%,color-mix(in srgb,var(--rc) 10%,transparent) 0%,transparent 70%);opacity:1}
+.rune-card.equipped{border-color:color-mix(in srgb,var(--rc) 65%,transparent);box-shadow:0 0 18px color-mix(in srgb,var(--rc) 22%,transparent)}
+.rune-card:not(.owned){opacity:0.38;filter:grayscale(0.85);cursor:default}
+.rune-card.owned:hover{transform:translateY(-3px);box-shadow:0 8px 22px color-mix(in srgb,var(--rc) 22%,transparent)}
+.rune-symbol{font-size:2em;line-height:1}
+.rune-card.owned .rune-symbol{color:var(--rc);text-shadow:0 0 14px var(--rc)}
+.rune-card:not(.owned) .rune-symbol{color:rgba(255,255,255,0.12);text-shadow:none}
+.rune-name{font-size:9.5px;letter-spacing:1px;color:var(--text-mid);text-transform:uppercase}
+.rune-card.owned .rune-name{color:var(--text)}
+.rune-rarity-dot{width:5px;height:5px;border-radius:50%;background:var(--rc)}
+.rune-card:not(.owned) .rune-rarity-dot{background:rgba(255,255,255,0.12)}
+.equipped-badge{position:absolute;top:5px;right:5px;font-size:7px;letter-spacing:0.8px;background:rgba(0,0,0,0.7);color:var(--rc);border:1px solid color-mix(in srgb,var(--rc) 45%,transparent);border-radius:4px;padding:2px 4px}
+.lock-badge{position:absolute;top:5px;left:5px;font-size:9px;opacity:0.25}
+.filter-bar{display:flex;gap:5px;margin-bottom:10px;overflow-x:auto;padding-bottom:2px}
+.filter-btn{background:var(--surface2);border:1px solid var(--border);border-radius:20px;color:var(--text-dim);font-family:'Cinzel',serif;font-size:8.5px;letter-spacing:0.8px;padding:5px 11px;cursor:pointer;white-space:nowrap;transition:all 0.2s;flex-shrink:0;text-transform:uppercase}
+.filter-btn.active{background:rgba(200,169,110,0.1);border-color:rgba(200,169,110,0.35);color:var(--gold)}
+
+/* RUNE DETAIL */
+#rune-detail{background:var(--surface2);border:1px solid var(--border2);border-radius:13px;padding:16px;margin-top:10px;display:none}
+#rune-detail.open{display:block;animation:fadeIn 0.2s ease}
+.rd-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.rd-symbol{font-size:2.6em;line-height:1}
+.rd-info .rd-name{font-size:15px;font-weight:700;color:var(--gold-light)}
+.rd-info .rd-rarity{font-size:9px;letter-spacing:2px;margin-top:3px}
+.rd-info .rd-bonus{font-size:11px;color:var(--text-mid);margin-top:4px}
+.rd-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.rd-btn{font-family:'Cinzel',serif;font-size:9.5px;font-weight:700;letter-spacing:0.8px;padding:8px 14px;border-radius:8px;cursor:pointer;border:1px solid;transition:all 0.2s;text-transform:uppercase}
+.rd-equip{background:rgba(200,169,110,0.08);border-color:rgba(200,169,110,0.3);color:var(--gold)}
+.rd-equip:hover{background:rgba(200,169,110,0.18)}
+.rd-unequip{background:rgba(155,89,255,0.08);border-color:rgba(155,89,255,0.3);color:var(--purple)}
+.rd-delete{background:rgba(255,68,102,0.06);border-color:rgba(255,68,102,0.28);color:var(--red)}
+.rd-delete:hover{background:rgba(255,68,102,0.16)}
+.slot-selector{display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap}
+.slot-picker{width:42px;height:42px;border-radius:50%;border:1.5px dashed var(--border2);background:var(--surface);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.35em;transition:all 0.2s}
+.slot-picker:hover{transform:scale(1.12)}
+.slot-picker.has-rune{border-style:solid}
+.slot-picker-label{font-size:10px;color:var(--text-dim);letter-spacing:1px}
+#delete-confirm{background:rgba(255,68,102,0.05);border:1px solid rgba(255,68,102,0.22);border-radius:10px;padding:12px 14px;margin-top:8px;display:none;animation:fadeIn 0.2s ease}
 #delete-confirm.open{display:block}
 .dc-text{font-size:11px;color:var(--text-mid);margin-bottom:10px}
-.dc-btns{display:flex;gap:8px}
-.dc-yes{background:rgba(255,68,102,0.15);border:1px solid rgba(255,68,102,0.4);color:var(--red);font-family:'Cinzel',serif;font-size:10px;font-weight:700;padding:7px 14px;border-radius:7px;cursor:pointer;transition:all 0.2s;flex:1}
-.dc-yes:hover{background:rgba(255,68,102,0.3)}
-.dc-no{background:none;border:1px solid var(--border);color:var(--text-dim);font-family:'Cinzel',serif;font-size:10px;padding:7px 14px;border-radius:7px;cursor:pointer;transition:all 0.2s;flex:1}
-.dc-no:hover{border-color:var(--border2);color:var(--text)}
+.dc-btns{display:flex;gap:7px}
+.dc-yes{background:rgba(255,68,102,0.12);border:1px solid rgba(255,68,102,0.38);color:var(--red);font-family:'Cinzel',serif;font-size:10px;font-weight:700;padding:7px 14px;border-radius:7px;cursor:pointer;transition:all 0.2s;flex:1}
+.dc-yes:hover{background:rgba(255,68,102,0.26)}
+.dc-no{background:none;border:1px solid var(--border);color:var(--text-dim);font-family:'Cinzel',serif;font-size:10px;padding:7px 14px;border-radius:7px;cursor:pointer;flex:1}
 
-/* PAYMENT MODAL */
+/* QUESTS */
+.quest-item{display:flex;align-items:center;gap:10px;padding:11px 13px;border-radius:11px;background:var(--surface2);border:1px solid var(--border);margin-bottom:7px;position:relative;overflow:hidden}
+.quest-item.complete{border-color:rgba(0,255,136,0.28)}
+.quest-progress-bg{position:absolute;inset:0;background:rgba(0,255,136,0.035);transform-origin:left;transition:transform 0.5s}
+.quest-icon{font-size:18px;flex-shrink:0;z-index:1}
+.quest-body{flex:1;z-index:1}
+.quest-text{font-size:11px;color:var(--text)}
+.quest-prog{font-size:9.5px;color:var(--text-dim);margin-top:2px}
+.quest-reward{font-size:10.5px;color:var(--gold);font-weight:700;z-index:1;flex-shrink:0}
+.quest-done{font-size:14px;z-index:1}
+.claim-btn{background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.28);color:var(--green);font-family:'Cinzel',serif;font-size:9px;font-weight:700;padding:5px 9px;border-radius:6px;cursor:pointer;transition:all 0.2s;z-index:1;white-space:nowrap}
+.claim-btn:hover{background:rgba(0,255,136,0.22)}
+
+/* ACHIEVEMENTS */
+.ach-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ach-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px;position:relative;overflow:hidden;transition:all 0.2s}
+.ach-card.unlocked{border-color:color-mix(in srgb,var(--ac,var(--gold)) 45%,transparent);box-shadow:0 0 14px color-mix(in srgb,var(--ac,var(--gold)) 12%,transparent)}
+.ach-card.unlocked::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--ac,var(--gold))}
+.ach-card:not(.unlocked){opacity:0.38;filter:grayscale(0.8)}
+.ach-icon{font-size:22px;margin-bottom:5px}
+.ach-name{font-size:10px;font-weight:700;color:var(--text);margin-bottom:2px}
+.ach-desc{font-size:8.5px;color:var(--text-dim);line-height:1.4}
+.ach-check{position:absolute;top:7px;right:8px;font-size:12px;color:var(--green)}
+.ach-date{position:absolute;bottom:6px;right:8px;font-size:7.5px;color:var(--text-dim);letter-spacing:0.5px}
+
+/* SHOP */
+.shop-section-title{font-size:9.5px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;margin:14px 0 8px}
+.shop-item{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:11px;background:var(--surface2);border:1px solid var(--border);margin-bottom:6px}
+.item-info{display:flex;flex-direction:column;gap:3px}
+.item-name{font-size:12px;color:var(--text)}
+.item-price{font-size:10px;color:var(--cyan);font-weight:700}
+.shop-btn{background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.25);color:var(--cyan);font-family:'Cinzel',serif;font-size:9.5px;font-weight:700;letter-spacing:0.8px;padding:7px 13px;border-radius:7px;cursor:pointer;transition:all 0.2s}
+.shop-btn:hover{background:rgba(0,212,255,0.2);box-shadow:0 0 12px rgba(0,212,255,0.2)}
+.booster-item{display:flex;align-items:center;gap:11px;padding:12px 13px;border-radius:11px;background:var(--surface2);border:1px solid var(--border);margin-bottom:6px}
+.booster-icon{font-size:24px;flex-shrink:0;width:36px;text-align:center}
+.booster-info{flex:1}
+.booster-name{font-size:11.5px;font-weight:700;color:var(--text)}
+.booster-desc{font-size:9.5px;color:var(--text-dim);margin-top:2px}
+.booster-price{font-size:9.5px;color:var(--gold);font-weight:700;margin-top:3px}
+.booster-btn{background:rgba(200,169,110,0.08);border:1px solid rgba(200,169,110,0.25);color:var(--gold);font-family:'Cinzel',serif;font-size:9.5px;padding:7px 11px;border-radius:7px;cursor:pointer;transition:all 0.2s;white-space:nowrap}
+.booster-btn:hover{background:rgba(200,169,110,0.18)}
+.booster-btn:disabled{opacity:0.4;cursor:default}
+
+/* CHESTS */
+.chest-row{display:flex;align-items:center;gap:12px;padding:13px;border-radius:13px;background:var(--surface2);border:1px solid var(--border);margin-bottom:9px}
+.chest-icon{font-size:30px;flex-shrink:0}
+.chest-info{flex:1}
+.chest-name{font-size:12px;font-weight:700;color:var(--text)}
+.chest-rarity{font-size:9px;letter-spacing:1px;margin-top:2px;text-transform:uppercase}
+.chest-count{font-size:9.5px;color:var(--text-dim);margin-top:4px}
+.chest-btns{display:flex;gap:5px;flex-direction:column}
+.chest-open-btn{font-family:'Cinzel',serif;font-size:9px;font-weight:700;padding:6px 11px;border-radius:7px;cursor:pointer;border:1px solid rgba(155,89,255,0.38);background:rgba(155,89,255,0.08);color:var(--purple);transition:all 0.2s}
+.chest-open-btn:hover{background:rgba(155,89,255,0.2)}
+.chest-open-btn:disabled{opacity:0.35;cursor:default}
+.chest-buy-btn{font-family:'Cinzel',serif;font-size:9px;font-weight:700;padding:6px 11px;border-radius:7px;cursor:pointer;border:1px solid rgba(200,169,110,0.28);background:rgba(200,169,110,0.06);color:var(--gold);transition:all 0.2s}
+.chest-buy-btn:hover{background:rgba(200,169,110,0.16)}
+#chest-result{text-align:center;padding:16px;margin-top:9px;border-radius:11px;background:var(--surface2);border:1px solid;display:none}
+.cr-symbol{font-size:2.8em;margin-bottom:5px;animation:popIn 0.4s ease}
+@keyframes popIn{0%{transform:scale(0.2) rotate(-20deg);opacity:0}60%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+.cr-name{font-size:14px;font-weight:700;margin-bottom:4px}
+.cr-bonus{font-size:11px;color:var(--text-dim)}
+
+/* SEAL GALLERY */
+.gallery-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.gallery-card{background:var(--surface2);border:1px solid var(--border);border-radius:13px;overflow:hidden;position:relative;cursor:pointer;transition:all 0.25s}
+.gallery-card:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,0.4)}
+.gallery-card canvas{width:100%;display:block}
+.gallery-card-info{padding:8px 10px}
+.gc-rarity{font-size:8px;letter-spacing:2px;text-transform:uppercase;font-weight:700}
+.gc-date{font-size:8px;color:var(--text-dim);margin-top:2px}
+.gc-shapes{font-size:9px;color:var(--text-mid);margin-top:2px}
+.gallery-empty{text-align:center;padding:40px 20px;color:var(--text-dim);font-size:11px;letter-spacing:1px}
+
+/* SEAL CODEX */
+.codex-entry{display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:11px;background:var(--surface2);border:1px solid var(--border);margin-bottom:7px;position:relative;overflow:hidden}
+.codex-entry.discovered{border-color:color-mix(in srgb,var(--ce-color,var(--gold)) 35%,transparent)}
+.codex-entry.discovered::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--ce-color,var(--gold))}
+.codex-entry:not(.discovered){opacity:0.35;filter:grayscale(0.8)}
+.ce-icon{font-size:24px;flex-shrink:0;width:34px;text-align:center}
+.ce-info{flex:1}
+.ce-name{font-size:12px;font-weight:700;color:var(--text)}
+.ce-entry.discovered .ce-name{color:var(--ce-color,var(--text))}
+.ce-desc{font-size:9.5px;color:var(--text-dim);margin-top:2px}
+.ce-reward{font-size:10px;color:var(--gold);font-weight:700}
+.ce-count{font-size:9px;color:var(--text-dim);margin-top:3px}
+.ce-new-badge{position:absolute;top:8px;right:10px;background:var(--red);color:#fff;font-size:7px;letter-spacing:1px;padding:2px 6px;border-radius:4px;font-weight:700}
+
+/* LEADERBOARD */
+.lb-row{display:flex;align-items:center;gap:10px;padding:10px 13px;border-radius:11px;background:var(--surface2);border:1px solid var(--border);margin-bottom:6px}
+.lb-row.is-me{border-color:rgba(200,169,110,0.35);background:rgba(200,169,110,0.04)}
+.lb-rank{font-size:13px;font-weight:700;color:var(--text-dim);min-width:22px;text-align:center;flex-shrink:0}
+.lb-rank.gold-rank{color:var(--gold)}
+.lb-avatar{width:32px;height:32px;border-radius:50%;overflow:hidden;flex-shrink:0;border:1.5px solid var(--border2)}
+.lb-avatar img{width:100%;height:100%;object-fit:cover}
+.lb-name{flex:1;font-size:11.5px;color:var(--text)}
+.lb-score{font-size:11px;font-weight:700;color:var(--green);flex-shrink:0}
+
+/* OFFLINE MODAL */
+#offline-overlay,#daily-modal-overlay{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,0.88);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center}
+#offline-overlay.open,#daily-modal-overlay.open{display:flex}
+.modal-box{background:var(--surface);border:1px solid rgba(200,169,110,0.28);border-radius:20px;padding:28px 24px;text-align:center;width:290px;animation:modalPop 0.35s ease;position:relative}
+@keyframes modalPop{from{transform:scale(0.75) translateY(20px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.modal-icon{font-size:3em;margin-bottom:8px}
+.modal-title{font-family:'Cinzel Decorative',serif;font-size:14px;letter-spacing:2px;color:var(--gold);margin-bottom:8px}
+.modal-val{font-size:28px;font-weight:700;margin-bottom:4px}
+.modal-sub{font-size:11px;color:var(--text-dim);margin-bottom:20px;line-height:1.5}
+.modal-btn{background:linear-gradient(135deg,rgba(200,169,110,0.15),rgba(200,169,110,0.05));border:1px solid rgba(200,169,110,0.35);color:var(--gold);font-family:'Cinzel',serif;font-size:12px;font-weight:700;padding:10px 28px;border-radius:9px;cursor:pointer;transition:all 0.2s;text-transform:uppercase}
+.modal-btn:hover{background:rgba(200,169,110,0.25);box-shadow:0 0 14px rgba(200,169,110,0.2)}
+
+/* PAYMENT */
 #payment-overlay{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center}
 #payment-overlay.open{display:flex}
-#payment-modal{background:var(--surface);border:1px solid var(--border2);border-radius:18px;padding:28px 28px 24px;text-align:center;width:290px;animation:modalPop 0.3s ease}
-@keyframes modalPop{from{transform:scale(0.75);opacity:0}to{transform:scale(1);opacity:1}}
+#payment-modal{background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:26px;text-align:center;width:280px;animation:modalPop 0.3s ease}
 #payment-modal h3{font-size:13px;letter-spacing:2px;color:var(--gold);margin-bottom:10px}
-.pm-spheres{font-size:32px;font-weight:700;color:var(--cyan);text-shadow:0 0 14px var(--cyan);margin-bottom:4px}
-.pm-detail{font-size:12px;color:var(--text-dim);margin-bottom:22px}
-.pm-btns{display:flex;gap:10px;justify-content:center}
-.pm-confirm{background:linear-gradient(135deg,rgba(0,212,255,0.2),rgba(0,212,255,0.06));border:1px solid rgba(0,212,255,0.4);color:var(--cyan);font-family:'Cinzel',serif;font-size:12px;font-weight:700;padding:10px 22px;border-radius:9px;cursor:pointer;transition:all 0.2s}
-.pm-confirm:hover{background:rgba(0,212,255,0.3)}
-.pm-confirm:disabled{opacity:0.5;cursor:default}
-.pm-cancel{background:none;border:1px solid var(--border);color:var(--text-dim);font-family:'Cinzel',serif;font-size:12px;padding:10px 22px;border-radius:9px;cursor:pointer;transition:all 0.2s}
-.pm-cancel:hover{border-color:var(--border2);color:var(--text)}
-#pm-result{font-size:12px;color:var(--green);margin-top:12px;min-height:18px}
+.pm-spheres{font-size:30px;font-weight:700;color:var(--cyan);text-shadow:0 0 12px var(--cyan);margin-bottom:4px}
+.pm-detail{font-size:11px;color:var(--text-dim);margin-bottom:20px}
+.pm-btns{display:flex;gap:9px;justify-content:center}
+.pm-confirm{background:rgba(0,212,255,0.14);border:1px solid rgba(0,212,255,0.38);color:var(--cyan);font-family:'Cinzel',serif;font-size:11px;font-weight:700;padding:9px 20px;border-radius:8px;cursor:pointer;transition:all 0.2s}
+.pm-confirm:hover{background:rgba(0,212,255,0.26)}
+.pm-confirm:disabled{opacity:0.4;cursor:default}
+.pm-cancel{background:none;border:1px solid var(--border);color:var(--text-dim);font-family:'Cinzel',serif;font-size:11px;padding:9px 20px;border-radius:8px;cursor:pointer}
+#pm-result{font-size:11px;color:var(--green);margin-top:10px;min-height:16px}
 
 /* TOAST */
-#toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%);z-index:90;background:var(--surface2);border:1px solid var(--border2);border-radius:20px;padding:8px 18px;font-size:11px;color:var(--text);letter-spacing:1px;opacity:0;transition:opacity 0.25s;pointer-events:none;white-space:nowrap}
+#toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%);z-index:95;background:var(--surface2);border:1px solid var(--border2);border-radius:20px;padding:8px 18px;font-size:11px;color:var(--text);letter-spacing:1px;opacity:0;transition:opacity 0.25s;pointer-events:none;white-space:nowrap;max-width:92vw;text-align:center}
 #toast.show{opacity:1}
+
+/* Profile header */
+#profile-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding:14px;background:var(--surface2);border:1px solid var(--border);border-radius:14px}
+#profile-header img{width:52px;height:52px;border-radius:50%;border:2px solid var(--gold);box-shadow:0 0 14px rgba(200,169,110,0.3)}
 
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-track{background:transparent}
@@ -297,15 +348,15 @@ pointer-events:none;z-index:0}
 <!-- TOP BAR -->
 <div id="top-bar">
   <div id="player-info">
-    <button id="avatar-btn" title="Profile"><img src="https://i.pravatar.cc/100?u=sealuser" alt="Avatar"/></button>
+    <button id="avatar-btn"><img src="https://i.pravatar.cc/100?u=sealuser" alt="Avatar"/></button>
     <div class="info-block">
       <span class="info-label">Seal Mage · Lv.<span id="level-val">1</span></span>
-      <span class="info-val"><span id="xp-val">0</span>/100 xp</span>
+      <span class="info-val"><span id="xp-val">0</span>/<span id="xp-max">100</span> xp</span>
       <div id="xp-bar-wrap"><div id="xp-bar-fill" style="width:0%"></div></div>
     </div>
   </div>
   <div id="resources-bar">
-    <div id="streak-badge">🔥 <span id="streak-val">0</span>x</div>
+    <div id="streak-badge">🔥<span id="streak-val">0</span>x</div>
     <div class="res-pill">
       <svg viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
       <span class="res-val" id="sphere-count">100</span>
@@ -317,10 +368,7 @@ pointer-events:none;z-index:0}
   </div>
 </div>
 
-<!-- RUNE VISIBILITY TOGGLE -->
-<button id="rune-toggle-btn" title="Toggle rune visibility">ᚠ</button>
-
-<!-- BOOSTER HUD -->
+<button id="rune-toggle-btn" title="Toggle runes">ᚠ</button>
 <div id="booster-hud"></div>
 
 <!-- CANVAS -->
@@ -332,8 +380,15 @@ pointer-events:none;z-index:0}
   </div>
 </div>
 
+<!-- HISTORY FEED -->
+<div id="history-feed"></div>
+
 <!-- COMBO -->
-<div id="combo-display"><div class="rf-bg" id="combo-bg"></div><div id="combo-text"></div></div>
+<div id="combo-display">
+  <div class="rf-bg" id="combo-bg"></div>
+  <div id="combo-text"></div>
+  <div id="combo-sub"></div>
+</div>
 
 <!-- RARITY FLASH -->
 <div id="rarity-flash">
@@ -345,10 +400,12 @@ pointer-events:none;z-index:0}
 <!-- BOTTOM NAV -->
 <div id="bottom-nav">
   <button class="nav-btn" onclick="openPanel('shop-panel')"><span class="nav-icon">🛒</span>Shop</button>
-  <button class="nav-btn" onclick="openPanel('quests-panel')"><span class="nav-icon">📜</span>Quests</button>
+  <button class="nav-btn" onclick="openPanel('quests-panel')"><span class="nav-icon">📜</span>Quests<div class="nav-badge" id="quest-badge"></div></button>
   <button class="nav-btn" onclick="openPanel('profile-panel')"><span class="nav-icon">👤</span>Profile</button>
-  <button class="nav-btn" onclick="openPanel('runes-panel')"><span class="nav-icon">ᚠ</span>Runes<div class="nav-badge" id="rune-badge"></div></button>
+  <button class="nav-btn" onclick="openPanel('runes-panel')"><span class="nav-icon">ᚠ</span>Runes</button>
   <button class="nav-btn" onclick="openPanel('chest-panel')"><span class="nav-icon">📦</span>Chests<div class="nav-badge" id="chest-badge"></div></button>
+  <button class="nav-btn" onclick="openPanel('codex-panel')"><span class="nav-icon">📖</span>Codex<div class="nav-badge" id="codex-badge"></div></button>
+  <button class="nav-btn" onclick="openPanel('lb-panel')"><span class="nav-icon">🏆</span>Ranks</button>
 </div>
 
 <!-- SHOP PANEL -->
@@ -358,11 +415,11 @@ pointer-events:none;z-index:0}
     <button class="panel-close" onclick="closePanel('shop-panel')">✕</button>
     <h2>Arcane Emporium</h2>
     <div class="panel-tabs">
-      <button class="ptab active" onclick="shopTab(this,'spheres')">⚡ Spheres</button>
-      <button class="ptab" onclick="shopTab(this,'boosters')">✨ Boosters</button>
+      <button class="ptab active" onclick="shopTab(this,'shop-spheres')">⚡ Spheres</button>
+      <button class="ptab" onclick="shopTab(this,'shop-boosters')">✨ Boosters</button>
     </div>
-    <div id="shop-spheres"><div id="shop-items"></div></div>
-    <div id="shop-boosters" style="display:none"><div id="booster-items"></div></div>
+    <div id="shop-spheres"></div>
+    <div id="shop-boosters" style="display:none"></div>
   </div>
 </div>
 
@@ -372,7 +429,14 @@ pointer-events:none;z-index:0}
     <div class="panel-handle"></div>
     <button class="panel-close" onclick="closePanel('quests-panel')">✕</button>
     <h2>Sacred Quests</h2>
-    <div id="quest-list"></div>
+    <div class="panel-tabs">
+      <button class="ptab active" onclick="questTab(this,'tab-daily-q')">Daily</button>
+      <button class="ptab" onclick="questTab(this,'tab-lifetime-q')">Lifetime</button>
+      <button class="ptab" onclick="questTab(this,'tab-ach-q')">Badges</button>
+    </div>
+    <div id="tab-daily-q"></div>
+    <div id="tab-lifetime-q" style="display:none"></div>
+    <div id="tab-ach-q" style="display:none"></div>
   </div>
 </div>
 
@@ -385,10 +449,19 @@ pointer-events:none;z-index:0}
     <div id="profile-header">
       <img src="https://i.pravatar.cc/100?u=sealuser" alt="Avatar"/>
       <div>
-        <div style="font-size:15px;font-weight:700;color:var(--gold-light)">Seal Mage</div>
-        <div style="font-size:11px;color:var(--text-dim);margin-top:3px">Level <span id="profile-level">1</span> · <span id="profile-xp">0</span>/100 XP</div>
-        <div style="font-size:10px;color:var(--text-dim);margin-top:5px">Runes: <span id="profile-rune-count">0</span> / <span id="profile-rune-total">0</span></div>
+        <div style="font-size:14px;font-weight:700;color:var(--gold-light)">Seal Mage</div>
+        <div style="font-size:10px;color:var(--text-dim);margin-top:3px">Level <span id="profile-level">1</span> · <span id="profile-xp">0</span>/<span id="profile-xp-max">100</span> XP</div>
+        <div style="font-size:10px;color:var(--text-dim);margin-top:2px">Runes <span id="profile-rune-count">0</span>/18 · Badges <span id="profile-badge-count">0</span>/12</div>
       </div>
+    </div>
+    <!-- DAILY LOGIN -->
+    <div class="section-card" id="daily-section">
+      <div class="section-title" style="display:flex;justify-content:space-between;align-items:center">
+        <span>Daily Login</span>
+        <span style="color:var(--orange);font-size:12px;font-weight:700">🔥 <span id="login-streak-count">0</span> day streak</span>
+      </div>
+      <div class="daily-days" id="daily-days-row"></div>
+      <button class="daily-claim-btn" id="daily-claim-btn" onclick="claimDailyReward()">Claim Today's Reward</button>
     </div>
     <div class="profile-stats" id="profile-stats"></div>
     <div id="mining-section">
@@ -397,7 +470,7 @@ pointer-events:none;z-index:0}
         <button id="mining-btn">Collect Yield</button>
       </div>
       <div id="mining-progress-bar"><div id="mining-fill"></div></div>
-      <div style="font-size:9px;color:var(--text-dim);margin-top:6px;letter-spacing:1px" id="mining-label">Ready to mine</div>
+      <div id="mining-label">Ready to collect</div>
     </div>
   </div>
 </div>
@@ -408,6 +481,7 @@ pointer-events:none;z-index:0}
     <div class="panel-handle"></div>
     <button class="panel-close" onclick="closePanel('runes-panel')">✕</button>
     <h2>Rune Grimoire</h2>
+    <p style="font-size:10px;color:var(--text-dim);text-align:center;margin-bottom:12px">Tap an owned rune to equip or manage it</p>
     <div class="filter-bar" id="rune-filter-bar">
       <button class="filter-btn active" onclick="setRuneFilter(this,'all')">All</button>
       <button class="filter-btn" onclick="setRuneFilter(this,'owned')">Owned</button>
@@ -434,7 +508,7 @@ pointer-events:none;z-index:0}
       <div id="delete-confirm">
         <div class="dc-text" id="dc-text"></div>
         <div class="dc-btns">
-          <button class="dc-yes" id="dc-yes">Delete</button>
+          <button class="dc-yes" id="dc-yes">Delete Forever</button>
           <button class="dc-no" onclick="closeDeleteConfirm()">Cancel</button>
         </div>
       </div>
@@ -453,7 +527,56 @@ pointer-events:none;z-index:0}
   </div>
 </div>
 
-<!-- PAYMENT OVERLAY -->
+<!-- CODEX PANEL -->
+<div class="panel-overlay" id="codex-panel" onclick="closeIfBg(event,this)">
+  <div class="panel">
+    <div class="panel-handle"></div>
+    <button class="panel-close" onclick="closePanel('codex-panel')">✕</button>
+    <h2>Seal Codex</h2>
+    <div class="panel-tabs">
+      <button class="ptab active" onclick="codexTab(this,'tab-codex-entries')">📖 Codex</button>
+      <button class="ptab" onclick="codexTab(this,'tab-gallery')">🖼 Gallery</button>
+    </div>
+    <div id="tab-codex-entries"></div>
+    <div id="tab-gallery" style="display:none"></div>
+  </div>
+</div>
+
+<!-- LEADERBOARD PANEL -->
+<div class="panel-overlay" id="lb-panel" onclick="closeIfBg(event,this)">
+  <div class="panel">
+    <div class="panel-handle"></div>
+    <button class="panel-close" onclick="closePanel('lb-panel')">✕</button>
+    <h2>Hall of Seals</h2>
+    <div style="font-size:9px;letter-spacing:1px;color:var(--text-dim);text-align:center;margin-bottom:14px">Weekly Rankings · Resets Monday</div>
+    <div id="lb-list"></div>
+  </div>
+</div>
+
+<!-- OFFLINE MODAL -->
+<div id="offline-overlay">
+  <div class="modal-box">
+    <div class="modal-icon">⛏</div>
+    <div class="modal-title">Welcome Back!</div>
+    <div class="modal-val" id="offline-val" style="color:var(--green);text-shadow:0 0 12px rgba(0,255,136,0.4)">+0.000 $SEAL</div>
+    <div class="modal-sub" id="offline-sub">While you were away, your seal kept working.</div>
+    <button class="modal-btn" onclick="document.getElementById('offline-overlay').classList.remove('open')">Collect</button>
+  </div>
+</div>
+
+<!-- DAILY MODAL -->
+<div id="daily-modal-overlay">
+  <div class="modal-box">
+    <div class="modal-icon" id="daily-modal-icon">🌟</div>
+    <div class="modal-title">Daily Reward!</div>
+    <div style="font-size:12px;color:var(--orange);margin-bottom:8px" id="daily-modal-streak"></div>
+    <div class="modal-val" id="daily-modal-val" style="color:var(--cyan);text-shadow:0 0 12px rgba(0,212,255,0.4)"></div>
+    <div class="modal-sub" id="daily-modal-sub"></div>
+    <button class="modal-btn" onclick="closeDailyModal()">Claim!</button>
+  </div>
+</div>
+
+<!-- PAYMENT -->
 <div id="payment-overlay" onclick="closeIfBg(event,this)">
   <div id="payment-modal">
     <h3>Purchase Spheres</h3>
@@ -467,172 +590,298 @@ pointer-events:none;z-index:0}
   </div>
 </div>
 
-<!-- TOAST -->
 <div id="toast"></div>
 
 <script>
 (() => {
+'use strict';
 
-// ── DATA ──────────────────────────────────────────────────────────────────
-const RUNES = [
-  {id:1,symbol:'ᚠ',name:'Fehu',rarity:'Common',color:'#88aacc',bonus:'+5% $SEAL on rare seals',effect:'sealBonus',value:0.05,lore:'Rune of wealth and cattle.'},
-  {id:2,symbol:'ᚢ',name:'Uruz',rarity:'Common',color:'#77cc99',bonus:'+5 XP per tap',effect:'xpBonus',value:5,lore:'Rune of strength and primal force.'},
-  {id:3,symbol:'ᚦ',name:'Thurisaz',rarity:'Common',color:'#cc8888',bonus:'+5% sphere reward',effect:'sphereBonus',value:0.05,lore:'Rune of the thorn and giant.'},
-  {id:4,symbol:'ᚨ',name:'Ansuz',rarity:'Common',color:'#cc99cc',bonus:'+5% mining yield',effect:'miningYield',value:0.05,lore:'Rune of the divine and Odin.'},
-  {id:5,symbol:'ᚱ',name:'Raido',rarity:'Common',color:'#ccaa66',bonus:'+1 bonus sphere chance 15%',effect:'sphereClick',value:1,lore:'Rune of the journey.'},
-  {id:6,symbol:'ᚲ',name:'Kenaz',rarity:'Common',color:'#ff9966',bonus:'-8% shop cost',effect:'shopDiscount',value:0.08,lore:'Rune of the torch and knowledge.'},
-  {id:7,symbol:'ᛉ',name:'Algiz',rarity:'Rare',color:'#00ffd0',bonus:'+12% $SEAL on rare seals',effect:'sealBonus',value:0.12,lore:'Rune of protection and the elk.'},
-  {id:8,symbol:'ᛟ',name:'Othala',rarity:'Rare',color:'#ffd700',bonus:'+12 XP per tap',effect:'xpBonus',value:12,lore:'Rune of heritage and home.'},
-  {id:9,symbol:'ᛈ',name:'Perthro',rarity:'Rare',color:'#ff6f91',bonus:'+12% sphere reward',effect:'sphereBonus',value:0.12,lore:'Rune of fate and mystery.'},
-  {id:10,symbol:'ᛇ',name:'Eiwaz',rarity:'Rare',color:'#b39ddb',bonus:'+15% mining yield',effect:'miningYield',value:0.15,lore:'Rune of the yew tree and death.'},
-  {id:11,symbol:'ᛜ',name:'Ingwaz',rarity:'Rare',color:'#69f0ae',bonus:'+3 bonus spheres chance 20%',effect:'sphereClick',value:3,lore:'Rune of the earth god Ing.'},
-  {id:12,symbol:'ᛞ',name:'Dagaz',rarity:'Rare',color:'#ffb300',bonus:'-15% shop cost',effect:'shopDiscount',value:0.15,lore:'Rune of the dawn and day.'},
-  {id:13,symbol:'ᛯ',name:'Sol',rarity:'Epic',color:'#00fff7',bonus:'+30% $SEAL on rare seals',effect:'sealBonus',value:0.30,lore:'The Solar rune of infinite light.'},
-  {id:14,symbol:'᛬',name:'Starweave',rarity:'Epic',color:'#ffd6ff',bonus:'+30 XP per tap',effect:'xpBonus',value:30,lore:'Woven from the light of distant stars.'},
-  {id:15,symbol:'᛭',name:'Ether',rarity:'Epic',color:'#a7ffeb',bonus:'+30% sphere reward',effect:'sphereBonus',value:0.30,lore:'Pure quintessence made manifest.'},
-  {id:16,symbol:'ᛮ',name:'Lux',rarity:'Epic',color:'#fff176',bonus:'+30% mining yield',effect:'miningYield',value:0.30,lore:'Condensed luminance of creation.'},
-  {id:17,symbol:'ᚺ',name:'Nova',rarity:'Epic',color:'#ff80ab',bonus:'+5 bonus spheres chance 25%',effect:'sphereClick',value:5,lore:'Born from the death of ancient stars.'},
-  {id:18,symbol:'ᛝ',name:'Aurora',rarity:'Epic',color:'#00e6ff',bonus:'-25% shop cost',effect:'shopDiscount',value:0.25,lore:'The celestial dance of charged light.'},
+// ─── DATA ────────────────────────────────────────────────────────────────────
+const RUNES=[
+  {id:1,symbol:'ᚠ',name:'Fehu',rarity:'Common',color:'#88aacc',bonus:'+5% $SEAL on rare',effect:'sealBonus',value:0.05},
+  {id:2,symbol:'ᚢ',name:'Uruz',rarity:'Common',color:'#77cc99',bonus:'+5 XP per tap',effect:'xpBonus',value:5},
+  {id:3,symbol:'ᚦ',name:'Thurisaz',rarity:'Common',color:'#cc8888',bonus:'+5% sphere refund',effect:'sphereBonus',value:0.05},
+  {id:4,symbol:'ᚨ',name:'Ansuz',rarity:'Common',color:'#cc99cc',bonus:'+5% mining yield',effect:'miningYield',value:0.05},
+  {id:5,symbol:'ᚱ',name:'Raido',rarity:'Common',color:'#ccaa66',bonus:'+1 bonus sphere (15%)',effect:'sphereClick',value:1},
+  {id:6,symbol:'ᚲ',name:'Kenaz',rarity:'Common',color:'#ff9966',bonus:'-8% shop cost',effect:'shopDiscount',value:0.08},
+  {id:7,symbol:'ᛉ',name:'Algiz',rarity:'Rare',color:'#00ffd0',bonus:'+12% $SEAL on rare',effect:'sealBonus',value:0.12},
+  {id:8,symbol:'ᛟ',name:'Othala',rarity:'Rare',color:'#ffd700',bonus:'+12 XP per tap',effect:'xpBonus',value:12},
+  {id:9,symbol:'ᛈ',name:'Perthro',rarity:'Rare',color:'#ff6f91',bonus:'+12% sphere refund',effect:'sphereBonus',value:0.12},
+  {id:10,symbol:'ᛇ',name:'Eiwaz',rarity:'Rare',color:'#b39ddb',bonus:'+15% mining yield',effect:'miningYield',value:0.15},
+  {id:11,symbol:'ᛜ',name:'Ingwaz',rarity:'Rare',color:'#69f0ae',bonus:'+3 bonus spheres (20%)',effect:'sphereClick',value:3},
+  {id:12,symbol:'ᛞ',name:'Dagaz',rarity:'Rare',color:'#ffb300',bonus:'-15% shop cost',effect:'shopDiscount',value:0.15},
+  {id:13,symbol:'ᛯ',name:'Sol',rarity:'Epic',color:'#00fff7',bonus:'+30% $SEAL on rare',effect:'sealBonus',value:0.30},
+  {id:14,symbol:'᛬',name:'Starweave',rarity:'Epic',color:'#ffd6ff',bonus:'+30 XP per tap',effect:'xpBonus',value:30},
+  {id:15,symbol:'᛭',name:'Ether',rarity:'Epic',color:'#a7ffeb',bonus:'+30% sphere refund',effect:'sphereBonus',value:0.30},
+  {id:16,symbol:'ᛮ',name:'Lux',rarity:'Epic',color:'#fff176',bonus:'+30% mining yield',effect:'miningYield',value:0.30},
+  {id:17,symbol:'ᚺ',name:'Nova',rarity:'Epic',color:'#ff80ab',bonus:'+5 bonus spheres (25%)',effect:'sphereClick',value:5},
+  {id:18,symbol:'ᛝ',name:'Aurora',rarity:'Epic',color:'#00e6ff',bonus:'-25% shop cost',effect:'shopDiscount',value:0.25},
 ];
-const RARITY_ORDER = {Common:0,Rare:1,Epic:2};
-const RARITY_COLORS = {Common:'#88aacc',Rare:'#ffd700',Epic:'#a855f7'};
+const RARITY_COLORS={Common:'#88aacc',Rare:'#ffd700',Epic:'#a855f7'};
+const RARITY_ORDER={Common:0,Rare:1,Epic:2};
 
-const CHESTS = [
-  {type:'common',label:'Common Chest',icon:'📦',color:'#aabbcc',pool:['Common','Rare'],chances:[0.85,0.15],price:5,currency:'spheres'},
-  {type:'rare',label:'Rare Chest',icon:'💎',color:'#00d4ff',pool:['Rare','Epic'],chances:[0.75,0.25],price:20,currency:'spheres'},
-  {type:'epic',label:'Epic Chest',icon:'✨',color:'#9b59ff',pool:['Epic'],chances:[1.0],price:50,currency:'spheres'},
+const CHESTS=[
+  {type:'common',label:'Common Chest',icon:'📦',color:'#aabbcc',pool:['Common','Rare'],chances:[0.85,0.15],price:5},
+  {type:'rare',label:'Rare Chest',icon:'💎',color:'#00d4ff',pool:['Rare','Epic'],chances:[0.75,0.25],price:20},
+  {type:'epic',label:'Epic Chest',icon:'✨',color:'#9b59ff',pool:['Epic'],chances:[1.0],price:50},
 ];
-
-const SHOP_ITEMS = [
+const SHOP_ITEMS=[
   {spheres:10,price:'5 TON'},{spheres:25,price:'10 TON'},{spheres:50,price:'18 TON'},
   {spheres:100,price:'30 TON'},{spheres:250,price:'60 TON'},{spheres:500,price:'100 TON'},
 ];
-
-const BOOSTERS = [
-  {id:'double_seal',icon:'💎',name:'Double Seal',desc:'2× $SEAL for 10 minutes',price:15,currency:'spheres',duration:600},
-  {id:'xp_rush',icon:'⚡',name:'XP Rush',desc:'3× XP for 5 minutes',price:10,currency:'spheres',duration:300},
-  {id:'lucky_tap',icon:'🍀',name:'Lucky Touch',desc:'2× chance for Rare+ for 3 minutes',price:8,currency:'spheres',duration:180},
-  {id:'sphere_rain',icon:'🌊',name:'Sphere Rain',desc:'+50 spheres instantly',price:5,currency:'spheres',duration:0},
+const BOOSTERS=[
+  {id:'double_seal',icon:'💎',name:'Double Seal',desc:'2× $SEAL for 10 minutes',price:15,duration:600},
+  {id:'xp_rush',icon:'⚡',name:'XP Rush',desc:'3× XP for 5 minutes',price:10,duration:300},
+  {id:'lucky_tap',icon:'🍀',name:'Lucky Touch',desc:'2× rare chance for 3 minutes',price:8,duration:180},
+  {id:'sphere_rain',icon:'🌊',name:'Sphere Rain',desc:'+50 spheres instantly',price:5,duration:0},
 ];
 
-const QUESTS_DEFS = [
-  {id:'q1',icon:'🔮',text:'Make 10 seals',reward:{xp:15,spheres:5},goal:10,track:'total',repeatable:true},
-  {id:'q2',icon:'🔷',text:'Get 3 Rare seals',reward:{xp:30,spheres:10},goal:3,track:'rare',repeatable:false},
-  {id:'q3',icon:'⚡',text:'Get a Mythic seal',reward:{xp:60,spheres:15},goal:1,track:'mythic',repeatable:false},
-  {id:'q4',icon:'💫',text:'Get a Legendary seal',reward:{xp:150,spheres:30},goal:1,track:'legendary',repeatable:false},
-  {id:'q5',icon:'✨',text:'Get an Ethereal seal',reward:{xp:500,spheres:100},goal:1,track:'ethereal',repeatable:false},
-  {id:'q6',icon:'ᚠ',text:'Equip a Rune',reward:{xp:20,spheres:5},goal:1,track:'runesEquipped',repeatable:false},
-  {id:'q7',icon:'📦',text:'Open 3 Chests',reward:{xp:50,spheres:20},goal:3,track:'chestsOpened',repeatable:false},
-  {id:'q8',icon:'🔥',text:'Get a 10× streak',reward:{xp:40,spheres:10},goal:10,track:'maxStreak',repeatable:false},
+// 7-day login reward cycle
+const DAILY_REWARDS=[
+  {icon:'⚡',label:'+5 Spheres',spheres:5},
+  {icon:'⚡',label:'+10 Spheres',spheres:10},
+  {icon:'📦',label:'Common Chest',chest:'common'},
+  {icon:'⚡',label:'+20 Spheres',spheres:20},
+  {icon:'✨',label:'+30 Spheres',spheres:30},
+  {icon:'💎',label:'Rare Chest',chest:'rare'},
+  {icon:'🌟',label:'Epic Chest + 50⚡',chest:'epic',spheres:50},
 ];
 
-const COLORS = ['#1E90FF','#00FFFF','#7FFF00','#FF69B4','#FFD700','#FF4500','#E040FB','#FF6B6B'];
-const SHAPES = ['circle','triangle','square','pentagon'];
-const SIZES  = [130,155,180,205,225];
-const SPEEDS = [0.001,0.002,0.003,0.004,0.005];
+// Codex entries — things to discover
+const CODEX_ENTRIES=[
+  {id:'cx_rare',icon:'✧',name:'Rare Seal',desc:'A seal with triple matching shapes or colours.',color:'#00d4ff',reward:'+10 XP',check:s=>s.rare>=1,countKey:'rare',goal:1},
+  {id:'cx_mythic',icon:'◈',name:'Mythic Seal',desc:'Four matching shapes or colours aligned.',color:'#c084fc',reward:'+25 XP',check:s=>s.mythic>=1,countKey:'mythic',goal:1},
+  {id:'cx_legendary',icon:'⊛',name:'Legendary Seal',desc:'Both triple match of shapes and colours.',color:'#ffd700',reward:'+100 XP',check:s=>s.legendary>=1,countKey:'legendary',goal:1},
+  {id:'cx_ethereal',icon:'✦',name:'Ethereal Seal',desc:'Perfect alignment — all four match in both.',color:'#b0e0ff',reward:'+500 XP',check:s=>s.ethereal>=1,countKey:'ethereal',goal:1},
+  {id:'cx_100',icon:'💯',name:'Centurion',desc:'Generated 100 seals total.',color:'#ff9966',reward:'+30 XP',check:s=>s.total>=100,countKey:'total',goal:100},
+  {id:'cx_500',icon:'🔮',name:'Arcane Adept',desc:'Generated 500 seals total.',color:'#cc99cc',reward:'+100 XP',check:s=>s.total>=500,countKey:'total',goal:500},
+  {id:'cx_chain5',icon:'🔥',name:'Chain 5×',desc:'Five consecutive non-common seals.',color:'#ff8844',reward:'+20 XP',check:s=>s.maxStreak>=5,countKey:'maxStreak',goal:5},
+  {id:'cx_chain15',icon:'💥',name:'Chain 15×',desc:'Fifteen consecutive non-common seals.',color:'#ff4466',reward:'+80 XP',check:s=>s.maxStreak>=15,countKey:'maxStreak',goal:15},
+  {id:'cx_miner',icon:'⛏',name:'Miner',desc:'Collected mining yield 5 times.',color:'#77cc99',reward:'+30 XP',check:s=>s.totalMines>=5,countKey:'totalMines',goal:5},
+  {id:'cx_runes3',icon:'ᚠ',name:'Runebound',desc:'Own 3 or more runes.',color:'#9b59ff',reward:'+20 XP',check:(s,ur)=>ur.length>=3,countKey:null,goal:3},
+  {id:'cx_runes9',icon:'ᛟ',name:'Rune Sage',desc:'Own 9 or more runes.',color:'#ffd700',reward:'+60 XP',check:(s,ur)=>ur.length>=9,countKey:null,goal:9},
+  {id:'cx_allslots',icon:'⭕',name:'Fully Attuned',desc:'All three rune slots equipped.',color:'#00fff7',reward:'+40 XP',check:(s,ur,rs)=>rs.filter(Boolean).length===3,countKey:null,goal:3},
+];
 
-// ── STATE ─────────────────────────────────────────────────────────────────
-let spheres=100, xp=0, level=1, seal=0;
-let stats={total:0,rare:0,mythic:0,legendary:0,ethereal:0,chestsOpened:0,runesEquipped:0,maxStreak:0};
+// Achievements (badge tab in quests)
+const ACHIEVEMENTS=[
+  {id:'ach_first',icon:'🔮',name:'First Seal',desc:'Your journey begins.',color:'#88aacc',check:s=>s.total>=1},
+  {id:'ach_rare',icon:'✧',name:'Rare Touch',desc:'First Rare seal.',color:'#00d4ff',check:s=>s.rare>=1},
+  {id:'ach_mythic',icon:'◈',name:'Mythic Vision',desc:'First Mythic seal.',color:'#c084fc',check:s=>s.mythic>=1},
+  {id:'ach_legendary',icon:'⊛',name:'Legendary',desc:'First Legendary seal.',color:'#ffd700',check:s=>s.legendary>=1},
+  {id:'ach_ethereal',icon:'✦',name:'Ethereal',desc:'First Ethereal seal.',color:'#b0e0ff',check:s=>s.ethereal>=1},
+  {id:'ach_chain10',icon:'🔥',name:'Chain Master',desc:'10× consecutive streak.',color:'#ff8844',check:s=>s.maxStreak>=10},
+  {id:'ach_collector',icon:'ᚠ',name:'Collector',desc:'Own 6 runes.',color:'#9b59ff',check:(s,ur)=>ur.length>=6},
+  {id:'ach_attuned',icon:'⭕',name:'Attuned',desc:'All 3 rune slots filled.',color:'#00fff7',check:(s,ur,rs)=>rs.filter(Boolean).length===3},
+  {id:'ach_login7',icon:'📅',name:'Devoted',desc:'7-day login streak.',color:'#ff6f91',check:(s,ur,rs,ls)=>ls>=7},
+  {id:'ach_login30',icon:'🌟',name:'Ascendant',desc:'30-day login streak.',color:'#ffd700',check:(s,ur,rs,ls)=>ls>=30},
+  {id:'ach_mine10',icon:'⛏',name:'Deep Miner',desc:'Mined 10 times.',color:'#77cc99',check:s=>s.totalMines>=10},
+  {id:'ach_gallery5',icon:'🖼',name:'Curator',desc:'5 seals saved to gallery.',color:'#cc99cc',check:s=>s.gallerySaves>=5},
+];
+
+const LEADERBOARD_NAMES=['ArcaneVoid','MysticFlame','RuneSeeker','StarForger','EtherWalker','ShadowMage','IronSeal','CrystalEye','DawnRune','SilverGlyph'];
+const LEADERBOARD_SCORES=[4.821,3.944,3.201,2.876,2.541,1.998,1.654,1.320,0.987,0.654];
+
+const COLORS=['#1E90FF','#00FFFF','#7FFF00','#FF69B4','#FFD700','#FF4500','#E040FB','#FF6B6B'];
+const SHAPES=['circle','triangle','square','pentagon'];
+const SIZES=[130,155,180,205,225];
+const SPEEDS=[0.001,0.002,0.003,0.004,0.005];
+const MINING_CD=8*3600*1000;
+const OFFLINE_CAP=4*3600*1000;
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+let spheres=100,xp=0,level=1,seal=0;
+let stats={total:0,rare:0,mythic:0,legendary:0,ethereal:0,chestsOpened:0,runesEquipped:0,maxStreak:0,totalMines:0,gallerySaves:0};
 let sealFigures=[];
-let userRunes=[], userRuneSlots=[null,null,null], userChests={common:0,rare:0,epic:0};
-let questProgress={}, questClaimed={};
+let userRunes=[],userRuneSlots=[null,null,null],userChests={common:0,rare:0,epic:0};
+let questProgress={},questClaimed={};
 let activeBoosters={};
-let currentStreak=0, lastSealRarity=null;
-let runeRotAngle=0, selectedRune=null, runeFilter='all';
+let currentStreak=0;
+let loginStreak=0,lastLoginDate='',dailyClaimed=false;
+let achievementsUnlocked={};  // id -> timestamp
+let codexDiscovered={};       // id -> timestamp
+let sealGallery=[];           // [{figures,rarity,ts}]
+let sealHistory=[];           // last 5 rarity strings
+let runesVisible=true,runeFilter='all',selectedRune=null;
+let runeRotAngle=0;
 
-// ── LOAD/SAVE ─────────────────────────────────────────────────────────────
+// ─── LOAD/SAVE ────────────────────────────────────────────────────────────────
 function save(){
-  localStorage.setItem('ms2_state',JSON.stringify({
-    spheres,xp,level,seal,stats,userRunes,userRuneSlots,userChests,
-    questProgress,questClaimed,activeBoosters,currentStreak
-  }));
+  try{
+    localStorage.setItem('ms4',JSON.stringify({
+      spheres,xp,level,seal,stats,userRunes,userRuneSlots,userChests,
+      questProgress,questClaimed,activeBoosters,currentStreak,
+      loginStreak,lastLoginDate,dailyClaimed,
+      achievementsUnlocked,codexDiscovered,sealGallery,
+      lastSeen:Date.now()
+    }));
+  }catch(e){}
 }
 function load(){
   try{
-    const s=JSON.parse(localStorage.getItem('ms2_state'));
-    if(!s)return;
-    spheres=s.spheres??100; xp=s.xp??0; level=s.level??1; seal=s.seal??0;
-    stats=s.stats??{total:0,rare:0,mythic:0,legendary:0,ethereal:0,chestsOpened:0,runesEquipped:0,maxStreak:0};
-    if(!stats.chestsOpened)stats.chestsOpened=0;
-    if(!stats.runesEquipped)stats.runesEquipped=0;
-    if(!stats.maxStreak)stats.maxStreak=0;
-    userRunes=s.userRunes??[]; userRuneSlots=s.userRuneSlots??[null,null,null];
-    userChests=s.userChests??{common:0,rare:0,epic:0};
-    questProgress=s.questProgress??{}; questClaimed=s.questClaimed??{};
-    activeBoosters=s.activeBoosters??{}; currentStreak=s.currentStreak??0;
-    // Clean expired boosters
+    const d=JSON.parse(localStorage.getItem('ms4'));
+    if(!d)return;
+    spheres=d.spheres??100; xp=d.xp??0; level=d.level??1; seal=d.seal??0;
+    stats=Object.assign({total:0,rare:0,mythic:0,legendary:0,ethereal:0,chestsOpened:0,runesEquipped:0,maxStreak:0,totalMines:0,gallerySaves:0},d.stats);
+    userRunes=d.userRunes??[]; userRuneSlots=d.userRuneSlots??[null,null,null];
+    userChests=d.userChests??{common:0,rare:0,epic:0};
+    questProgress=d.questProgress??{}; questClaimed=d.questClaimed??{};
     const now=Date.now();
-    Object.keys(activeBoosters).forEach(k=>{if(activeBoosters[k].end<now)delete activeBoosters[k]});
+    activeBoosters=d.activeBoosters??{};
+    Object.keys(activeBoosters).forEach(k=>{if(activeBoosters[k].end<now)delete activeBoosters[k];});
+    currentStreak=d.currentStreak??0;
+    loginStreak=d.loginStreak??0; lastLoginDate=d.lastLoginDate??''; dailyClaimed=d.dailyClaimed??false;
+    achievementsUnlocked=d.achievementsUnlocked??{};
+    codexDiscovered=d.codexDiscovered??{};
+    sealGallery=d.sealGallery??[];
+    // Offline earnings
+    if(d.lastSeen){
+      const away=Math.min(now-d.lastSeen,OFFLINE_CAP);
+      if(away>120000){
+        const earned=(away/3600000)*0.05;
+        seal+=earned;
+        const mins=Math.round(away/60000);
+        document.getElementById('offline-val').textContent=`+${earned.toFixed(4)} $SEAL`;
+        document.getElementById('offline-sub').textContent=`Away for ${mins} minute${mins!==1?'s':''}. Your seal kept working.`;
+        setTimeout(()=>document.getElementById('offline-overlay').classList.add('open'),400);
+      }
+    }
   }catch(e){}
 }
 load();
-setInterval(save,10000);
+setInterval(save,12000);
 window.addEventListener('beforeunload',save);
 
-// ── DOM ────────────────────────────────────────────────────────────────────
+// ─── LOGIN STREAK ─────────────────────────────────────────────────────────────
+function checkLoginStreak(){
+  const today=new Date().toDateString();
+  if(lastLoginDate===today){
+    updateDailySection();
+    return;
+  }
+  const yesterday=new Date(Date.now()-86400000).toDateString();
+  loginStreak=lastLoginDate===yesterday?loginStreak+1:1;
+  lastLoginDate=today;
+  dailyClaimed=false;
+  updateDailySection();
+  // Auto-show daily modal after a short delay
+  setTimeout(showDailyModal,900);
+  save();
+}
+
+function showDailyModal(){
+  const idx=((loginStreak-1)%7+7)%7;
+  const r=DAILY_REWARDS[idx];
+  document.getElementById('daily-modal-icon').textContent=r.icon;
+  document.getElementById('daily-modal-streak').textContent=`Day ${loginStreak} streak 🔥`;
+  document.getElementById('daily-modal-val').textContent=r.label;
+  document.getElementById('daily-modal-sub').textContent=`Come back tomorrow to continue your streak!`;
+  document.getElementById('daily-modal-overlay').classList.add('open');
+}
+window.closeDailyModal=function(){
+  document.getElementById('daily-modal-overlay').classList.remove('open');
+  // Apply today's reward when they close the modal
+  if(!dailyClaimed) applyDailyReward();
+};
+function applyDailyReward(){
+  if(dailyClaimed)return;
+  const idx=((loginStreak-1)%7+7)%7;
+  const r=DAILY_REWARDS[idx];
+  if(r.spheres){spheres+=r.spheres;updateSpheres();}
+  if(r.chest){userChests[r.chest]=(userChests[r.chest]||0)+1;updateChestBadge();}
+  dailyClaimed=true;
+  updateDailySection();
+  save();
+}
+window.claimDailyReward=function(){
+  if(dailyClaimed){showToast('Already claimed today!');return;}
+  closeDailyModal();
+  showToast('✓ Daily reward claimed!');
+};
+
+function updateDailySection(){
+  const idx=((loginStreak-1)%7+7)%7;
+  document.getElementById('login-streak-count').textContent=loginStreak;
+  const row=document.getElementById('daily-days-row');
+  if(!row)return;
+  row.innerHTML='';
+  DAILY_REWARDS.forEach((r,i)=>{
+    const claimed=i<idx||(i===idx&&dailyClaimed);
+    const today=i===idx&&!dailyClaimed;
+    const future=i>idx;
+    const d=document.createElement('div');
+    d.className='daily-day'+(claimed?' claimed':today?' today':future?' future':'');
+    d.innerHTML=`<div class="dd-num">D${i+1}</div><div class="dd-icon">${r.icon}</div><div class="dd-val">${r.spheres?r.spheres+'⚡':r.chest==='epic'?'Epic':r.chest==='rare'?'Rare':'Chest'}</div>`;
+    row.appendChild(d);
+  });
+  const btn=document.getElementById('daily-claim-btn');
+  if(btn){btn.disabled=dailyClaimed;btn.textContent=dailyClaimed?'Claimed Today ✓':'Claim Today\'s Reward';}
+}
+checkLoginStreak();
+
+// ─── DOM REFS ─────────────────────────────────────────────────────────────────
 const canvas=document.getElementById('sealCanvas');
 const ctx=canvas.getContext('2d');
-const levelEl=document.getElementById('level-val');
-const xpEl=document.getElementById('xp-val');
-const xpBar=document.getElementById('xp-bar-fill');
-const sphereEl=document.getElementById('sphere-count');
-const sealEl=document.getElementById('seal-amount');
-const miningBtn=document.getElementById('mining-btn');
 const slotsRing=document.getElementById('rune-slots-ring');
 const streakEl=document.getElementById('streak-val');
 const streakBadge=document.getElementById('streak-badge');
 const comboEl=document.getElementById('combo-display');
-const comboText=document.getElementById('combo-text');
-const comboBg=document.getElementById('combo-bg');
 
-// ── CANVAS RESIZE ──────────────────────────────────────────────────────────
+// ─── CANVAS ───────────────────────────────────────────────────────────────────
 function resizeCanvas(){
   const avail=Math.min(window.innerWidth*0.88,window.innerHeight-190,400);
   const dpr=window.devicePixelRatio||1;
-  canvas.width=avail*dpr; canvas.height=avail*dpr;
-  canvas.style.width=avail+'px'; canvas.style.height=avail+'px';
+  canvas.width=avail*dpr;canvas.height=avail*dpr;
+  canvas.style.width=avail+'px';canvas.style.height=avail+'px';
 }
 window.addEventListener('resize',resizeCanvas);
 resizeCanvas();
 
-// ── DRAW ───────────────────────────────────────────────────────────────────
 function drawShape(type,x,y,size,color,rot,glow,dpr){
-  ctx.save(); ctx.translate(x,y); ctx.rotate(rot);
-  ctx.lineWidth=5*dpr; ctx.strokeStyle=color;
-  ctx.shadowColor=color; ctx.shadowBlur=24*glow*dpr;
+  ctx.save();ctx.translate(x,y);ctx.rotate(rot);
+  ctx.lineWidth=5*dpr;ctx.strokeStyle=color;
+  ctx.shadowColor=color;ctx.shadowBlur=22*glow*dpr;
   ctx.beginPath();
-  if(type==='circle'){
-    ctx.arc(0,0,size/2,0,Math.PI*2);
-  }else if(type==='triangle'){
-    for(let i=0;i<3;i++){const a=i*2*Math.PI/3-Math.PI/2;const r=size/Math.sqrt(3);i===0?ctx.moveTo(r*Math.cos(a),r*Math.sin(a)):ctx.lineTo(r*Math.cos(a),r*Math.sin(a))}
-    ctx.closePath();
-  }else if(type==='pentagon'){
-    for(let i=0;i<5;i++){const a=i*2*Math.PI/5-Math.PI/2;const r=size/2;i===0?ctx.moveTo(r*Math.cos(a),r*Math.sin(a)):ctx.lineTo(r*Math.cos(a),r*Math.sin(a))}
-    ctx.closePath();
-  }else{
-    const s=size/Math.sqrt(2);ctx.rect(-s/2,-s/2,s,s);
-  }
-  ctx.stroke(); ctx.restore();
+  if(type==='circle'){ctx.arc(0,0,size/2,0,Math.PI*2);}
+  else if(type==='triangle'){for(let i=0;i<3;i++){const a=i*2*Math.PI/3-Math.PI/2,r=size/Math.sqrt(3);i===0?ctx.moveTo(r*Math.cos(a),r*Math.sin(a)):ctx.lineTo(r*Math.cos(a),r*Math.sin(a));}ctx.closePath();}
+  else if(type==='pentagon'){for(let i=0;i<5;i++){const a=i*2*Math.PI/5-Math.PI/2,r=size/2;i===0?ctx.moveTo(r*Math.cos(a),r*Math.sin(a)):ctx.lineTo(r*Math.cos(a),r*Math.sin(a));}ctx.closePath();}
+  else{const s=size/Math.sqrt(2);ctx.rect(-s/2,-s/2,s,s);}
+  ctx.stroke();ctx.restore();
 }
-
-// Center symbol
 function drawCenterSymbol(){
   if(!runesVisible)return;
-  if(userRuneSlots.filter(Boolean).length===0)return;
+  const equipped=userRuneSlots.filter(Boolean).map(id=>RUNES.find(r=>r.id===id)).filter(Boolean);
+  if(!equipped.length)return;
+  const r=equipped[0];
   const dpr=window.devicePixelRatio||1;
-  const cx=canvas.width/2,cy=canvas.height/2;
-  const equippedRunes=userRuneSlots.filter(Boolean).map(id=>RUNES.find(r=>r.id===id)).filter(Boolean);
-  if(equippedRunes.length===0)return;
-  const r=equippedRunes[0];
   ctx.save();
-  ctx.font=`${28*dpr}px Cinzel`;
-  ctx.fillStyle=r.color;
-  ctx.shadowColor=r.color; ctx.shadowBlur=20*dpr;
-  ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.globalAlpha=0.4+0.2*Math.sin(Date.now()/800);
-  ctx.fillText(r.symbol,cx,cy);
+  ctx.font=`${26*dpr}px Cinzel`;
+  ctx.fillStyle=r.color;ctx.shadowColor=r.color;ctx.shadowBlur=18*dpr;
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.globalAlpha=0.35+0.2*Math.sin(Date.now()/900);
+  ctx.fillText(r.symbol,canvas.width/2,canvas.height/2);
   ctx.restore();
+}
+
+// Snapshot seal to an off-screen canvas for gallery
+function snapSeal(figures){
+  const sz=120,dpr=1;
+  const oc=document.createElement('canvas');
+  oc.width=sz;oc.height=sz;
+  const oc2=oc.getContext('2d');
+  const scale=(sz/(500))*1.3;
+  figures.forEach(f=>{
+    oc2.save();oc2.translate(sz/2,sz/2);oc2.rotate(f.rotation||0);
+    oc2.lineWidth=4;oc2.strokeStyle=f.color;oc2.shadowColor=f.color;oc2.shadowBlur=14;
+    oc2.beginPath();
+    const s=f.size*scale;
+    if(f.type==='circle'){oc2.arc(0,0,s/2,0,Math.PI*2);}
+    else if(f.type==='triangle'){for(let i=0;i<3;i++){const a=i*2*Math.PI/3-Math.PI/2,r=s/Math.sqrt(3);i===0?oc2.moveTo(r*Math.cos(a),r*Math.sin(a)):oc2.lineTo(r*Math.cos(a),r*Math.sin(a));}oc2.closePath();}
+    else if(f.type==='pentagon'){for(let i=0;i<5;i++){const a=i*2*Math.PI/5-Math.PI/2,r=s/2;i===0?oc2.moveTo(r*Math.cos(a),r*Math.sin(a)):oc2.lineTo(r*Math.cos(a),r*Math.sin(a));}oc2.closePath();}
+    else{const ss=s/Math.sqrt(2);oc2.rect(-ss/2,-ss/2,ss,ss);}
+    oc2.stroke();oc2.restore();
+  });
+  return oc.toDataURL();
 }
 
 let time=0;
@@ -643,69 +892,53 @@ function render(){
   const cx=canvas.width/2,cy=canvas.height/2;
   const scale=(canvas.width/(500*dpr))*1.3;
   const glow=0.65+0.35*Math.sin(time*Math.PI*2/3.5);
-  for(const f of sealFigures){
-    f.rotation+=f.speed*f.direction;
-    drawShape(f.type,cx,cy,f.size*scale*dpr,f.color,f.rotation,glow,dpr);
-  }
+  sealFigures.forEach(f=>{f.rotation+=f.speed*f.direction;drawShape(f.type,cx,cy,f.size*scale*dpr,f.color,f.rotation,glow,dpr);});
   drawCenterSymbol();
-  time+=1/60;
-  runeRotAngle+=0.005;
+  time+=1/60;runeRotAngle+=0.005;
   if(runesVisible)updateRuneSlotsRing();
   requestAnimationFrame(render);
 }
 
-// ── RUNE SLOTS RING ────────────────────────────────────────────────────────
+// ─── RUNE RING ────────────────────────────────────────────────────────────────
 function buildRuneSlotsRing(){
   slotsRing.innerHTML='';
   for(let i=0;i<3;i++){
     const el=document.createElement('div');
     el.className='rune-slot-el';
-    el.dataset.idx=i;
     el.innerHTML='<span class="slot-symbol">○</span>';
     slotsRing.appendChild(el);
   }
 }
 function updateRuneSlotsRing(){
   const els=slotsRing.querySelectorAll('.rune-slot-el');
-  const cw=canvas.offsetWidth,ch=canvas.offsetHeight;
-  const radius=(Math.min(cw,ch)/2)*0.7+26;
+  const radius=(Math.min(canvas.offsetWidth,canvas.offsetHeight)/2)*0.7+24;
   els.forEach((el,i)=>{
     const angle=runeRotAngle+(Math.PI*2*i/3);
     el.style.left=Math.cos(angle)*radius+'px';
     el.style.top=Math.sin(angle)*radius+'px';
-    const runeId=userRuneSlots[i];
-    const rune=runeId?RUNES.find(r=>r.id===runeId):null;
-    if(rune){
-      el.classList.add('filled');
-      el.style.setProperty('--rune-color',rune.color);
-      el.querySelector('.slot-symbol').textContent=rune.symbol;
-      el.querySelector('.slot-symbol').style.color=rune.color;
-    }else{
-      el.classList.remove('filled');
-      el.style.removeProperty('--rune-color');
-      el.querySelector('.slot-symbol').textContent='○';
-      el.querySelector('.slot-symbol').style.color='';
-    }
+    const rune=userRuneSlots[i]?RUNES.find(r=>r.id===userRuneSlots[i]):null;
+    el.classList.toggle('filled',!!rune);
+    if(rune){el.style.setProperty('--rune-color',rune.color);el.querySelector('.slot-symbol').textContent=rune.symbol;el.querySelector('.slot-symbol').style.color=rune.color;}
+    else{el.style.removeProperty('--rune-color');el.querySelector('.slot-symbol').textContent='○';el.querySelector('.slot-symbol').style.color='';}
   });
 }
 
-// ── BONUS HELPERS ──────────────────────────────────────────────────────────
-function getBonus(effect){
-  return userRuneSlots.reduce((sum,id)=>{
-    if(!id)return sum;
-    const r=RUNES.find(x=>x.id===id);
-    return r&&r.effect===effect?sum+r.value:sum;
-  },0);
-}
-function boosterActive(id){
-  return activeBoosters[id]&&activeBoosters[id].end>Date.now();
-}
-function getDiscount(){
-  const disc=getBonus('shopDiscount');
-  return Math.min(disc,0.5);
-}
+// Rune toggle
+const runeToggleBtn=document.getElementById('rune-toggle-btn');
+runeToggleBtn.addEventListener('click',()=>{
+  runesVisible=!runesVisible;
+  slotsRing.classList.toggle('hidden',!runesVisible);
+  runeToggleBtn.classList.toggle('runes-hidden',!runesVisible);
+  runeToggleBtn.textContent=runesVisible?'ᚠ':'○';
+  showToast(runesVisible?'Runes visible':'Runes hidden');
+});
 
-// ── SEAL GENERATION ────────────────────────────────────────────────────────
+// ─── BONUSES ──────────────────────────────────────────────────────────────────
+function getBonus(effect){return userRuneSlots.reduce((s,id)=>{if(!id)return s;const r=RUNES.find(x=>x.id===id);return r&&r.effect===effect?s+r.value:s;},0);}
+function boosterActive(id){return activeBoosters[id]&&activeBoosters[id].end>Date.now();}
+function getDiscount(){return Math.min(getBonus('shopDiscount'),0.5);}
+
+// ─── SEAL GENERATION ─────────────────────────────────────────────────────────
 function generateSeal(){
   sealFigures=Array.from({length:4},()=>({
     type:SHAPES[Math.floor(Math.random()*SHAPES.length)],
@@ -718,209 +951,270 @@ function generateSeal(){
   stats.total++;
   const rarity=checkRarity();
   updateStreak(rarity);
+  pushHistoryFeed(rarity);
+  // Auto-save notable seals to gallery
+  if(rarity!=='common'){saveToGallery(rarity);}
   checkQuests();
+  checkCodex();
+  checkAchievements();
   updateHUD();
 }
 
+function cMax(key){const m={};sealFigures.forEach(f=>m[f[key]]=(m[f[key]]||0)+1);return Math.max(...Object.values(m));}
+
 function checkRarity(){
   const luckMult=boosterActive('lucky_tap')?2:1;
-  const countMap=(key)=>{const m={};for(const f of sealFigures)m[f[key]]=(m[f[key]]||0)+1;return Math.max(...Object.values(m))};
-  const cm=countMap('color'),tm=countMap('type');
-  const sealBonus=getBonus('sealBonus');
-  const sealMult=boosterActive('double_seal')?2:1;
+  const cm=cMax('color'),tm=cMax('type');
+  const sb=getBonus('sealBonus'),sm=boosterActive('double_seal')?2:1;
   let rarity='common';
-  if(cm===4&&tm===4){
-    stats.ethereal++; seal+=1*(1+sealBonus)*sealMult;
-    flashRarity('✦ ETHEREAL SEAL ✦','#b0e0ff','All matches · 0.02% chance');
-    spawnParticles('✦','#b0e0ff',6); rarity='ethereal';
-  }else if(cm===3&&tm===3){
-    stats.legendary++; seal+=0.1*(1+sealBonus)*sealMult;
-    flashRarity('⊛ LEGENDARY ⊛','#ffd700','Triple match · 0.2% chance');
-    spawnParticles('★','#ffd700',4); rarity='legendary';
-  }else if((cm===4||tm===4)*luckMult){
-    const r=Math.random();
-    if(r<(0.005*luckMult)){stats.mythic++;seal+=0.01*(1+sealBonus)*sealMult;flashRarity('◈ MYTHIC ◈','#c084fc','Quad match · 0.5%');spawnParticles('◈','#c084fc',3);rarity='mythic';}
-    else if(r<(0.02*luckMult)){stats.rare++;seal+=0.001*(1+sealBonus)*sealMult;flashRarity('✧ RARE ✧','#00d4ff','Triple form · 2%');spawnParticles('✧','#00d4ff',2);rarity='rare';}
-  }else if((cm===3||tm===3)*luckMult&&Math.random()<(0.02*luckMult)){
-    stats.rare++;seal+=0.001*(1+sealBonus)*sealMult;
-    flashRarity('✧ RARE ✧','#00d4ff','Shape match · 2%');
-    spawnParticles('✧','#00d4ff',2); rarity='rare';
-  }
+  if(cm===4&&tm===4){stats.ethereal++;seal+=1*(1+sb)*sm;flashRarity('✦ ETHEREAL SEAL ✦','#b0e0ff','All matches · 0.02%');spawnParticles('✦','#b0e0ff',6);rarity='ethereal';}
+  else if(cm===3&&tm===3){stats.legendary++;seal+=0.1*(1+sb)*sm;flashRarity('⊛ LEGENDARY ⊛','#ffd700','Triple match · 0.2%');spawnParticles('★','#ffd700',4);rarity='legendary';}
+  else if((cm===4||tm===4)&&Math.random()<0.005*luckMult){stats.mythic++;seal+=0.01*(1+sb)*sm;flashRarity('◈ MYTHIC ◈','#c084fc','Quad form · 0.5%');spawnParticles('◈','#c084fc',3);rarity='mythic';}
+  else if((cm===3||tm===3)&&Math.random()<0.02*luckMult){stats.rare++;seal+=0.001*(1+sb)*sm;flashRarity('✧ RARE ✧','#00d4ff','Shape match · 2%');spawnParticles('✧','#00d4ff',2);rarity='rare';}
   updateSeal();
   return rarity;
 }
 
-// ── STREAK ─────────────────────────────────────────────────────────────────
+// ─── STREAK ───────────────────────────────────────────────────────────────────
 function updateStreak(rarity){
-  if(rarity==='common'){
-    currentStreak=0;
-  }else{
+  if(rarity==='common'){currentStreak=0;}
+  else{
     currentStreak++;
     if(currentStreak>stats.maxStreak)stats.maxStreak=currentStreak;
-    if(currentStreak>=3){
-      showCombo(currentStreak,rarity);
-    }
+    if(currentStreak>=3)showCombo(currentStreak,rarity);
   }
   streakEl.textContent=currentStreak;
   streakBadge.classList.toggle('hot',currentStreak>=3);
 }
-
 function showCombo(streak,rarity){
-  const colors={rare:'#00d4ff',mythic:'#c084fc',legendary:'#ffd700',ethereal:'#b0e0ff'};
-  const col=colors[rarity]||'#ffffff';
-  comboText.textContent=`${streak}× CHAIN!`;
-  comboText.style.color=col;
-  comboBg.style.background=col;
+  const cols={rare:'#00d4ff',mythic:'#c084fc',legendary:'#ffd700',ethereal:'#b0e0ff'};
+  const col=cols[rarity]||'#fff';
+  document.getElementById('combo-text').textContent=`${streak}× CHAIN!`;
+  document.getElementById('combo-text').style.color=col;
+  document.getElementById('combo-sub').textContent=`Streak bonus active`;
+  document.getElementById('combo-sub').style.color=col;
+  document.getElementById('combo-bg').style.background=col;
   comboEl.classList.add('show');
   setTimeout(()=>comboEl.classList.remove('show'),1800);
 }
 
-// ── PARTICLES ──────────────────────────────────────────────────────────────
-function spawnParticles(symbol,color,count){
-  for(let i=0;i<count;i++){
+// ─── HISTORY FEED ─────────────────────────────────────────────────────────────
+const RARITY_META={
+  common:{label:'Common',color:'rgba(200,200,200,0.3)',textColor:'rgba(200,200,200,0.6)'},
+  rare:{label:'Rare',color:'rgba(0,212,255,0.25)',textColor:'#00d4ff'},
+  mythic:{label:'Mythic',color:'rgba(192,132,252,0.25)',textColor:'#c084fc'},
+  legendary:{label:'Legendary',color:'rgba(255,215,0,0.25)',textColor:'#ffd700'},
+  ethereal:{label:'Ethereal',color:'rgba(176,224,255,0.25)',textColor:'#b0e0ff'},
+};
+function pushHistoryFeed(rarity){
+  sealHistory.unshift(rarity);
+  if(sealHistory.length>5)sealHistory.pop();
+  const feed=document.getElementById('history-feed');
+  feed.innerHTML='';
+  sealHistory.forEach(r=>{
+    const m=RARITY_META[r];
     const p=document.createElement('div');
-    p.className='particle';
-    p.textContent=symbol;
-    p.style.color=color;
-    p.style.left=(window.innerWidth/2+((Math.random()-0.5)*80))+'px';
-    p.style.top=(window.innerHeight/2+((Math.random()-0.5)*60))+'px';
-    p.style.animationDelay=(i*0.1)+'s';
-    document.body.appendChild(p);
-    setTimeout(()=>p.remove(),1500);
+    p.className='hf-pill';
+    p.style.borderColor=m.textColor;
+    p.style.background=m.color;
+    p.style.color=m.textColor;
+    p.textContent=m.label;
+    feed.appendChild(p);
+  });
+}
+
+// ─── GALLERY ──────────────────────────────────────────────────────────────────
+function saveToGallery(rarity){
+  if(sealGallery.length>=30)sealGallery.pop(); // max 30
+  const snap=snapSeal(sealFigures.map(f=>({...f})));
+  sealGallery.unshift({
+    snap,rarity,
+    shapes:[...new Set(sealFigures.map(f=>f.type))].join(', '),
+    ts:Date.now()
+  });
+  stats.gallerySaves++;
+}
+function buildGallery(){
+  const el=document.getElementById('tab-gallery');
+  if(!sealGallery.length){
+    el.innerHTML='<div class="gallery-empty">No seals saved yet.<br/>Rare+ seals are automatically captured.</div>';
+    return;
   }
+  el.innerHTML='<div class="gallery-grid"></div>';
+  const grid=el.querySelector('.gallery-grid');
+  sealGallery.forEach((entry,i)=>{
+    const m=RARITY_META[entry.rarity];
+    const card=document.createElement('div');
+    card.className='gallery-card';
+    card.style.borderColor=m.textColor;
+    const img=new Image();
+    img.src=entry.snap;
+    img.style.cssText='width:100%;display:block;background:#04040a;border-radius:13px 13px 0 0';
+    const info=document.createElement('div');
+    info.className='gallery-card-info';
+    const d=new Date(entry.ts);
+    info.innerHTML=`<div class="gc-rarity" style="color:${m.textColor}">${entry.rarity.toUpperCase()}</div>
+      <div class="gc-shapes">${entry.shapes}</div>
+      <div class="gc-date">${d.toLocaleDateString()} ${d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>`;
+    card.appendChild(img);card.appendChild(info);
+    grid.appendChild(card);
+  });
 }
 
-// ── RARITY FLASH ───────────────────────────────────────────────────────────
-const rfEl=document.getElementById('rarity-flash');
-const rfTitle=document.getElementById('rf-title');
-const rfSub=document.getElementById('rf-sub');
-const rfBg=document.getElementById('rf-bg');
-let rfTimer;
-function flashRarity(title,color,sub){
-  clearTimeout(rfTimer);
-  rfTitle.textContent=title; rfTitle.style.color=color;
-  rfSub.textContent=sub; rfBg.style.background=color;
-  rfEl.classList.add('show');
-  rfTimer=setTimeout(()=>rfEl.classList.remove('show'),2400);
-}
-
-// ── CLICK ──────────────────────────────────────────────────────────────────
-canvas.addEventListener('click',(e)=>{
-  if(spheres<=0){showToast('No spheres remaining!');return;}
-  spheres--;
-  // Sphere bonus chance
-  const sr=getBonus('sphereBonus');
-  if(Math.random()<0.15+sr)spheres++;
-  // Rune sphere click bonus
-  const scBonus=getBonus('sphereClick');
-  if(scBonus>0&&Math.random()<0.2)spheres+=scBonus;
-  updateSpheres();
-  const xpGain=(10+getBonus('xpBonus'))*(boosterActive('xp_rush')?3:1);
-  gainXP(xpGain);
-  generateSeal();
-  // Click ripple feel
-  canvas.style.filter='brightness(1.18) drop-shadow(0 0 28px rgba(200,169,110,0.3))';
-  setTimeout(()=>canvas.style.filter='drop-shadow(0 0 30px rgba(200,169,110,0.08))',120);
-});
-
-// ── XP / LEVEL ──────────────────────────────────────────────────────────────
-function gainXP(amount){
-  xp+=amount;
-  const needed=level*100;
-  if(xp>=needed){xp-=needed;level++;showToast(`⬆ Level ${level}!`);updateHUD();}
-  levelEl.textContent=level;
-  xpEl.textContent=Math.floor(xp);
-  xpBar.style.width=(xp/Math.max(1,level*100)*100)+'%';
-  document.getElementById('profile-level').textContent=level;
-  document.getElementById('profile-xp').textContent=Math.floor(xp);
-}
-function updateSpheres(){sphereEl.textContent=spheres}
-function updateSeal(){sealEl.textContent=seal.toFixed(3)}
-function updateHUD(){
-  updateSpheres(); updateSeal();
-}
-
-// ── MINING ─────────────────────────────────────────────────────────────────
-const MINING_CD=8*3600*1000;
-function getMiningYield(){return 0.10*(1+getBonus('miningYield'));}
-function updateMiningBtn(){
-  const end=parseInt(localStorage.getItem('ms2_miningEnd')||0);
-  const left=end-Date.now();
-  const fill=document.getElementById('mining-fill');
-  const label=document.getElementById('mining-label');
-  if(left>0){
-    miningBtn.disabled=true;
-    const h=Math.floor(left/3600000),m=Math.floor((left%3600000)/60000),s=Math.floor((left%60000)/1000);
-    miningBtn.textContent=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-    const pct=Math.max(0,(MINING_CD-left)/MINING_CD*100);
-    if(fill)fill.style.width=pct+'%';
-    if(label)label.textContent=`Mining… ${Math.round(pct)}% complete`;
-  }else{
-    miningBtn.disabled=false;
-    miningBtn.textContent='Collect Yield';
-    if(fill)fill.style.width='100%';
-    if(label)label.textContent='Ready to collect!';
-  }
-}
-miningBtn.addEventListener('click',()=>{
-  if(miningBtn.disabled)return;
-  const yield_=getMiningYield();
-  seal+=yield_; updateSeal();
-  showToast(`⛏ Mined ${yield_.toFixed(3)} $SEAL`);
-  localStorage.setItem('ms2_miningEnd',Date.now()+MINING_CD);
-  updateMiningBtn();
-});
-setInterval(updateMiningBtn,1000);
-updateMiningBtn();
-
-// ── BOOSTER HUD ────────────────────────────────────────────────────────────
-function updateBoosterHud(){
-  const hud=document.getElementById('booster-hud');
-  const now=Date.now();
-  const active=Object.entries(activeBoosters).filter(([,v])=>v.end>now);
-  hud.classList.toggle('show',active.length>0);
-  // Update existing pills in-place; add/remove only when count changes
-  const existing=hud.querySelectorAll('.booster-active-pill');
-  active.forEach(([k,v],i)=>{
-    const left=Math.ceil((v.end-now)/1000);
-    const mins=Math.floor(left/60), secs=left%60;
-    const timeStr=mins>0?`${mins}m ${secs}s`:`${secs}s`;
-    if(existing[i]){
-      existing[i].querySelector('.b-time').textContent=timeStr;
-    }else{
-      const pill=document.createElement('div');
-      pill.className='booster-active-pill';
-      pill.innerHTML=`<span>${v.icon} ${v.name}</span><span class="b-time" style="opacity:0.65;margin-left:4px">${timeStr}</span>`;
-      hud.appendChild(pill);
+// ─── CODEX ────────────────────────────────────────────────────────────────────
+function checkCodex(){
+  let newDisc=false;
+  CODEX_ENTRIES.forEach(e=>{
+    if(codexDiscovered[e.id])return;
+    if(e.check(stats,userRunes,userRuneSlots)){
+      codexDiscovered[e.id]=Date.now();
+      newDisc=true;
+      showToast(`📖 Codex: ${e.name} discovered!`);
+      // Award XP from codex reward string
+      const xpMatch=e.reward.match(/\+(\d+)\s*XP/);
+      if(xpMatch)gainXP(parseInt(xpMatch[1]));
     }
   });
-  // Remove pills for expired boosters
-  for(let i=active.length;i<existing.length;i++)existing[i].remove();
+  if(newDisc)updateCodexBadge();
 }
-setInterval(updateBoosterHud,1000);
-
-// ── QUESTS ──────────────────────────────────────────────────────────────────
-function checkQuests(){
-  QUESTS_DEFS.forEach(q=>{
-    if(questClaimed[q.id]&&!q.repeatable)return;
-    const prog=questProgress[q.id]||0;
-    const cur=stats[q.track]||0;
-    questProgress[q.id]=Math.max(prog,cur);
-  });
-  const badge=document.getElementById('rune-badge');
-  const hasReady=QUESTS_DEFS.some(q=>{
-    if(questClaimed[q.id]&&!q.repeatable)return false;
-    return (questProgress[q.id]||0)>=q.goal;
-  });
+function updateCodexBadge(){
+  const undiscovered=CODEX_ENTRIES.filter(e=>!codexDiscovered[e.id]).length;
+  document.getElementById('codex-badge').classList.toggle('show',undiscovered<CODEX_ENTRIES.length&&Object.keys(codexDiscovered).length>0);
 }
-
-function buildQuestList(){
-  const el=document.getElementById('quest-list');
+function buildCodex(){
+  const el=document.getElementById('tab-codex-entries');
   el.innerHTML='';
-  QUESTS_DEFS.forEach(q=>{
-    const prog=questProgress[q.id]||0;
+  // Sort: discovered first, then by id
+  const sorted=[...CODEX_ENTRIES].sort((a,b)=>{
+    const ad=codexDiscovered[a.id]?1:0,bd=codexDiscovered[b.id]?1:0;
+    return bd-ad;
+  });
+  sorted.forEach(e=>{
+    const discovered=!!codexDiscovered[e.id];
+    const ts=codexDiscovered[e.id];
+    const row=document.createElement('div');
+    row.className='codex-entry'+(discovered?' discovered':'');
+    row.style.setProperty('--ce-color',e.color);
+    const progress=getCodexProgress(e);
+    row.innerHTML=`
+      <div class="ce-icon" style="${discovered?`color:${e.color};text-shadow:0 0 10px ${e.color}`:''}">${discovered?e.icon:'?'}</div>
+      <div class="ce-info">
+        <div class="ce-name" style="${discovered?`color:${e.color}`:'color:var(--text-dim)'}">${discovered?e.name:'???'}</div>
+        <div class="ce-desc">${discovered?e.desc:'Discover this seal type to reveal.'}</div>
+        ${discovered?`<div class="ce-reward">${e.reward}</div>`:''}
+        ${!discovered&&progress?`<div class="ce-count">${progress}</div>`:''}
+      </div>
+      ${discovered&&ts?`<div class="ach-date">${new Date(ts).toLocaleDateString()}</div>`:''}
+    `;
+    el.appendChild(row);
+  });
+}
+function getCodexProgress(e){
+  if(!e.countKey)return null;
+  const cur=stats[e.countKey]||0;
+  if(cur===0)return null;
+  return `${Math.min(cur,e.goal)}/${e.goal}`;
+}
+window.codexTab=function(btn,tab){
+  document.querySelectorAll('#codex-panel .ptab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-codex-entries').style.display=tab==='tab-codex-entries'?'block':'none';
+  document.getElementById('tab-gallery').style.display=tab==='tab-gallery'?'block':'none';
+  if(tab==='tab-gallery')buildGallery();
+  else buildCodex();
+};
+
+// ─── ACHIEVEMENTS ─────────────────────────────────────────────────────────────
+function checkAchievements(){
+  ACHIEVEMENTS.forEach(a=>{
+    if(achievementsUnlocked[a.id])return;
+    if(a.check(stats,userRunes,userRuneSlots,loginStreak)){
+      achievementsUnlocked[a.id]=Date.now();
+      showToast(`🏅 Badge: ${a.name}!`);
+      spawnParticles('🏅','#ffd700',3);
+      updateBadgeCount();
+    }
+  });
+}
+function updateBadgeCount(){
+  const count=Object.keys(achievementsUnlocked).length;
+  document.getElementById('profile-badge-count').textContent=count;
+}
+function buildAchievements(){
+  const el=document.getElementById('tab-ach-q');
+  const count=Object.keys(achievementsUnlocked).length;
+  el.innerHTML=`<div style="font-size:10px;color:var(--text-dim);letter-spacing:1px;text-align:center;margin-bottom:12px">${count}/${ACHIEVEMENTS.length} badges unlocked</div><div class="ach-grid"></div>`;
+  const grid=el.querySelector('.ach-grid');
+  [...ACHIEVEMENTS].sort((a,b)=>(achievementsUnlocked[b.id]?1:0)-(achievementsUnlocked[a.id]?1:0)).forEach(a=>{
+    const unlocked=!!achievementsUnlocked[a.id];
+    const ts=achievementsUnlocked[a.id];
+    const card=document.createElement('div');
+    card.className='ach-card'+(unlocked?' unlocked':'');
+    card.style.setProperty('--ac',a.color);
+    card.innerHTML=`
+      ${unlocked?`<div class="ach-check">✓</div>`:''}
+      <div class="ach-icon" style="${unlocked?`color:${a.color};text-shadow:0 0 12px ${a.color}`:''}">${a.icon}</div>
+      <div class="ach-name">${a.name}</div>
+      <div class="ach-desc">${a.desc}</div>
+      ${unlocked&&ts?`<div class="ach-date">${new Date(ts).toLocaleDateString()}</div>`:''}
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// ─── QUESTS ───────────────────────────────────────────────────────────────────
+const LIFETIME_QUESTS=[
+  {id:'lq1',icon:'🔮',text:'Generate 50 seals',goal:50,track:'total',reward:{xp:50,spheres:15}},
+  {id:'lq2',icon:'🔮',text:'Generate 250 seals',goal:250,track:'total',reward:{xp:150,spheres:40}},
+  {id:'lq3',icon:'✧',text:'Get 5 Rare seals',goal:5,track:'rare',reward:{xp:60,spheres:18}},
+  {id:'lq4',icon:'◈',text:'Get 3 Mythic seals',goal:3,track:'mythic',reward:{xp:120,spheres:30}},
+  {id:'lq5',icon:'⊛',text:'Get a Legendary seal',goal:1,track:'legendary',reward:{xp:250,spheres:60}},
+  {id:'lq6',icon:'✦',text:'Get an Ethereal seal',goal:1,track:'ethereal',reward:{xp:700,spheres:120}},
+  {id:'lq7',icon:'🔥',text:'Reach a 5× streak',goal:5,track:'maxStreak',reward:{xp:40,spheres:10}},
+  {id:'lq8',icon:'ᚠ',text:'Own 6 runes',goal:6,track:null,reward:{xp:80,spheres:20}},
+  {id:'lq9',icon:'⛏',text:'Mine 5 times',goal:5,track:'totalMines',reward:{xp:50,spheres:15}},
+];
+// Daily quests reset each day
+const DAILY_QUESTS=[
+  {id:'dq1',icon:'🔮',text:'Generate 15 seals today',goal:15,track:'dailyTotal',reward:{xp:20,spheres:6}},
+  {id:'dq2',icon:'✧',text:'Get 2 Rare+ seals today',goal:2,track:'dailyRarePlus',reward:{xp:35,spheres:10}},
+  {id:'dq3',icon:'⚡',text:'Spend 30 spheres today',goal:30,track:'dailySpheresSpent',reward:{xp:25,spheres:8}},
+];
+let dailyStats={dailyTotal:0,dailyRarePlus:0,dailySpheresSpent:0,lastDailyDate:''};
+
+function checkDailyReset(){
+  const today=new Date().toDateString();
+  if(dailyStats.lastDailyDate!==today){
+    dailyStats={dailyTotal:0,dailyRarePlus:0,dailySpheresSpent:0,lastDailyDate:today};
+    DAILY_QUESTS.forEach(q=>{delete questClaimed['d_'+q.id];});
+  }
+}
+
+function checkQuests(){
+  // Sync lifetime tracking
+  LIFETIME_QUESTS.forEach(q=>{
+    if(q.track)questProgress[q.id]=stats[q.track]||0;
+    else if(q.id==='lq8')questProgress[q.id]=userRunes.length;
+  });
+  // Daily tracking
+  dailyStats.dailyTotal=stats.total;
+  updateQuestBadge();
+}
+function updateQuestBadge(){
+  const hasLife=LIFETIME_QUESTS.some(q=>!questClaimed[q.id]&&(questProgress[q.id]||0)>=q.goal);
+  const hasDaily=DAILY_QUESTS.some(q=>!questClaimed['d_'+q.id]&&(dailyStats[q.track]||0)>=q.goal);
+  document.getElementById('quest-badge').classList.toggle('show',hasLife||hasDaily);
+}
+function buildQuestList(type){
+  const isDaily=type==='daily';
+  const defs=isDaily?DAILY_QUESTS:LIFETIME_QUESTS;
+  const el=document.getElementById(isDaily?'tab-daily-q':'tab-lifetime-q');
+  el.innerHTML='';
+  defs.forEach(q=>{
+    const key=isDaily?'d_'+q.id:q.id;
+    const prog=isDaily?(dailyStats[q.track]||0):(questProgress[q.id]||0);
     const done=prog>=q.goal;
-    const claimed=questClaimed[q.id]&&!q.repeatable;
+    const claimed=questClaimed[key];
     const pct=Math.min(100,prog/q.goal*100);
     const div=document.createElement('div');
     div.className='quest-item'+(done&&!claimed?' complete':'');
@@ -929,171 +1223,233 @@ function buildQuestList(){
       <div class="quest-icon">${q.icon}</div>
       <div class="quest-body">
         <div class="quest-text">${q.text}</div>
-        <div class="quest-prog">${Math.min(prog,q.goal)} / ${q.goal}${claimed?' · Claimed':''}</div>
+        <div class="quest-prog">${Math.min(prog,q.goal)}/${q.goal}${claimed?' · ✓ Claimed':''}</div>
       </div>
       <div class="quest-reward">+${q.reward.xp}xp${q.reward.spheres?` +${q.reward.spheres}⚡`:''}</div>
-      ${done&&!claimed?`<button class="claim-btn" onclick="claimQuest('${q.id}')">Claim</button>`:claimed?`<div class="quest-done">✓</div>`:''}
-    `;
+      ${done&&!claimed?`<button class="claim-btn" onclick="claimQuest('${key}',${q.reward.xp},${q.reward.spheres||0})">Claim</button>`:claimed?`<div class="quest-done">✓</div>`:''}`;
     el.appendChild(div);
   });
 }
-
-window.claimQuest=function(qid){
-  const q=QUESTS_DEFS.find(x=>x.id===qid);
-  if(!q)return;
-  gainXP(q.reward.xp);
-  spheres+=q.reward.spheres||0;
-  questClaimed[qid]=true;
-  if(q.repeatable)questProgress[qid]=0;
-  updateSpheres();
-  showToast(`Quest complete! +${q.reward.xp} XP`);
-  buildQuestList();
+window.claimQuest=function(key,xpAmt,spAmt){
+  questClaimed[key]=true;
+  gainXP(xpAmt);
+  if(spAmt){spheres+=spAmt;updateSpheres();}
+  showToast(`Quest complete! +${xpAmt} XP`);
+  buildQuestList(key.startsWith('d_')?'daily':'lifetime');
+  updateQuestBadge();
+};
+window.questTab=function(btn,tab){
+  document.querySelectorAll('#quests-panel .ptab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  ['tab-daily-q','tab-lifetime-q','tab-ach-q'].forEach(id=>document.getElementById(id).style.display='none');
+  document.getElementById(tab).style.display='block';
+  if(tab==='tab-daily-q'){checkDailyReset();buildQuestList('daily');}
+  else if(tab==='tab-lifetime-q')buildQuestList('lifetime');
+  else buildAchievements();
 };
 
-// ── RUNE COLLECTION ─────────────────────────────────────────────────────────
+// ─── CLICK ────────────────────────────────────────────────────────────────────
+canvas.addEventListener('click',()=>{
+  if(spheres<=0){showToast('No spheres remaining!');return;}
+  spheres--;
+  dailyStats.dailySpheresSpent++;
+  const sr=getBonus('sphereBonus');
+  if(Math.random()<0.15+sr)spheres++;
+  const sc=getBonus('sphereClick');
+  if(sc>0&&Math.random()<0.2)spheres+=sc;
+  updateSpheres();
+  const xpGain=(10+getBonus('xpBonus'))*(boosterActive('xp_rush')?3:1);
+  gainXP(xpGain);
+  generateSeal();
+  dailyStats.dailyTotal++;
+  canvas.style.filter='brightness(1.18) drop-shadow(0 0 26px rgba(200,169,110,0.28))';
+  setTimeout(()=>canvas.style.filter='drop-shadow(0 0 28px rgba(200,169,110,0.08))',110);
+});
+
+// ─── XP / LEVEL ───────────────────────────────────────────────────────────────
+function gainXP(amount){
+  xp+=amount;
+  const needed=level*100;
+  if(xp>=needed){xp-=needed;level++;showToast(`⬆ Level ${level}!`);}
+  document.getElementById('level-val').textContent=level;
+  document.getElementById('xp-val').textContent=Math.floor(xp);
+  document.getElementById('xp-max').textContent=level*100;
+  document.getElementById('xp-bar-fill').style.width=(xp/(level*100)*100)+'%';
+  document.getElementById('profile-level').textContent=level;
+  document.getElementById('profile-xp').textContent=Math.floor(xp);
+  document.getElementById('profile-xp-max').textContent=level*100;
+}
+function updateSpheres(){document.getElementById('sphere-count').textContent=spheres;}
+function updateSeal(){document.getElementById('seal-amount').textContent=seal.toFixed(3);}
+function updateHUD(){updateSpheres();updateSeal();}
+
+// ─── RARITY FLASH ─────────────────────────────────────────────────────────────
+let rfTimer;
+function flashRarity(title,color,sub){
+  clearTimeout(rfTimer);
+  const rfEl=document.getElementById('rarity-flash');
+  document.getElementById('rf-title').textContent=title;
+  document.getElementById('rf-title').style.color=color;
+  document.getElementById('rf-sub').textContent=sub;
+  document.getElementById('rf-bg').style.background=color;
+  rfEl.classList.add('show');
+  rfTimer=setTimeout(()=>rfEl.classList.remove('show'),2200);
+}
+
+// ─── PARTICLES ────────────────────────────────────────────────────────────────
+function spawnParticles(sym,color,n){
+  for(let i=0;i<n;i++){
+    const p=document.createElement('div');
+    p.className='particle';p.textContent=sym;p.style.color=color;
+    p.style.left=(window.innerWidth/2+((Math.random()-0.5)*80))+'px';
+    p.style.top=(window.innerHeight/2+((Math.random()-0.5)*60))+'px';
+    p.style.animationDelay=(i*0.08)+'s';
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),1400);
+  }
+}
+
+// ─── MINING ───────────────────────────────────────────────────────────────────
+function getMiningYield(){return 0.10*(1+getBonus('miningYield'));}
+function updateMiningBtn(){
+  const end=parseInt(localStorage.getItem('ms4_mine')||0);
+  const left=end-Date.now();
+  const fill=document.getElementById('mining-fill');
+  const label=document.getElementById('mining-label');
+  if(left>0){
+    document.getElementById('mining-btn').disabled=true;
+    const h=Math.floor(left/3600000),m=Math.floor((left%3600000)/60000),s=Math.floor((left%60000)/1000);
+    document.getElementById('mining-btn').textContent=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    if(fill)fill.style.width=Math.max(0,(MINING_CD-left)/MINING_CD*100)+'%';
+    if(label)label.textContent=`Mining… ${Math.round((MINING_CD-left)/MINING_CD*100)}% complete`;
+  }else{
+    document.getElementById('mining-btn').disabled=false;
+    document.getElementById('mining-btn').textContent='Collect Yield';
+    if(fill)fill.style.width='100%';
+    if(label)label.textContent='Ready to collect!';
+  }
+}
+document.getElementById('mining-btn').addEventListener('click',()=>{
+  if(document.getElementById('mining-btn').disabled)return;
+  const y=getMiningYield();seal+=y;updateSeal();
+  stats.totalMines++;checkAchievements();checkCodex();checkQuests();
+  showToast(`⛏ Mined ${y.toFixed(3)} $SEAL`);
+  localStorage.setItem('ms4_mine',Date.now()+MINING_CD);
+  updateMiningBtn();
+});
+setInterval(updateMiningBtn,1000);
+updateMiningBtn();
+
+// ─── BOOSTER HUD ──────────────────────────────────────────────────────────────
+function updateBoosterHud(){
+  const hud=document.getElementById('booster-hud');
+  const now=Date.now();
+  const active=Object.entries(activeBoosters).filter(([,v])=>v.end>now);
+  hud.classList.toggle('show',active.length>0);
+  const existing=hud.querySelectorAll('.booster-active-pill');
+  active.forEach(([k,v],i)=>{
+    const left=Math.ceil((v.end-now)/1000);
+    const t=left>=60?`${Math.floor(left/60)}m ${left%60}s`:`${left}s`;
+    if(existing[i])existing[i].querySelector('.b-time').textContent=t;
+    else{const p=document.createElement('div');p.className='booster-active-pill';p.innerHTML=`<span>${v.icon} ${v.name}</span><span class="b-time" style="opacity:0.6;margin-left:4px">${t}</span>`;hud.appendChild(p);}
+  });
+  for(let i=active.length;i<existing.length;i++)existing[i].remove();
+}
+setInterval(updateBoosterHud,1000);
+
+// ─── RUNE COLLECTION ──────────────────────────────────────────────────────────
 function buildRuneGrid(){
   const grid=document.getElementById('rune-collection-grid');
   grid.innerHTML='';
-  let filtered=RUNES;
-  if(runeFilter==='owned')filtered=RUNES.filter(r=>userRunes.includes(r.id));
-  else if(runeFilter==='equipped')filtered=RUNES.filter(r=>userRuneSlots.includes(r.id));
-  else if(runeFilter==='Common'||runeFilter==='Rare'||runeFilter==='Epic')filtered=RUNES.filter(r=>r.rarity===runeFilter);
-  // Sort: owned first, then by rarity
-  filtered.sort((a,b)=>{
-    const ao=userRunes.includes(a.id)?1:0,bo=userRunes.includes(b.id)?1:0;
-    if(ao!==bo)return bo-ao;
-    return RARITY_ORDER[b.rarity]-RARITY_ORDER[a.rarity];
-  });
-  filtered.forEach(rune=>{
+  let list=RUNES;
+  if(runeFilter==='owned')list=RUNES.filter(r=>userRunes.includes(r.id));
+  else if(runeFilter==='equipped')list=RUNES.filter(r=>userRuneSlots.includes(r.id));
+  else if(['Common','Rare','Epic'].includes(runeFilter))list=RUNES.filter(r=>r.rarity===runeFilter);
+  list.sort((a,b)=>{const ao=userRunes.includes(a.id)?1:0,bo=userRunes.includes(b.id)?1:0;if(ao!==bo)return bo-ao;return RARITY_ORDER[b.rarity]-RARITY_ORDER[a.rarity];});
+  list.forEach(rune=>{
     const owned=userRunes.includes(rune.id);
     const equipped=userRuneSlots.includes(rune.id);
     const cell=document.createElement('div');
     cell.className='rune-card'+(owned?' owned':'')+(equipped?' equipped':'');
     cell.style.setProperty('--rc',rune.color);
     cell.innerHTML=`
-      ${equipped?`<div class="equipped-badge">EQUIPPED</div>`:''}
+      ${equipped?`<div class="equipped-badge">ON</div>`:''}
       ${!owned?`<div class="lock-badge">🔒</div>`:''}
       <div class="rune-symbol">${rune.symbol}</div>
       <div class="rune-name">${rune.name}</div>
-      <div class="rune-rarity-dot" title="${rune.rarity}"></div>
-    `;
-    if(owned){
-      cell.addEventListener('click',()=>openRuneDetail(rune));
-    }
+      <div class="rune-rarity-dot"></div>`;
+    if(owned)cell.addEventListener('click',()=>openRuneDetail(rune));
     grid.appendChild(cell);
   });
   document.getElementById('profile-rune-count').textContent=userRunes.length;
-  document.getElementById('profile-rune-total').textContent=RUNES.length;
 }
-
 window.setRuneFilter=function(btn,filter){
   runeFilter=filter;
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  buildRuneGrid();
-  closeRuneDetail();
+  buildRuneGrid();closeRuneDetail();
 };
-
 function openRuneDetail(rune){
   selectedRune=rune;
-  const det=document.getElementById('rune-detail');
   const sym=document.getElementById('rd-symbol');
-  sym.textContent=rune.symbol; sym.style.color=rune.color; sym.style.textShadow=`0 0 20px ${rune.color}`;
+  sym.textContent=rune.symbol;sym.style.color=rune.color;sym.style.textShadow=`0 0 18px ${rune.color}`;
   document.getElementById('rd-name').textContent=rune.name;
   document.getElementById('rd-name').style.color=rune.color;
-  const rarEl=document.getElementById('rd-rarity');
-  rarEl.textContent=rune.rarity.toUpperCase();
-  rarEl.style.color=RARITY_COLORS[rune.rarity];
+  const re=document.getElementById('rd-rarity');
+  re.textContent=rune.rarity.toUpperCase();re.style.color=RARITY_COLORS[rune.rarity];
   document.getElementById('rd-bonus').textContent=rune.bonus;
   buildDetailActions(rune);
-  det.classList.add('open');
+  document.getElementById('rune-detail').classList.add('open');
   closeDeleteConfirm();
   document.getElementById('slot-selector').style.display='none';
-  det.scrollIntoView({behavior:'smooth',block:'nearest'});
+  document.getElementById('rune-detail').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
-
 function buildDetailActions(rune){
   const actions=document.getElementById('rd-actions');
   const equipped=userRuneSlots.includes(rune.id);
-  const slotIdx=userRuneSlots.indexOf(rune.id);
   actions.innerHTML='';
   if(equipped){
-    const unequipBtn=document.createElement('button');
-    unequipBtn.className='rd-btn rd-unequip';
-    unequipBtn.textContent='Unequip';
-    unequipBtn.onclick=()=>{
-      userRuneSlots[slotIdx]=null;
-      showToast(`${rune.name} unequipped`);
-      buildRuneGrid(); buildDetailActions(rune); updateRuneSlotsRing();
-    };
-    actions.appendChild(unequipBtn);
+    const ub=document.createElement('button');ub.className='rd-btn rd-unequip';ub.textContent='Unequip';
+    ub.onclick=()=>{userRuneSlots[userRuneSlots.indexOf(rune.id)]=null;stats.runesEquipped=userRuneSlots.filter(Boolean).length;showToast(`${rune.name} unequipped`);buildRuneGrid();buildDetailActions(rune);updateRuneSlotsRing();};
+    actions.appendChild(ub);
   }else{
-    const equipBtn=document.createElement('button');
-    equipBtn.className='rd-btn rd-equip';
-    equipBtn.textContent='Equip Rune';
-    equipBtn.onclick=()=>showSlotSelector(rune);
-    actions.appendChild(equipBtn);
+    const eb=document.createElement('button');eb.className='rd-btn rd-equip';eb.textContent='Equip Rune';
+    eb.onclick=()=>showSlotSelector(rune);
+    actions.appendChild(eb);
   }
-  const delBtn=document.createElement('button');
-  delBtn.className='rd-btn rd-delete';
-  delBtn.textContent='Delete Rune';
-  delBtn.onclick=()=>showDeleteConfirm(rune);
-  actions.appendChild(delBtn);
+  const db=document.createElement('button');db.className='rd-btn rd-delete';db.textContent='Delete';
+  db.onclick=()=>showDeleteConfirm(rune);
+  actions.appendChild(db);
 }
-
 function showSlotSelector(rune){
   const ss=document.getElementById('slot-selector');
   const pickers=document.getElementById('slot-pickers');
-  ss.style.display='flex';
-  pickers.innerHTML='';
+  ss.style.display='flex';pickers.innerHTML='';
   for(let i=0;i<3;i++){
-    const existing=userRuneSlots[i]?RUNES.find(r=>r.id===userRuneSlots[i]):null;
+    const ex=userRuneSlots[i]?RUNES.find(r=>r.id===userRuneSlots[i]):null;
     const btn=document.createElement('div');
-    btn.className='slot-picker'+(existing?' has-rune':'');
-    btn.title=existing?`Replace ${existing.name}`:`Empty slot ${i+1}`;
-    btn.style.borderColor=existing?existing.color:'';
-    btn.textContent=existing?existing.symbol:'·';
-    btn.style.fontSize='1.4em';
-    btn.style.color=existing?existing.color:'var(--text-dim)';
-    btn.onclick=()=>{
-      userRuneSlots[i]=rune.id;
-      stats.runesEquipped=userRuneSlots.filter(Boolean).length;
-      showToast(`${rune.name} equipped in slot ${i+1}`);
-      document.getElementById('slot-selector').style.display='none';
-      buildRuneGrid(); buildDetailActions(rune); updateRuneSlotsRing(); checkQuests();
-    };
+    btn.className='slot-picker'+(ex?' has-rune':'');
+    btn.style.borderColor=ex?ex.color:'';btn.style.color=ex?ex.color:'var(--text-dim)';
+    btn.style.fontSize='1.35em';btn.textContent=ex?ex.symbol:'·';
+    btn.onclick=()=>{userRuneSlots[i]=rune.id;stats.runesEquipped=userRuneSlots.filter(Boolean).length;showToast(`${rune.name} → Slot ${i+1}`);ss.style.display='none';buildRuneGrid();buildDetailActions(rune);updateRuneSlotsRing();checkAchievements();checkCodex();};
     pickers.appendChild(btn);
   }
 }
-
 function showDeleteConfirm(rune){
-  const dc=document.getElementById('delete-confirm');
-  document.getElementById('dc-text').textContent=`Delete "${rune.name}"? This cannot be undone. The rune will be lost forever.`;
-  document.getElementById('dc-yes').onclick=()=>deleteRune(rune);
-  dc.classList.add('open');
+  document.getElementById('dc-text').textContent=`Delete "${rune.name}"? This cannot be undone.`;
+  document.getElementById('dc-yes').onclick=()=>{
+    userRunes=userRunes.filter(id=>id!==rune.id);
+    userRuneSlots=userRuneSlots.map(id=>id===rune.id?null:id);
+    showToast(`${rune.name} deleted`);
+    closeDeleteConfirm();closeRuneDetail();buildRuneGrid();updateRuneSlotsRing();
+  };
+  document.getElementById('delete-confirm').classList.add('open');
   document.getElementById('slot-selector').style.display='none';
 }
+window.closeDeleteConfirm=function(){document.getElementById('delete-confirm').classList.remove('open');};
+function closeRuneDetail(){document.getElementById('rune-detail').classList.remove('open');selectedRune=null;}
 
-window.closeDeleteConfirm=function(){
-  document.getElementById('delete-confirm').classList.remove('open');
-};
-
-function deleteRune(rune){
-  userRunes=userRunes.filter(id=>id!==rune.id);
-  userRuneSlots=userRuneSlots.map(id=>id===rune.id?null:id);
-  showToast(`${rune.name} deleted`);
-  closeDeleteConfirm();
-  closeRuneDetail();
-  buildRuneGrid(); updateRuneSlotsRing();
-}
-
-function closeRuneDetail(){
-  document.getElementById('rune-detail').classList.remove('open');
-  document.getElementById('slot-selector').style.display='none';
-  selectedRune=null;
-}
-
-// ── CHESTS ──────────────────────────────────────────────────────────────────
+// ─── CHESTS ───────────────────────────────────────────────────────────────────
 function buildChestList(){
   const el=document.getElementById('chest-list');
   el.innerHTML='';
@@ -1103,12 +1459,11 @@ function buildChestList(){
     const price=Math.round(chest.price*(1-disc));
     const row=document.createElement('div');
     row.className='chest-row';
-    row.innerHTML=`
-      <div class="chest-icon">${chest.icon}</div>
+    row.innerHTML=`<div class="chest-icon">${chest.icon}</div>
       <div class="chest-info">
         <div class="chest-name">${chest.label}</div>
         <div class="chest-rarity" style="color:${chest.color}">${chest.pool.join(' / ')}</div>
-        <div class="chest-count">Owned: ${cnt} · ${price}⚡${disc>0?` <span style="color:var(--green);font-size:9px">(-${Math.round(disc*100)}%)</span>`:''}</div>
+        <div class="chest-count">Owned: ${cnt} · ${price}⚡${disc>0?` <span style="color:var(--green);font-size:8px">-${Math.round(disc*100)}%</span>`:''}</div>
       </div>
       <div class="chest-btns">
         <button class="chest-open-btn" ${cnt===0?'disabled':''} onclick="openChest('${chest.type}')">Open</button>
@@ -1116,112 +1471,127 @@ function buildChestList(){
       </div>`;
     el.appendChild(row);
   });
-  const cb=document.getElementById('chest-badge');
-  const total=Object.values(userChests).reduce((a,b)=>a+b,0);
-  cb.classList.toggle('show',total>0);
+  updateChestBadge();
 }
-
+function updateChestBadge(){
+  const total=Object.values(userChests).reduce((a,b)=>a+b,0);
+  document.getElementById('chest-badge').classList.toggle('show',total>0);
+}
 window.buyChest=function(type,price){
   if(spheres<price){showToast('Not enough spheres!');return;}
-  spheres-=price; updateSpheres();
+  spheres-=price;updateSpheres();
   userChests[type]=(userChests[type]||0)+1;
   showToast(`${CHESTS.find(c=>c.type===type).label} acquired!`);
   buildChestList();
 };
-
 window.openChest=function(type){
   if(!(userChests[type]>0))return;
   const chest=CHESTS.find(c=>c.type===type);
   let pool=[];
   chest.pool.forEach((rarity,i)=>{
     const avail=RUNES.filter(r=>r.rarity===rarity&&!userRunes.includes(r.id));
-    const weight=Math.round(chest.chances[i]*100);
-    for(let j=0;j<weight;j++)pool.push(...avail);
+    const w=Math.round(chest.chances[i]*100);
+    for(let j=0;j<w;j++)pool.push(...avail);
   });
-  if(!pool.length){
-    // Give spheres refund instead
-    const ref=CHESTS.find(c=>c.type===type).price;
-    spheres+=ref; updateSpheres();
-    userChests[type]--;
-    showToast('All runes collected! Refunded spheres.');
-    buildChestList(); return;
-  }
+  if(!pool.length){spheres+=chest.price;updateSpheres();userChests[type]--;buildChestList();showToast('All runes found! Refunded spheres.');return;}
   const rune=pool[Math.floor(Math.random()*pool.length)];
-  userRunes.push(rune.id);
-  userChests[type]--;
+  userRunes.push(rune.id);userChests[type]--;
   stats.chestsOpened++;
-  checkQuests();
-  buildChestList(); buildRuneGrid();
+  checkQuests();checkAchievements();checkCodex();
+  buildChestList();buildRuneGrid();
   const res=document.getElementById('chest-result');
-  res.style.display='block';
-  res.style.borderColor=rune.color;
-  res.innerHTML=`
-    <div class="cr-symbol" style="color:${rune.color};text-shadow:0 0 24px ${rune.color}">${rune.symbol}</div>
+  res.style.display='block';res.style.borderColor=rune.color;
+  res.innerHTML=`<div class="cr-symbol" style="color:${rune.color};text-shadow:0 0 20px ${rune.color}">${rune.symbol}</div>
     <div class="cr-name" style="color:${rune.color}">${rune.name}</div>
-    <div style="font-size:10px;letter-spacing:2px;color:${RARITY_COLORS[rune.rarity]};margin-bottom:4px">${rune.rarity.toUpperCase()}</div>
+    <div style="font-size:9px;letter-spacing:2px;color:${RARITY_COLORS[rune.rarity]};margin-bottom:4px">${rune.rarity.toUpperCase()}</div>
     <div class="cr-bonus">${rune.bonus}</div>`;
   spawnParticles(rune.symbol,rune.color,4);
   setTimeout(()=>{res.style.display='none';},4000);
 };
 
-// ── SHOP ────────────────────────────────────────────────────────────────────
+// ─── SHOP ─────────────────────────────────────────────────────────────────────
 window.shopTab=function(btn,tab){
   document.querySelectorAll('#shop-panel .ptab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  document.getElementById('shop-spheres').style.display=tab==='spheres'?'block':'none';
-  document.getElementById('shop-boosters').style.display=tab==='boosters'?'block':'none';
+  document.getElementById('shop-spheres').style.display=tab==='shop-spheres'?'block':'none';
+  document.getElementById('shop-boosters').style.display=tab==='shop-boosters'?'block':'none';
 };
-
 function buildShop(){
-  const el=document.getElementById('shop-items');
+  const el=document.getElementById('shop-spheres');
   el.innerHTML='<div class="shop-section-title">Sphere Packs</div>';
   SHOP_ITEMS.forEach(item=>{
-    el.innerHTML+=`
-      <div class="shop-item">
-        <div class="item-info">
-          <span class="item-name">${item.spheres} Spheres</span>
-          <span class="item-price">${item.price}</span>
-        </div>
-        <button class="shop-btn" onclick="startPayment(${item.spheres},'${item.price}')">Buy</button>
-      </div>`;
+    el.innerHTML+=`<div class="shop-item"><div class="item-info"><span class="item-name">${item.spheres} Spheres</span><span class="item-price">${item.price}</span></div><button class="shop-btn" onclick="startPayment(${item.spheres},'${item.price}')">Buy</button></div>`;
   });
-  const bl=document.getElementById('booster-items');
+  const bl=document.getElementById('shop-boosters');
   bl.innerHTML='<div class="shop-section-title">Arcane Boosters</div>';
   BOOSTERS.forEach(b=>{
     const disc=getDiscount();
     const price=Math.round(b.price*(1-disc));
     const active=boosterActive(b.id);
-    bl.innerHTML+=`
-      <div class="booster-item">
-        <div class="booster-icon">${b.icon}</div>
-        <div class="booster-info">
-          <div class="booster-name">${b.name}</div>
-          <div class="booster-desc">${b.desc}</div>
-          <div class="booster-price">${price}⚡${disc>0?` <span style="color:var(--green);font-size:9px">(-${Math.round(disc*100)}%)</span>`:''}</div>
-        </div>
-        <button class="booster-btn" onclick="buyBooster('${b.id}',${price})" ${active?'disabled style="opacity:0.5"':''}>
-          ${active?'Active':'Get'}
-        </button>
-      </div>`;
+    bl.innerHTML+=`<div class="booster-item"><div class="booster-icon">${b.icon}</div><div class="booster-info"><div class="booster-name">${b.name}</div><div class="booster-desc">${b.desc}</div><div class="booster-price">${price}⚡${disc>0?` <span style="color:var(--green);font-size:8px">(-${Math.round(disc*100)}%)</span>`:''}</div></div><button class="booster-btn" onclick="buyBooster('${b.id}',${price})" ${active?'disabled':''}>${active?'Active':'Get'}</button></div>`;
+  });
+}
+window.buyBooster=function(id,price){
+  if(spheres<price){showToast('Not enough spheres!');return;}
+  const b=BOOSTERS.find(x=>x.id===id);if(!b)return;
+  spheres-=price;updateSpheres();
+  if(b.duration>0){activeBoosters[id]={end:Date.now()+b.duration*1000,icon:b.icon,name:b.name};showToast(`${b.name} activated!`);}
+  else if(id==='sphere_rain'){spheres+=50;updateSpheres();showToast('🌊 +50 Spheres!');}
+  buildShop();updateBoosterHud();
+};
+
+// ─── LEADERBOARD ──────────────────────────────────────────────────────────────
+function buildLeaderboard(){
+  const el=document.getElementById('lb-list');
+  const my=parseFloat(seal.toFixed(3));
+  const entries=[...LEADERBOARD_NAMES.map((n,i)=>({name:n,score:LEADERBOARD_SCORES[i],me:false})),{name:'You',score:my,me:true}];
+  entries.sort((a,b)=>b.score-a.score);
+  const medals=['🥇','🥈','🥉'];
+  el.innerHTML='';
+  entries.forEach((e,i)=>{
+    const row=document.createElement('div');
+    row.className='lb-row'+(e.me?' is-me':'');
+    row.innerHTML=`<div class="lb-rank${i<3?' gold-rank':''}">${medals[i]||i+1}</div>
+      <div class="lb-avatar"><img src="https://i.pravatar.cc/40?u=${e.name}" alt="${e.name}"/></div>
+      <div class="lb-name">${e.name}${e.me?' (You)':''}</div>
+      <div class="lb-score">${e.score.toFixed(3)} $SEAL</div>`;
+    el.appendChild(row);
   });
 }
 
-window.buyBooster=function(id,price){
-  if(spheres<price){showToast('Not enough spheres!');return;}
-  const b=BOOSTERS.find(x=>x.id===id);
-  if(!b)return;
-  spheres-=price; updateSpheres();
-  if(b.duration>0){
-    activeBoosters[id]={end:Date.now()+b.duration*1000,icon:b.icon,name:b.name};
-    showToast(`${b.name} activated!`);
-  }else{
-    // instant effect
-    if(id==='sphere_rain'){spheres+=50;updateSpheres();showToast('🌊 +50 Spheres!');}
-  }
-  buildShop(); updateBoosterHud();
-};
+// ─── PROFILE STATS ────────────────────────────────────────────────────────────
+function updateProfileStats(){
+  document.getElementById('profile-stats').innerHTML=`
+    <div class="stat-card"><div class="sc-val">${stats.total}</div><div class="sc-label">Total Seals</div></div>
+    <div class="stat-card"><div class="sc-val">${seal.toFixed(3)}</div><div class="sc-label">$SEAL</div></div>
+    <div class="stat-card" style="--sc-color:#00d4ff"><div class="sc-val">${stats.rare}</div><div class="sc-label">Rare</div></div>
+    <div class="stat-card" style="--sc-color:#c084fc"><div class="sc-val">${stats.mythic}</div><div class="sc-label">Mythic</div></div>
+    <div class="stat-card" style="--sc-color:#ffd700"><div class="sc-val">${stats.legendary}</div><div class="sc-label">Legendary</div></div>
+    <div class="stat-card" style="--sc-color:#b0e0ff"><div class="sc-val">${stats.ethereal}</div><div class="sc-label">Ethereal</div></div>
+    <div class="stat-card" style="--sc-color:#ff8844"><div class="sc-val">${stats.maxStreak}</div><div class="sc-label">Best Chain</div></div>
+    <div class="stat-card" style="--sc-color:#9b59ff"><div class="sc-val">${Object.keys(achievementsUnlocked).length}/${ACHIEVEMENTS.length}</div><div class="sc-label">Badges</div></div>
+  `;
+  updateDailySection();
+  updateBadgeCount();
+}
 
-// ── PAYMENT ─────────────────────────────────────────────────────────────────
+// ─── PANELS ───────────────────────────────────────────────────────────────────
+window.openPanel=function(id){
+  document.querySelectorAll('.panel-overlay').forEach(p=>p.classList.remove('open'));
+  document.getElementById(id).classList.add('open');
+  if(id==='runes-panel'){buildRuneGrid();closeRuneDetail();}
+  if(id==='profile-panel'){updateProfileStats();updateMiningBtn();}
+  if(id==='chest-panel')buildChestList();
+  if(id==='shop-panel')buildShop();
+  if(id==='quests-panel'){checkDailyReset();buildQuestList('daily');updateQuestBadge();}
+  if(id==='codex-panel'){buildCodex();updateCodexBadge();}
+  if(id==='lb-panel')buildLeaderboard();
+};
+window.closePanel=function(id){document.getElementById(id).classList.remove('open');};
+window.closeIfBg=function(e,el){if(e.target===el)el.classList.remove('open');};
+document.getElementById('avatar-btn').addEventListener('click',()=>openPanel('profile-panel'));
+
+// ─── PAYMENT ─────────────────────────────────────────────────────────────────
 let paymentAmt=0;
 window.startPayment=function(amt,price){
   paymentAmt=amt;
@@ -1235,73 +1605,30 @@ window.closePayment=function(){document.getElementById('payment-overlay').classL
 document.getElementById('pm-confirm').addEventListener('click',function(){
   this.disabled=true;
   document.getElementById('pm-result').textContent='Processing…';
-  setTimeout(()=>{
-    spheres+=paymentAmt; updateSpheres();
-    document.getElementById('pm-result').textContent=`✓ ${paymentAmt} spheres added!`;
-    setTimeout(closePayment,1500);
-  },1200);
+  setTimeout(()=>{spheres+=paymentAmt;updateSpheres();document.getElementById('pm-result').textContent=`✓ ${paymentAmt} spheres added!`;setTimeout(closePayment,1400);},1200);
 });
 
-// ── PROFILE STATS ────────────────────────────────────────────────────────────
-function updateProfileStats(){
-  const el=document.getElementById('profile-stats');
-  el.innerHTML=`
-    <div class="stat-card"><div class="sc-val">${stats.total}</div><div class="sc-label">Total Seals</div></div>
-    <div class="stat-card"><div class="sc-val">${seal.toFixed(3)}</div><div class="sc-label">$SEAL Balance</div></div>
-    <div class="stat-card" style="--sc-color:#00d4ff"><div class="sc-val">${stats.rare}</div><div class="sc-label">Rare</div></div>
-    <div class="stat-card" style="--sc-color:#c084fc"><div class="sc-val">${stats.mythic}</div><div class="sc-label">Mythic</div></div>
-    <div class="stat-card" style="--sc-color:#ffd700"><div class="sc-val">${stats.legendary}</div><div class="sc-label">Legendary</div></div>
-    <div class="stat-card" style="--sc-color:#b0e0ff"><div class="sc-val">${stats.ethereal}</div><div class="sc-label">Ethereal</div></div>
-    <div class="stat-card" style="--sc-color:#ff8844"><div class="sc-val">${stats.maxStreak}</div><div class="sc-label">Best Chain</div></div>
-    <div class="stat-card" style="--sc-color:#9b59ff"><div class="sc-val">${userRunes.length}</div><div class="sc-label">Runes</div></div>
-  `;
-}
-
-// ── PANELS ────────────────────────────────────────────────────────────────────
-window.openPanel=function(id){
-  document.querySelectorAll('.panel-overlay').forEach(p=>p.classList.remove('open'));
-  document.getElementById(id).classList.add('open');
-  if(id==='runes-panel'){buildRuneGrid();closeRuneDetail();}
-  if(id==='profile-panel'){updateProfileStats();updateMiningBtn();}
-  if(id==='chest-panel'){buildChestList();}
-  if(id==='shop-panel'){buildShop();}
-  if(id==='quests-panel'){buildQuestList();}
-};
-window.closePanel=function(id){document.getElementById(id).classList.remove('open');};
-window.closeIfBg=function(e,el){if(e.target===el)el.classList.remove('open');};
-document.getElementById('avatar-btn').addEventListener('click',()=>openPanel('profile-panel'));
-
-// ── TOAST ──────────────────────────────────────────────────────────────────
+// ─── TOAST ────────────────────────────────────────────────────────────────────
 let toastTimer;
 function showToast(msg){
   const t=document.getElementById('toast');
-  t.textContent=msg;
-  t.classList.add('show');
+  t.textContent=msg;t.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>t.classList.remove('show'),2200);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2400);
 }
 
-// ── RUNE VISIBILITY TOGGLE ───────────────────────────────────────────────────
-let runesVisible=true;
-const runeToggleBtn=document.getElementById('rune-toggle-btn');
-runeToggleBtn.addEventListener('click',()=>{
-  runesVisible=!runesVisible;
-  slotsRing.classList.toggle('hidden',!runesVisible);
-  runeToggleBtn.classList.toggle('runes-hidden',!runesVisible);
-  runeToggleBtn.textContent=runesVisible?'ᚠ':'○';
-  runeToggleBtn.title=runesVisible?'Hide runes':'Show runes';
-  showToast(runesVisible?'Runes visible':'Runes hidden');
-});
-
-// ── INIT ────────────────────────────────────────────────────────────────────
+// ─── INIT ─────────────────────────────────────────────────────────────────────
 buildRuneSlotsRing();
 buildShop();
 buildChestList();
-buildQuestList();
-updateSpheres();
-updateSeal();
-updateProfileStats();
+checkDailyReset();
+buildQuestList('daily');
 checkQuests();
+checkAchievements();
+checkCodex();
+updateCodexBadge();
+updateBadgeCount();
+updateSpheres();updateSeal();
 gainXP(0);
 generateSeal();
 render();
